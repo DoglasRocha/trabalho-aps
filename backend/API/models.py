@@ -26,7 +26,7 @@ class Cliente(models.Model):
     estado = models.CharField(max_length=2)
     
     def __str__(self) -> str:
-        texto = f'{Usuario.objects.get(pk=self.usuario_id)}\n'
+        texto = f'{Usuario.objects.get(pk=self.usuario_id).__str__()}\n'
         texto += f'Endereço: {self.endereco}\n'
         texto += f'Cidade: {self.cidade}\n'
         texto += f'Estado: {self.estado}\n'
@@ -48,8 +48,8 @@ class Prestador(models.Model):
     empresa_id = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        texto = f'{Usuario.objects.get(pk=self.usuario_id)}\n'
-        texto += f'{Empresa.objects.get(pk=self.empresa_id)}\n'
+        texto = f'{Usuario.objects.get(pk=self.usuario_id).__str__()}\n'
+        texto += f'{Empresa.objects.get(pk=self.empresa_id).__str__()}\n'
         
         return texto
     
@@ -80,13 +80,17 @@ class Agendamento(models.Model):
     servico_id = models.ForeignKey(Servico, on_delete=models.CASCADE)
     horario_inicio = models.DateTimeField()
     horario_fim = models.DateTimeField()
-    observacoes = models.TextField()
+    observacoes_cliente = models.TextField()
+    realizado = models.BooleanField()
+    observacoes_prestador = models.TextField()
     
     def __str__(self) -> str:
         texto = f'Nome Cliente: {Usuario.objects.get(pk=Cliente.objects.get(pk=self.cliente_id).usuario_id).nome}\n'
         texto += f'Nome Prestador: {Usuario.objects.get(pk=Cliente.objects.get(pk=self.cliente_id).usuario_id).nome}\n'
         texto += f'Horário Início: {self.horario_inicio}\n'
         texto += f'Horário Fim: {self.horario_fim}\n'
-        texto += f'Observações: {self.observacoes}\n'
+        texto += f'Observações Cliente: {self.observacoes_cliente}\n'
+        texto += f'Realizado: {self.realizado}\n'
+        texto += f'Observações Prestador: {self.observacoes_prestador}\n'
         
         return texto
