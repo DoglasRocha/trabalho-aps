@@ -19,6 +19,11 @@ class Usuario(models.Model):
         
         return texto
     
+    def set_nome(self, novo_nome: str):
+        self.nome = novo_nome
+        self.save()
+        return self
+    
 class Cliente(models.Model):
     usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     endereco = models.CharField(max_length=200)
