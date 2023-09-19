@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from .models import Usuario
+from .models import Usuario, Cliente
 
 # Create your routes here.
 def get_usuarios(request) -> JsonResponse:
@@ -10,6 +10,8 @@ def get_usuarios(request) -> JsonResponse:
 def create_cliente(request) -> JsonResponse:
     data = request.POST.items()
     
-    cliente = Cliente()
+    cliente = Cliente(**data)
+    
+    
     
     

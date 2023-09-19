@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 # Create your models here.
 class Usuario(models.Model):
@@ -19,9 +20,28 @@ class Usuario(models.Model):
         
         return texto
     
-    def set_nome(self, novo_nome: str):
-        self.nome = novo_nome
-        self.save()
+    def set_nome(self, nome: str):
+        self.nome = nome
+        return self
+    
+    def set_email(self, email: str):
+        self.email = email
+        return self
+    
+    def set_senha(self, senha: str):
+        self.senha = senha
+        return self
+    
+    def set_data_nascimento(self, data_nascimento: date):
+        self.data_nascimento = data_nascimento
+        return self
+    
+    def set_cpf(self, cpf: str):
+        self.cpf = cpf
+        return self
+    
+    def set_tipo(self, tipo: str):
+        self.tipo = tipo
         return self
     
 class Cliente(models.Model):
