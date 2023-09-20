@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from .models import Usuario
+from .models import Usuario, Cliente
 
 # Create your routes here.
 def get_usuarios(request) -> JsonResponse:
@@ -8,8 +8,21 @@ def get_usuarios(request) -> JsonResponse:
     return JsonResponse({'dados': resp})
 
 def create_cliente(request) -> JsonResponse:
-    data = request.POST.items()
+    dados = request.POST.items()
     
-    cliente = Cliente()
-    
-    
+    try:
+        # cria usuario
+        atributos_usuario = Usuario.filtra_atributos_dicionario(dados)
+        novo_usuario = Usuario(**atributos_usuario)
+        # salva usuario no banco de dados
+        novo_usuario.save()
+        
+        # cria cliente
+        atributos_cliente = Cliente.filtra_atributos_dicionario(dados)
+        novo_cliente = Cliente(usuario_id=novo_usuario.pk, **atributos_cliente)
+        # salva cliente no banco de dados
+        novo_cliente.save()
+        
+        return {'status': 'success'}
+    except Exception as e:
+        return {'status': e}

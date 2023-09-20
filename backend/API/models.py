@@ -24,6 +24,11 @@ class Usuario(models.Model):
         self.save()
         return self
     
+    @staticmethod
+    def filtra_atributos_dicionario(dicionario: dict):
+        keys = ['nome', 'email', 'senha', 'data_nascimento', 'cpf', 'tipo']
+        return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+    
 class Cliente(models.Model):
     usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     endereco = models.CharField(max_length=200)
@@ -37,6 +42,11 @@ class Cliente(models.Model):
         texto += f'Estado: {self.estado}\n'
         
         return texto
+    
+    @staticmethod
+    def filtra_atributos_dicionario(dicionario: dict):
+        keys = ['endereco', 'cidade', 'estado']
+        return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
 class Empresa(models.Model):
     nome = models.CharField(max_length=200)
