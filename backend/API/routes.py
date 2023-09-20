@@ -12,6 +12,11 @@ def create_cliente(request) -> JsonResponse:
     
     cliente = Cliente(**data)
     
+def get_cliente(request, id: int) -> JsonResponse:
+    cliente = Cliente.objects.get(pk=id)
+    usuario = Usuario.objects.get(cliente.usuario_id)
     
+    cliente = {**usuario, **cliente}
+    return JsonResponse(cliente)
     
     
