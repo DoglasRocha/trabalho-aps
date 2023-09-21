@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 # Create your models here.
 class Usuario(models.Model):
@@ -10,7 +11,8 @@ class Usuario(models.Model):
     tipo = models.CharField(max_length=10)
     
     def __str__(self) -> str:
-        texto = f'Nome: {self.nome}\n'
+        texto = f'ID: {self.id}\n'
+        texto += f'Nome: {self.nome}\n'
         texto += f'Email: {self.email}\n'
         texto += f'Senha: {self.senha}\n'
         texto += f'Data Nascimento: {self.data_nascimento}\n'
@@ -19,9 +21,28 @@ class Usuario(models.Model):
         
         return texto
     
-    def set_nome(self, novo_nome: str):
-        self.nome = novo_nome
-        self.save()
+    def set_nome(self, nome: str):
+        self.nome = nome
+        return self
+    
+    def set_email(self, email: str):
+        self.email = email
+        return self
+    
+    def set_senha(self, senha: str):
+        self.senha = senha
+        return self
+    
+    def set_data_nascimento(self, data_nascimento: date):
+        self.data_nascimento = data_nascimento
+        return self
+    
+    def set_cpf(self, cpf: str):
+        self.cpf = cpf
+        return self
+    
+    def set_tipo(self, tipo: str):
+        self.tipo = tipo
         return self
     
     @staticmethod
@@ -30,7 +51,7 @@ class Usuario(models.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
     
 class Cliente(models.Model):
-    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario_id = models.ForeignKey(Usuario, to_field="id", on_delete=models.CASCADE)
     endereco = models.CharField(max_length=200)
     cidade = models.CharField(max_length=50)
     estado = models.CharField(max_length=2)
@@ -95,8 +116,8 @@ class Agendamento(models.Model):
     servico_id = models.ForeignKey(Servico, on_delete=models.CASCADE)
     horario_inicio = models.DateTimeField()
     horario_fim = models.DateTimeField()
-    observacoes_cliente = models.TextField()
-    realizado = models.BooleanField()
+    observacoes_cliente = models.TextField(default="null")
+    realizado = models.BooleanField(default=False)
     observacoes_prestador = models.TextField()
     
     def __str__(self) -> str:
