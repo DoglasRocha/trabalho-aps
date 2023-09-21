@@ -20,8 +20,11 @@ def get_usuario(request, id: int) -> JsonResponse:
     )
 
 def create_cliente(request) -> JsonResponse:
-    dados = request.POST.items()
+    if request.method != 'POST':
+        return JsonResponse({"status": "post route only"})
     
+    dados = json.loads(request.body)
+    print(dados)
     try:
         # cria usuario
         atributos_usuario = Usuario.filtra_atributos_dicionario(dados)
@@ -31,19 +34,18 @@ def create_cliente(request) -> JsonResponse:
         
         # cria cliente
         atributos_cliente = Cliente.filtra_atributos_dicionario(dados)
-        novo_cliente = Cliente(usuario_id=novo_usuario.pk, **atributos_cliente)
+        novo_cliente = Cliente(usuario_id=novo_usuario, **atributos_cliente)
         # salva cliente no banco de dados
         novo_cliente.save()
         
-        return {'status': 'success'}
+        return JsonResponse({'status': 'success'})
     except Exception as e:
-        return {'status': e}
+        print(e)
+        return JsonResponse({'status': e})
     
 def get_cliente(request, id: int) -> JsonResponse:
     cliente = Cliente.objects.get(pk=id)
-    usuario = Usuario.objects.get(cliente.usuario_id)
     
-    cliente = {vars(usuario), vars(cliente)}
-    return JsonResponse(cliente)
+    return JsonResponse(cliente.get_dict())
     
     

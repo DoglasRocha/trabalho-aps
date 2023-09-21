@@ -21,34 +21,21 @@ class Usuario(models.Model):
         
         return texto
     
-    def set_nome(self, nome: str):
-        self.nome = nome
-        return self
-    
-    def set_email(self, email: str):
-        self.email = email
-        return self
-    
-    def set_senha(self, senha: str):
-        self.senha = senha
-        return self
-    
-    def set_data_nascimento(self, data_nascimento: date):
-        self.data_nascimento = data_nascimento
-        return self
-    
-    def set_cpf(self, cpf: str):
-        self.cpf = cpf
-        return self
-    
-    def set_tipo(self, tipo: str):
-        self.tipo = tipo
-        return self
-    
     @staticmethod
-    def filtra_atributos_dicionario(dicionario: dict):
+    def filtra_atributos_dicionario(dicionario: dict) -> dict:
         keys = ['nome', 'email', 'senha', 'data_nascimento', 'cpf', 'tipo']
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+
+    def get_dict(self) -> dict:
+        return {
+            'id': self.id,
+            'nome': self.nome,
+            'email': self.email,
+            'data_nascimento': self.data_nascimento,
+            'cpf': self.cpf,
+            'tipo': self.tipo,
+            'senha': self.senha,
+        }
     
 class Cliente(models.Model):
     usuario_id = models.ForeignKey(Usuario, to_field="id", on_delete=models.CASCADE)
@@ -57,7 +44,8 @@ class Cliente(models.Model):
     estado = models.CharField(max_length=2)
     
     def __str__(self) -> str:
-        texto = f'{Usuario.objects.get(pk=self.usuario_id).__str__()}\n'
+        texto = f'{self.usuario_id.get_dict()}\n'
+        texto += f'ID: {self.id}'
         texto += f'Endereço: {self.endereco}\n'
         texto += f'Cidade: {self.cidade}\n'
         texto += f'Estado: {self.estado}\n'
@@ -65,9 +53,18 @@ class Cliente(models.Model):
         return texto
     
     @staticmethod
-    def filtra_atributos_dicionario(dicionario: dict):
+    def filtra_atributos_dicionario(dicionario: dict) -> dict:
         keys = ['endereco', 'cidade', 'estado']
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+    
+    def get_dict(self) -> dict:
+        return {
+            'id': self.id,
+            'usuario_id': self.usuario_id.get_dict(),
+            'endereco': self.endereco,
+            'cidade': self.cidade,
+            'estado': self.estado,
+        }
 
 class Empresa(models.Model):
     nome = models.CharField(max_length=200)
