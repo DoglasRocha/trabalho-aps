@@ -39,14 +39,14 @@ class Usuario(models.Model):
         }
     
 class Cliente(models.Model):
-    usuario = models.ForeignKey(Usuario, to_field="id", on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     endereco = models.CharField(max_length=200)
     cidade = models.CharField(max_length=50)
     estado = models.CharField(max_length=2)
     
     def __str__(self) -> str:
-        texto = f'{self.usuario_id.get_dict()}\n'
-        texto += f'ID: {self.id}'
+        texto = f'Usuário: {self.usuario.get_dict()}\n'
+        texto += f'ID: {self.id}\n'
         texto += f'Endereço: {self.endereco}\n'
         texto += f'Cidade: {self.cidade}\n'
         texto += f'Estado: {self.estado}\n'
@@ -61,7 +61,7 @@ class Cliente(models.Model):
     def get_dict(self) -> dict:
         return {
             'id': self.id,
-            'usuario_id': self.usuario.get_dict(),
+            'usuario': self.usuario.get_dict(),
             'endereco': self.endereco,
             'cidade': self.cidade,
             'estado': self.estado,
