@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from abc import ABCMeta, abstractmethod, abstractclassmethod
 
 # Create your models here.
 class Usuario(models.Model):
@@ -38,7 +39,7 @@ class Usuario(models.Model):
         }
     
 class Cliente(models.Model):
-    usuario_id = models.ForeignKey(Usuario, to_field="id", on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, to_field="id", on_delete=models.CASCADE)
     endereco = models.CharField(max_length=200)
     cidade = models.CharField(max_length=50)
     estado = models.CharField(max_length=2)
@@ -54,13 +55,13 @@ class Cliente(models.Model):
     
     @staticmethod
     def filtra_atributos_dicionario(dicionario: dict) -> dict:
-        keys = ['endereco', 'cidade', 'estado']
+        keys = ['endereco', 'cidade', 'estado', 'usuario']
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
     
     def get_dict(self) -> dict:
         return {
             'id': self.id,
-            'usuario_id': self.usuario_id.get_dict(),
+            'usuario_id': self.usuario.get_dict(),
             'endereco': self.endereco,
             'cidade': self.cidade,
             'estado': self.estado,
@@ -76,15 +77,37 @@ class Empresa(models.Model):
         
         return texto
     
+    @staticmethod
+    def filtra_atributos_dicionario(dicionario: dict) -> dict:
+        keys = ['nome', 'cnpj',]
+        return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+    
+    def get_dict(self) -> dict:
+        return {
+            'nome': self.nome,
+            'cnpj': self.cnpj
+        }
+    
 class Prestador(models.Model):
-    usuario_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    empresa_id = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        texto = f'{Usuario.objects.get(pk=self.usuario_id).__str__()}\n'
-        texto += f'{Empresa.objects.get(pk=self.empresa_id).__str__()}\n'
+        texto = f'Usuário: {self.usuario.get_dict()}\n'
+        texto += f'Empresa: {self.empresa.get_dict()}\n'
         
         return texto
+    
+    @staticmethod
+    def filtra_atributos_dicionario(dicionario: dict) -> dict:
+        keys = ['usuario', 'empresa',]
+        return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+    
+    def get_dict(self) -> dict:
+        return {
+            'usuario': self.usuario.get_dict(),
+            'empresa': self.empresa.get_dict()
+        }
     
 class Categoria(models.Model):
     nome = models.CharField(max_length=100)
@@ -94,23 +117,46 @@ class Categoria(models.Model):
         
         return texto
     
+    @staticmethod
+    def filtra_atributos_dicionario(dicionario: dict) -> dict:
+        keys = ['nome',]
+        return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+    
+    def get_dict(self) -> dict:
+        return {
+            'nome': self.nome
+        }
+        
 class Servico(models.Model):
-    id_prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE)
-    id_categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     preco = models.FloatField()
     duracao = models.DurationField()
     
     def __str__(self) -> str:
-        texto = f'Nome Prestador: {Usuario.objects.get(pk=Prestador.objects.get(pk=self.id_prestador).usuario_id).nome}\n'
-        texto += f'Categoria: {Categoria.objects.get(pk=self.id_categoria).nome}\n'
+        texto = f'Nome Prestador: {self.prestador.get_dict()}\n'
+        texto += f'Categoria: {self.categoria.get_dict()}\n'
         texto += f'Preço: {self.preco}'
         texto += f'Duração: {self.duracao}'
         
         return texto
     
+    @staticmethod
+    def filtra_atributos_dicionario(dicionario: dict) -> dict:
+        keys = ['prestador', 'categoria', 'preco', 'duracao']
+        return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+    
+    def get_dict(self) -> dict:
+        return {
+            'prestador': self.prestador.get_dict(),
+            'categoria': self.categoria.get_dict(),
+            'preco': self.preco,
+            'durcao': self.duracao
+        }
+    
 class Agendamento(models.Model):
-    cliente_id = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    servico_id = models.ForeignKey(Servico, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     horario_inicio = models.DateTimeField()
     horario_fim = models.DateTimeField()
     observacoes_cliente = models.TextField(default="null")
@@ -118,8 +164,8 @@ class Agendamento(models.Model):
     observacoes_prestador = models.TextField()
     
     def __str__(self) -> str:
-        texto = f'Nome Cliente: {Usuario.objects.get(pk=Cliente.objects.get(pk=self.cliente_id).usuario_id).nome}\n'
-        texto += f'Nome Prestador: {Usuario.objects.get(pk=Cliente.objects.get(pk=self.cliente_id).usuario_id).nome}\n'
+        texto = f'Nome Cliente: {self.cliente.get_dict()["usuario"]["nome"]}\n'
+        texto += f'Nome Prestador: {self.servico.get_dict()["prestador"]["usuario"]["nome"]}\n'
         texto += f'Horário Início: {self.horario_inicio}\n'
         texto += f'Horário Fim: {self.horario_fim}\n'
         texto += f'Observações Cliente: {self.observacoes_cliente}\n'
@@ -127,3 +173,27 @@ class Agendamento(models.Model):
         texto += f'Observações Prestador: {self.observacoes_prestador}\n'
         
         return texto
+    
+    @staticmethod
+    def filtra_atributos_dicionario(dicionario: dict) -> dict:
+        keys = [
+            'cliente', 
+            'servico', 
+            'horario_inicio', 
+            'horario_fim', 
+            'observacoes_cliente', 
+            'realizado', 
+            'observacoes_prestador'
+        ]
+        return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+    
+    def get_dict(self) -> dict:
+        return {
+            'cliente': self.cliente.get_dict(),
+            'servico': self.servico.get_dict(),
+            'horario_inicio': self.horario_inicio,
+            'horario_fim': self.horario_fim,
+            'observacoes_cliente': self.observacoes_cliente,
+            'realizado': self.realizado,
+            'observacoes_prestador': self.observacoes_prestador
+        }
