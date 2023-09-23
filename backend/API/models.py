@@ -29,7 +29,7 @@ class Usuario(models.Model):
 
     def get_dict(self) -> dict:
         return {
-            'id': self.id,
+            'usuario_id': self.id,
             'nome': self.nome,
             'email': self.email,
             'data_nascimento': self.data_nascimento,
@@ -60,15 +60,15 @@ class Cliente(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'id': self.id,
-            'usuario': self.usuario.get_dict(),
+            'cliente_id': self.id,
+            **self.usuario.get_dict(),
             'endereco': self.endereco,
             'cidade': self.cidade,
             'estado': self.estado,
         }
 
 class Empresa(models.Model):
-    nome = models.CharField(max_length=200)
+    nome_fantasia = models.CharField(max_length=200)
     cnpj = models.CharField(max_length=18)
     
     def __str__(self) -> str:
@@ -84,7 +84,8 @@ class Empresa(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'nome': self.nome,
+            'nome_fantasia': self.nome,
+            'empresa_id': self.id,
             'cnpj': self.cnpj
         }
     
@@ -105,8 +106,9 @@ class Prestador(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'usuario': self.usuario.get_dict(),
-            'empresa': self.empresa.get_dict()
+            'prestador_id': self.id,
+            **self.usuario.get_dict(),
+            **self.empresa.get_dict()
         }
     
 class Categoria(models.Model):
@@ -124,7 +126,8 @@ class Categoria(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'nome': self.nome
+            'nome': self.nome,
+            'categoria_id': self.id
         }
         
 class Servico(models.Model):
@@ -148,8 +151,9 @@ class Servico(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'prestador': self.prestador.get_dict(),
-            'categoria': self.categoria.get_dict(),
+            'servico_id': self.id,
+            'prestador_id': self.prestador.get_dict()['prestador_id'],
+            'categoria_id': self.categoria.get_dict()['categoria_id'],
             'preco': self.preco,
             'durcao': self.duracao
         }
@@ -189,8 +193,8 @@ class Agendamento(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'cliente': self.cliente.get_dict(),
-            'servico': self.servico.get_dict(),
+            'cliente_id': self.cliente.get_dict()['cliente_id'],
+            'servico_id': self.servico.get_dict()['servico_id'],
             'horario_inicio': self.horario_inicio,
             'horario_fim': self.horario_fim,
             'observacoes_cliente': self.observacoes_cliente,

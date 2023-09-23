@@ -22,7 +22,6 @@ def create_cliente(request) -> JsonResponse:
     
     try:
         dados = json.loads(request.body)
-        print(dados)
         # cria usuario
         atributos_usuario = Usuario.filtra_atributos_dicionario(dados)
         novo_usuario = Usuario(**atributos_usuario)
@@ -31,15 +30,12 @@ def create_cliente(request) -> JsonResponse:
         
         # cria cliente
         atributos_cliente = Cliente.filtra_atributos_dicionario(dados)
-        novo_cliente = Cliente(**atributos_cliente)
-        novo_cliente.usuario = novo_usuario
+        novo_cliente = Cliente(usuario=novo_usuario, **atributos_cliente)
         # salva cliente no banco de dados
-        print(novo_cliente)
         novo_cliente.save()
         
         return JsonResponse(novo_cliente.get_dict())
     except Exception as e:
-        print(e)
         return HttpResponseServerError(content="algo deu errado")
     
 def get_cliente(request, id: int) -> JsonResponse:
