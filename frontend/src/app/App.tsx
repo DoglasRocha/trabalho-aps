@@ -1,7 +1,7 @@
+import { Rota } from "./routes/index"
+
 export const App = () => {
   return (
-    <div className="App">
-      Hello World
-    </div>
+    <Rota></Rota>
   );
 }
