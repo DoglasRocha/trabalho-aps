@@ -44,6 +44,7 @@ export class Cliente extends Usuario {
     this.endereco = endereco;
     this.cidade = cidade;
     this.estado = estado;
+    this.tipo = "cliente";
   }
 
   geraImpressao(): string {
