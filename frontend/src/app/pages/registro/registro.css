@@ -1,0 +1,38 @@
+.background-registro {
+    /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
+    background-color: greenyellow;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.box-registro {
+    background-color: white;
+    width: 500px;
+    height: auto;
+    align-self: center;
+    padding: 20px;
+}
+
+.dainfe-image {
+    /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
+    background-color: red;
+    height: 50px;
+    width: 100px;
+    justify-self: center;
+    margin: 10px;
+}
+
+.input-registro {
+    color: brown;
+}
+
+.button-registro {
+    color: burlywood;
+}
+.button-registro:hover {
+    background-color: burlywood;
+    color: white;
+}

@@ -1,0 +1,17 @@
+.fundo-home {
+    background-color: blue;
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    overflow-x: auto;
+    display: block;
+    position: relative;
+}
+
+.dainfe-image {
+    background-color: red;
+    height: 50px;
+    width: 100px;
+    justify-self: center;
+    margin: 10px;
+}
