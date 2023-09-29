@@ -14,13 +14,29 @@ def get_usuarios() -> dict:
         database.select(Usuario)
     ).scalars().all()
     
-    return {"dados": [
-        usuario.get_dict() for usuario in usuarios
-    ]}
+    return {
+        "dados": [usuario.get_dict() for usuario in usuarios]
+    }
+    
+@app.get('/API/usuarios/get/<int:id>')
+def get_usuario(id: int) -> dict:
+    usuario = database.session.get(
+        Usuario, {"id": id}
+    )
+    
+    if not usuario:
+        return {"dados": "Usuário não existente"}
+    
+    return {
+        "dados": usuario.get_dict()
+    }
+    
+@app.post('/API/usuarios/create')
+def create_usuario() -> dict:
+    pass    
 
 @app.post('/API/clientes/create')
 def create_cliente() -> dict:
-    
     try:
         dados = request.json
         
@@ -28,6 +44,7 @@ def create_cliente() -> dict:
         atributos_usuario = Usuario.filtra_atributos_dicionario(dados)
         atributos_usuario['data_nascimento'] = date.fromisoformat(atributos_usuario['data_nascimento'])
         novo_usuario = Usuario(**atributos_usuario)
+        
         # salva usuario no banco de dados
         database.session.add(novo_usuario)
         database.session.commit()
@@ -44,7 +61,57 @@ def create_cliente() -> dict:
         return {
             'usuario': novo_usuario.get_dict(),
             'cliente': novo_cliente.get_dict()
-            } #JsonResponse(novo_cliente.get_dict())
+        }
     except Exception as e:
         return {}
 
+@app.get('/API/clientes/get/<int:id>')
+def get_cliente(id: int):
+    cliente = database.session.get(
+        Cliente, {'id': id}
+    )
+    
+    if not cliente:
+        return {"dados": "Cliente não existente"}
+    
+    usuario = database.session.get(
+        Usuario, {'id': cliente.usuario_id}
+    )
+    
+    return {
+        "dados": {
+            "cliente": cliente.get_dict(),
+            "usuario": usuario.get_dict()
+        }
+    }   
+    
+@app.get('/API/clientes/all')
+def get_clientes() -> dict:
+    clientes = database.session.execute(
+        database.select(Cliente)
+    ).scalars().all()
+    
+    
+    return {
+        "dados": [
+            {
+                "cliente": cliente.get_dict(),
+                "usuario": 
+                    (database
+                     .session
+                     .get(
+                         Usuario, 
+                         {"id": cliente.usuario_id}
+                         ).get_dict()
+                    )    
+            } for cliente in clientes
+        ]
+    }
+
+@app.post('/API/prestadores/create')
+def create_prestador() -> dict:
+    pass
+
+@app.get('/API/prestadores/get/<int:id>')
+def get_prestador(id: int) -> dict:
+    pass
