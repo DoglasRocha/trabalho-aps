@@ -1,15 +1,15 @@
-from django.db import models
-from datetime import date
-from abc import ABCMeta, abstractmethod, abstractclassmethod
+from db import database
+from sqlalchemy.orm import Mapped, mapped_column
+from datetime import date, timedelta, datetime
 
-# Create your models here.
-class Usuario(models.Model):
-    nome = models.CharField(max_length=200)
-    email = models.EmailField()
-    senha = models.CharField(max_length=32)
-    data_nascimento = models.DateField()
-    cpf = models.CharField(max_length=14)
-    tipo = models.CharField(max_length=10)
+class Usuario(database.Model):
+    id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
+    nome : Mapped[str] = mapped_column(database.String(100), nullable=False)
+    email : Mapped[str] = mapped_column(database.String(50), unique=True,nullable=False)
+    senha : Mapped[str] = mapped_column(database.String(64), nullable=False)
+    data_nascimento : Mapped[date] = mapped_column(database.Date, nullable=False)
+    cpf : Mapped[str] = mapped_column(database.String(14), nullable=False)
+    tipo : Mapped[str] = mapped_column(database.String(10), nullable=False)
     
     def __str__(self) -> str:
         texto = f'ID: {self.id}\n'
@@ -38,14 +38,15 @@ class Usuario(models.Model):
             'senha': self.senha,
         }
     
-class Cliente(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    endereco = models.CharField(max_length=200)
-    cidade = models.CharField(max_length=50)
-    estado = models.CharField(max_length=2)
+class Cliente(database.Model):
+    id : Mapped[int] = mapped_column(database.Integer, primary_key=True, nullable=False)
+    usuario_id : Mapped[int] = mapped_column(database.ForeignKey(Usuario.id), nullable=False)
+    endereco : Mapped[str] = mapped_column(database.String(200), nullable=False)
+    cidade : Mapped[str] = mapped_column(database.String(50), nullable=False)
+    estado : Mapped[str] = mapped_column(database.String(2), nullable=False)
     
     def __str__(self) -> str:
-        texto = f'Usuário: {self.usuario.get_dict()}\n'
+        texto = f'Usuário: {self.usuario_id}\n'
         texto += f'ID: {self.id}\n'
         texto += f'Endereço: {self.endereco}\n'
         texto += f'Cidade: {self.cidade}\n'
@@ -55,21 +56,22 @@ class Cliente(models.Model):
     
     @staticmethod
     def filtra_atributos_dicionario(dicionario: dict) -> dict:
-        keys = ['endereco', 'cidade', 'estado', 'usuario']
+        keys = ['endereco', 'cidade', 'estado', 'usuario_id']
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
     
     def get_dict(self) -> dict:
         return {
-            'cliente_id': self.id,
-            **self.usuario.get_dict(),
+            'id': self.id,
+            'usuario_id': self.usuario_id,
             'endereco': self.endereco,
             'cidade': self.cidade,
             'estado': self.estado,
         }
 
-class Empresa(models.Model):
-    nome_fantasia = models.CharField(max_length=200)
-    cnpj = models.CharField(max_length=18)
+class Empresa(database.Model):
+    id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
+    nome_fantasia : Mapped[str] = mapped_column(database.String(200), nullable=False)
+    cnpj : Mapped[str] = mapped_column(database.String(18), nullable=False)
     
     def __str__(self) -> str:
         texto = f'Nome Fantasia: {self.nome}\n'
@@ -79,44 +81,44 @@ class Empresa(models.Model):
     
     @staticmethod
     def filtra_atributos_dicionario(dicionario: dict) -> dict:
-        keys = ['nome', 'cnpj',]
+        keys = ['nome_fantasia', 'cnpj',]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
     
     def get_dict(self) -> dict:
         return {
             'nome_fantasia': self.nome,
-            'empresa_id': self.id,
             'cnpj': self.cnpj
         }
     
-class Prestador(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+class Prestador(database.Model):
+    id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
+    usuario_id : Mapped[int] = mapped_column(database.ForeignKey(Usuario.id), nullable=False)
+    empresa_id : Mapped[int] = mapped_column(database.ForeignKey(Empresa.id), nullable=False)
     
     def __str__(self) -> str:
-        texto = f'Usuário: {self.usuario.get_dict()}\n'
-        texto += f'Empresa: {self.empresa.get_dict()}\n'
+        texto = f'Usuário: {self.usuario_id}\n'
+        texto += f'Empresa: {self.empresa_id}\n'
         
         return texto
     
     @staticmethod
     def filtra_atributos_dicionario(dicionario: dict) -> dict:
-        keys = ['usuario', 'empresa',]
+        keys = ['usuario_id', 'empresa_id',]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
     
     def get_dict(self) -> dict:
         return {
-            'prestador_id': self.id,
-            **self.usuario.get_dict(),
-            **self.empresa.get_dict()
+            'id': self.id,
+            'usuario_id': self.usuario_id,
+            'empresa_id': self.empresa_id
         }
     
-class Categoria(models.Model):
-    nome = models.CharField(max_length=100)
+class Categoria(database.Model):
+    id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
+    nome : Mapped[str] = mapped_column(database.String(100), nullable=False)
     
     def __str__(self) -> str:
         texto = f'Categoria: {self.nome}\n'
-        
         return texto
     
     @staticmethod
@@ -130,15 +132,16 @@ class Categoria(models.Model):
             'categoria_id': self.id
         }
         
-class Servico(models.Model):
-    prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    preco = models.FloatField()
-    duracao = models.DurationField()
+class Servico(database.Model):
+    id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
+    prestador_id : Mapped[int] = mapped_column(database.ForeignKey(Prestador.id), nullable=False)
+    categoria_id : Mapped[int] = mapped_column(database.ForeignKey(Categoria.id), nullable=False)
+    preco : Mapped[float] = mapped_column(database.Float, nullable=False)
+    duracao : Mapped[timedelta] = mapped_column(database.Time, nullable=False)
     
     def __str__(self) -> str:
-        texto = f'Nome Prestador: {self.prestador.get_dict()}\n'
-        texto += f'Categoria: {self.categoria.get_dict()}\n'
+        texto = f'ID Prestador: {self.prestador_id}\n'
+        texto += f'ID Categoria: {self.categoria_id}\n'
         texto += f'Preço: {self.preco}'
         texto += f'Duração: {self.duracao}'
         
@@ -151,25 +154,26 @@ class Servico(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'servico_id': self.id,
-            'prestador_id': self.prestador.get_dict()['prestador_id'],
-            'categoria_id': self.categoria.get_dict()['categoria_id'],
+            'id': self.id,
+            'prestador_id': self.prestador_id,
+            'categoria_id': self.categoria_id,
             'preco': self.preco,
             'durcao': self.duracao
         }
     
-class Agendamento(models.Model):
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
-    horario_inicio = models.DateTimeField()
-    horario_fim = models.DateTimeField()
-    observacoes_cliente = models.TextField(default="null")
-    realizado = models.BooleanField(default=False)
-    observacoes_prestador = models.TextField()
+class Agendamento(database.Model):
+    id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
+    cliente_id : Mapped[int] = mapped_column(database.ForeignKey(Cliente.id), nullable=False)
+    servico_id : Mapped[int] = mapped_column(database.ForeignKey(Servico.id), nullable=False)
+    horario_inicio : Mapped[datetime] = mapped_column(database.DateTime, nullable=False)
+    horario_fim : Mapped[datetime] = mapped_column(database.DateTime, nullable=False)
+    observacoes_cliente : Mapped[str] = mapped_column(database.String, nullable=True)
+    realizado : Mapped[bool] = mapped_column(database.Boolean, default=False)
+    observacoes_prestador : Mapped[str] = mapped_column(database.String, nullable=True)
     
     def __str__(self) -> str:
-        texto = f'Nome Cliente: {self.cliente.get_dict()["usuario"]["nome"]}\n'
-        texto += f'Nome Prestador: {self.servico.get_dict()["prestador"]["usuario"]["nome"]}\n'
+        texto = f'ID Cliente: {self.cliente_id}\n'
+        texto += f'ID Serviço: {self.servico_id}\n'
         texto += f'Horário Início: {self.horario_inicio}\n'
         texto += f'Horário Fim: {self.horario_fim}\n'
         texto += f'Observações Cliente: {self.observacoes_cliente}\n'
@@ -181,8 +185,8 @@ class Agendamento(models.Model):
     @staticmethod
     def filtra_atributos_dicionario(dicionario: dict) -> dict:
         keys = [
-            'cliente', 
-            'servico', 
+            'cliente_id', 
+            'servico_id', 
             'horario_inicio', 
             'horario_fim', 
             'observacoes_cliente', 
@@ -193,11 +197,12 @@ class Agendamento(models.Model):
     
     def get_dict(self) -> dict:
         return {
-            'cliente_id': self.cliente.get_dict()['cliente_id'],
-            'servico_id': self.servico.get_dict()['servico_id'],
+            'cliente_id': self.cliente_id,
+            'servico_id': self.servico_id,
             'horario_inicio': self.horario_inicio,
             'horario_fim': self.horario_fim,
             'observacoes_cliente': self.observacoes_cliente,
             'realizado': self.realizado,
             'observacoes_prestador': self.observacoes_prestador
         }
+
