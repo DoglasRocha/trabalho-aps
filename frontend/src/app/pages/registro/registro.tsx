@@ -6,6 +6,10 @@ export const Registro = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
   const navegacao = useNavigate();
 
   return (
@@ -46,6 +50,46 @@ export const Registro = () => {
               placeholder="Digite a senha aqui!"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+            />
+          </div>
+          <div className="d-flex flex-column input-registro pb-2">
+            <strong>CPF</strong>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="123.456.789-00"
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value)}
+            />
+          </div>
+          <div className="d-flex flex-column input-registro pb-2">
+            <strong>Endereco</strong>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Rua Fulano 123"
+              value={endereco}
+              onChange={(e) => setEndereco(e.target.value)}
+            />
+          </div>
+          <div className="d-flex flex-column input-registro pb-2">
+            <strong>Estado</strong>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Paraná"
+              value={estado}
+              onChange={(e) => setEstado(e.target.value)}
+            />
+          </div>
+          <div className="d-flex flex-column input-registro pb-2">
+            <strong>Cidade</strong>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Curitiba"
+              value={cidade}
+              onChange={(e) => setCidade(e.target.value)}
             />
           </div>
           <div className="d-flex justify-content-end pb-2">
