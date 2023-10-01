@@ -35,7 +35,6 @@ class Usuario(database.Model):
             'data_nascimento': self.data_nascimento,
             'cpf': self.cpf,
             'tipo': self.tipo,
-            'senha': self.senha,
         }
     
 class Cliente(database.Model):
@@ -74,7 +73,7 @@ class Empresa(database.Model):
     cnpj : Mapped[str] = mapped_column(database.String(18), nullable=False)
     
     def __str__(self) -> str:
-        texto = f'Nome Fantasia: {self.nome}\n'
+        texto = f'Nome Fantasia: {self.nome_fantasia}\n'
         texto += f'CNPJ: {self.cnpj}\n'
         
         return texto
@@ -86,7 +85,7 @@ class Empresa(database.Model):
     
     def get_dict(self) -> dict:
         return {
-            'nome_fantasia': self.nome,
+            'nome_fantasia': self.nome_fantasia,
             'cnpj': self.cnpj
         }
     

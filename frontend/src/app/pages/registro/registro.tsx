@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./registro.css";
+import { useNavigate } from "react-router-dom"
+import "./registro.css"
 
 export const Registro = () => {
   const [nome, setNome] = useState("");
@@ -103,5 +103,5 @@ export const Registro = () => {
         </div>
       </div>
     </div>
-  );
-};
+    );
+}

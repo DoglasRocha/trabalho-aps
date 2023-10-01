@@ -33,7 +33,23 @@ def get_usuario(id: int) -> dict:
     
 @app.post('/API/usuarios/create')
 def create_usuario() -> dict:
-    pass    
+    try:
+        dados = request.json
+        
+        # cria usuario
+        atributos_usuario = Usuario.filtra_atributos_dicionario(dados)
+        atributos_usuario['data_nascimento'] = date.fromisoformat(atributos_usuario['data_nascimento'])
+        novo_usuario = Usuario(**atributos_usuario)
+        
+        # salva usuario no banco de dados
+        database.session.add(novo_usuario)
+        database.session.commit()
+        
+        return {
+            'usuario': novo_usuario.get_dict()
+        }
+    except Exception as e:
+        return {'msg': str(e)}    
 
 @app.post('/API/clientes/create')
 def create_cliente() -> dict:
@@ -63,7 +79,7 @@ def create_cliente() -> dict:
             'cliente': novo_cliente.get_dict()
         }
     except Exception as e:
-        return {}
+        return {'msg': str(e)}
 
 @app.get('/API/clientes/get/<int:id>')
 def get_cliente(id: int):
@@ -110,7 +126,40 @@ def get_clientes() -> dict:
 
 @app.post('/API/prestadores/create')
 def create_prestador() -> dict:
-    pass
+    try:
+        dados = request.json
+        
+        # cria usuario
+        atributos_usuario = Usuario.filtra_atributos_dicionario(dados)
+        atributos_usuario['data_nascimento'] = date.fromisoformat(atributos_usuario['data_nascimento'])
+        novo_usuario = Usuario(**atributos_usuario)
+        
+        # salva usuario no banco de dados
+        database.session.add(novo_usuario)
+        database.session.commit()
+        
+        # cria empresa
+        atributos_empresa = Empresa.filtra_atributos_dicionario(dados)
+        nova_empresa = Empresa(**atributos_empresa)
+
+        # salva empresa no banco de dados
+        database.session.add(nova_empresa)
+        database.session.commit()
+        
+        # cria prestador
+        novo_prestador = Prestador(usuario_id=novo_usuario.id, empresa_id=nova_empresa.id)
+        
+        # salva prestador no banco de dados
+        database.session.add(novo_prestador)
+        database.session.commit()
+        
+        return {
+            'usuario': novo_usuario.get_dict(),
+            'empresa': nova_empresa.get_dict(),
+            'prestador': novo_prestador.get_dict()
+        }
+    except Exception as e:
+        return {'msg': str(e)}
 
 @app.get('/API/prestadores/get/<int:id>')
 def get_prestador(id: int) -> dict:

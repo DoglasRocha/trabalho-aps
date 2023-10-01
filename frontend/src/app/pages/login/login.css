@@ -4,39 +4,76 @@ a {
 
 .background-login {
     /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
-    background-color: aquamarine;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: linear-gradient(to bottom, #1d202b 51%, #383e53 98%);
     height: 100vh;
     width: 100vw;
     overflow: hidden;
 }
 
 .box-login {
-    background-color: white;
+    background: linear-gradient(to top, #3a684d 0%, #003300 100%);
     width: 500px;
     height: auto;
     align-self: center;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 10px 10px 10px black;
+    border-style: solid;    
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+    border-color: white;
 }
 
 .dainfe-image {
-    /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
-    background-color: red;
+    /*background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); 
+    background-color: white;*/
     height: 50px;
     width: 100px;
     justify-self: center;
+    text-align: center;
     margin: 10px;
+    border-radius: 3px;
+    color:white;
 }
 
 .input-login {
-    color: brown;
+    color: #c0d230;
 }
 
 .button-login {
-    color: burlywood;
+    background-color: #ef5b38;
+    color: white;
+    border-style: none;
+    border-radius: 3px;
+    transition: all .2s ease-in-out; 
+    padding-top: 1%;
+    padding-bottom: 1.5%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 .button-login:hover {
-    background-color: burlywood;
+    border-style: none;
     color: white;
+    transform: scale(1.1); 
+    
+}
+
+.text-1{
+    color: white;
+}
+
+.link{
+    margin-left: 1%;color: #ef5b38;
+    
+    font-weight: bold;
+}
+
+.link:hover{
+    color: #f7451d;
+}
+
+#form-login {
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.493);
 }
