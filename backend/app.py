@@ -33,7 +33,23 @@ def get_usuario(id: int) -> dict:
     
 @app.post('/API/usuarios/create')
 def create_usuario() -> dict:
-    pass    
+    try:
+        dados = request.json
+        
+        # cria usuario
+        atributos_usuario = Usuario.filtra_atributos_dicionario(dados)
+        atributos_usuario['data_nascimento'] = date.fromisoformat(atributos_usuario['data_nascimento'])
+        novo_usuario = Usuario(**atributos_usuario)
+        
+        # salva usuario no banco de dados
+        database.session.add(novo_usuario)
+        database.session.commit()
+        
+        return {
+            'usuario': novo_usuario.get_dict()
+        }
+    except Exception as e:
+        return {'msg': str(e)}    
 
 @app.post('/API/clientes/create')
 def create_cliente() -> dict:
@@ -143,7 +159,7 @@ def create_prestador() -> dict:
             'prestador': novo_prestador.get_dict()
         }
     except Exception as e:
-        return {}
+        return {'msg': str(e)}
 
 @app.get('/API/prestadores/get/<int:id>')
 def get_prestador(id: int) -> dict:

@@ -35,7 +35,6 @@ class Usuario(database.Model):
             'data_nascimento': self.data_nascimento,
             'cpf': self.cpf,
             'tipo': self.tipo,
-            'senha': self.senha,
         }
     
 class Cliente(database.Model):
