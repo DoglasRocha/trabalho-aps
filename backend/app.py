@@ -123,7 +123,9 @@ def create_empresa() -> dict:
         database.session.commit()
         
         return {
-            "dados": nova_empresa.get_dict()
+            "dados": {
+                "empresa": nova_empresa.get_dict()
+            }
         }
         
     except Exception as e:
@@ -174,9 +176,10 @@ def create_prestador() -> dict:
         database.session.commit()
         
         return {
-            'usuario': novo_usuario.get_dict(),
-            'empresa': empresa.get_dict(),
-            'prestador': novo_prestador.get_dict()
+            'dados': {
+                'usuario': novo_usuario.get_dict(),
+                'prestador': novo_prestador.get_dict()
+            }
         }
     except Exception as e:
         return {'msg': str(e)}
@@ -250,7 +253,9 @@ def create_categoria() -> dict:
         database.session.commit()
         
         return {
-            'categoria': nova_categoria.get_dict(),
+            'dados': {
+                'categoria': nova_categoria.get_dict(),
+            }
         }
     except Exception as e:
         return {'msg': str(e)}
@@ -265,7 +270,9 @@ def get_categoria(id: int) -> dict:
         return {"dados": "Categoria não existente"}
     
     return {
-        "dados": categoria.get_dict()
+        "dados": {
+            'categoria': categoria.get_dict() 
+        }
     }   
     
 @app.get("/API/categorias/all")
@@ -279,3 +286,38 @@ def get_categorias() -> dict:
             categoria.get_dict() for categoria in categorias
         ] 
     }
+    
+@app.post("/API/servicos/create")
+def create_servico() -> dict:
+    try:
+        dados = request.json
+        
+        # checa se prestador existe
+        prestador = database.session.get(Prestador, {"id": dados["prestador_id"]})
+        if not prestador:
+            return {"dados": "Prestador não existente"}
+        
+        # checa se categoria existe
+        categoria = database.session.get(Categoria, {"id": dados["categoria_id"]})
+        if not categoria:
+            return {"dados": "Categoria não existente"}
+        
+        # cria servico
+        atributos_servico = Servico.filtra_atributos_dicionario(dados)
+        atributos_servico["duracao"] = timedelta(atributos_servico["duracao"])
+        novo_servico = Servico(
+            **atributos_servico
+        )
+        
+        # salva servico no banco de dados
+        database.session.add(novo_servico)
+        database.session.commit()
+        
+        return {
+            'dados': 
+                {
+                    'servico': novo_servico.get_dict(),
+                }
+        }
+    except Exception as e:
+        return {'msg': str(e)}

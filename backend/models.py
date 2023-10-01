@@ -136,7 +136,7 @@ class Servico(database.Model):
     prestador_id : Mapped[int] = mapped_column(database.ForeignKey(Prestador.id), nullable=False)
     categoria_id : Mapped[int] = mapped_column(database.ForeignKey(Categoria.id), nullable=False)
     preco : Mapped[float] = mapped_column(database.Float, nullable=False)
-    duracao : Mapped[timedelta] = mapped_column(database.Time, nullable=False)
+    duracao : Mapped[timedelta] = mapped_column(database.Interval, nullable=False)
     
     def __str__(self) -> str:
         texto = f'ID Prestador: {self.prestador_id}\n'
@@ -148,7 +148,7 @@ class Servico(database.Model):
     
     @staticmethod
     def filtra_atributos_dicionario(dicionario: dict) -> dict:
-        keys = ['prestador', 'categoria', 'preco', 'duracao']
+        keys = ['prestador_id', 'categoria_id', 'preco', 'duracao']
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
     
     def get_dict(self) -> dict:
