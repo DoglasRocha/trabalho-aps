@@ -1,6 +1,6 @@
 # Trabalho de Análise e Projeto de Sistemas
 
-- Olá queridos amigos
+- Instruções de uso:
 
   ## Frontend
 
