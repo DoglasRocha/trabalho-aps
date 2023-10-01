@@ -235,3 +235,47 @@ def get_prestadores() -> dict:
             } for prestador in prestadores
         ]
     }
+    
+@app.post("/API/categorias/create")
+def create_categoria() -> dict:
+    try:
+        dados = request.json
+        
+        # cria categoria
+        atributos_categoria = Categoria.filtra_atributos_dicionario(dados)
+        nova_categoria = Categoria(**atributos_categoria)
+        
+        # salva categoria no banco de dados
+        database.session.add(nova_categoria)
+        database.session.commit()
+        
+        return {
+            'categoria': nova_categoria.get_dict(),
+        }
+    except Exception as e:
+        return {'msg': str(e)}
+    
+@app.get("/API/categorias/get/<int:id>")
+def get_categoria(id: int) -> dict:
+    categoria = database.session.get(
+        Categoria, {'id': id}
+    )
+    
+    if not categoria:
+        return {"dados": "Categoria não existente"}
+    
+    return {
+        "dados": categoria.get_dict()
+    }   
+    
+@app.get("/API/categorias/all")
+def get_categorias() -> dict:
+    categorias = database.session.execute(
+        database.select(Categoria)
+    ).scalars().all()
+    
+    return {
+        "dados": [
+            categoria.get_dict() for categoria in categorias
+        ] 
+    }
