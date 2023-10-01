@@ -16,15 +16,15 @@ export const Login = () => {
                     </div>
                     <div className="d-flex flex-column input-login pb-2">
                         <strong>E-mail</strong>
-                        <input className="form-control" type="text" placeholder="email@gmail.com" value={email} onChange={e => setEmail(e.target.value)}/>
+                        <input className="form-control" id="form-login" type="text" placeholder="email@gmail.com" value={email} onChange={e => setEmail(e.target.value)}/>
                     </div>
                     <div className="d-flex flex-column input-login pb-2">
                         <strong>Senha</strong>
-                        <input className="form-control" type="password" placeholder="Digite a senha aqui!" value={senha} onChange={e => setSenha(e.target.value)}/>
+                        <input className="form-control" id="form-login" type="password" placeholder="Digite a senha aqui!" value={senha} onChange={e => setSenha(e.target.value)}/>
                     </div>
                     <div className="d-flex">
-                        <span>Não tem conta?</span>
-                        <a href="" onClick={() => navegacao("/registro")}>Clique aqui!</a>
+                        <span className= "text-1">Não tem conta? </span>
+                        <a href="" onClick={() => navegacao("/registro")} className="link"> Clique aqui!</a>
                     </div>
                     <div className="d-flex justify-content-end pb-2">
                         <button className="button-login" onClick={() => navegacao("/home")}>Entrar</button>
