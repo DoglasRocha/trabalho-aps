@@ -70,7 +70,7 @@ class Cliente(database.Model):
 class Empresa(database.Model):
     id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
     nome_fantasia : Mapped[str] = mapped_column(database.String(200), nullable=False)
-    cnpj : Mapped[str] = mapped_column(database.String(18), nullable=False)
+    cnpj : Mapped[str] = mapped_column(database.String(18), unique=True, nullable=False)
     
     def __str__(self) -> str:
         texto = f'Nome Fantasia: {self.nome_fantasia}\n'
@@ -114,7 +114,7 @@ class Prestador(database.Model):
     
 class Categoria(database.Model):
     id : Mapped[int] = mapped_column(database.Integer, primary_key=True)
-    nome : Mapped[str] = mapped_column(database.String(100), nullable=False)
+    nome : Mapped[str] = mapped_column(database.String(100), nullable=False, unique=True)
     
     def __str__(self) -> str:
         texto = f'Categoria: {self.nome}\n'
