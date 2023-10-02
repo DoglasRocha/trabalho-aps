@@ -8,8 +8,8 @@ export const Home= () => {
         <>
             <Navbar/>
             <div className="container-fluid fundo-home">
-                <div className="container-fluid fundo-principal">
-                    <h1>Início</h1>
+                <div className="fundo-principal">
+                    <h1>Área verde é a parte utilizável</h1>
                     <ListaServicos/>
                 </div>
             </div>

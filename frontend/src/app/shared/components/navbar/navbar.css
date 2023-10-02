@@ -1,5 +1,5 @@
 .navegacao {
-    background-color: white;
+    background-color: yellow;
     width: 100vw;
     height: 100px;
     position: absolute;
@@ -15,6 +15,22 @@
     margin-left: 15px;
 }
 
+.box-iniciais {
+    background-color: red;
+    padding: 7px;
+    width: 40px;
+    height: 40px;
+    margin: 0px 10px;
+    font-size: large;
+}
+
+.btn-navbar {
+    background-color: transparent;
+    color: brown;
+    border: none;
+}
+
 .user {
     margin: 10px;
+    align-items: center;
 }

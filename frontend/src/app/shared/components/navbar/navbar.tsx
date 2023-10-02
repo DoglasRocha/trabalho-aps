@@ -18,18 +18,18 @@ export const Navbar= () => {
         return <strong>Olá, {nome}</strong>
     }
     
-    const IniciaisUsuario = ({name}) => {
-        let nomeUser = name.trim().split(" ");
+    function IniciaisUsuario (user : string) {
+        let nomeUser = user.trim().split(" ");
         let iniciais = "";
         if(nomeUser.length > 1)
         {
-            iniciais = nomeUser[0].substr(0, 1) + " " + nomeUser[nomeUser.length - 1].substr(0, 1).toUpperCase()
+            iniciais = nomeUser[0].substr(0, 1) + nomeUser[nomeUser.length - 1].substr(0, 1).toUpperCase()
         }
         else
         {
             iniciais = nomeUser[0].substr(0, 1).toUpperCase()
         }
-        return <span>{iniciais}</span>
+        return <strong>{iniciais}</strong>
     }
 
     return (
@@ -39,15 +39,17 @@ export const Navbar= () => {
                     <div className="dainfe"></div>
                 </div>
                 <div className="row ms-auto">
-                    <div className="user"> 
-                        {NomeUsuario("Ricardo Lanches de Oliveira")}
-                        <div className="dainfe">
+                    <div className="d-flex user">
+                        <div className="">
+                            {NomeUsuario("Ricardo Lanches de Rocha Oliverira")}
                         </div>
-                        
-                        <button id="btn-sair" type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div className="box-iniciais text-center">
+                            {IniciaisUsuario("Ricardo Lanches de Rocha Oliverira")}
+                        </div>
+                        <button id="sair" type="button" className="btn-navbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i className="fa-solid fa-angle-down"></i>
                         </button>
-                        <div className="dropdown-menu" aria-labelledby="btn-sair">
+                        <div className="dropdown-menu" aria-labelledby="sair">
                             <a className="dropdown-item" href="#">
                                 <i className="fa-regular fa-power-off"></i>
                                 <span className="">Sair</span>
