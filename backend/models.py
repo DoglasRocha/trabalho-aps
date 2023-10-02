@@ -30,12 +30,14 @@ class Usuario(database.Model):
 
     def get_dict(self) -> dict:
         return {
-            "usuario_id": self.id,
-            "nome": self.nome,
-            "email": self.email,
-            "data_nascimento": self.data_nascimento,
-            "cpf": self.cpf,
-            "tipo": self.tipo,
+            "usuario": {
+                "usuario_id": self.id,
+                "nome": self.nome,
+                "email": self.email,
+                "data_nascimento": self.data_nascimento,
+                "cpf": self.cpf,
+                "tipo": self.tipo,
+            }
         }
 
 
@@ -63,12 +65,17 @@ class Cliente(database.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
     def get_dict(self) -> dict:
+        usuario = database.session.get(Usuario, {"id": self.usuario_id})
+
         return {
-            "id": self.id,
-            "usuario_id": self.usuario_id,
-            "endereco": self.endereco,
-            "cidade": self.cidade,
-            "estado": self.estado,
+            "cliente": {
+                "id": self.id,
+                "usuario_id": self.usuario_id,
+                "endereco": self.endereco,
+                "cidade": self.cidade,
+                "estado": self.estado,
+            },
+            **usuario.get_dict(),
         }
 
 
@@ -92,7 +99,7 @@ class Empresa(database.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
     def get_dict(self) -> dict:
-        return {"nome_fantasia": self.nome_fantasia, "cnpj": self.cnpj}
+        return {"empresa": {"nome_fantasia": self.nome_fantasia, "cnpj": self.cnpj}}
 
 
 class Prestador(database.Model):
@@ -119,10 +126,17 @@ class Prestador(database.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
     def get_dict(self) -> dict:
+        empresa = database.session.get(Empresa, {"id": self.empresa_id})
+        usuario = database.session.get(Usuario, {"id": self.usuario_id})
+
         return {
-            "id": self.id,
-            "usuario_id": self.usuario_id,
-            "empresa_id": self.empresa_id,
+            "prestador": {
+                "id": self.id,
+                "usuario_id": self.usuario_id,
+                "empresa_id": self.empresa_id,
+            },
+            **empresa.get_dict(),
+            **usuario.get_dict(),
         }
 
 
@@ -142,7 +156,7 @@ class Categoria(database.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
     def get_dict(self) -> dict:
-        return {"nome": self.nome, "categoria_id": self.id}
+        return {"categoria": {"nome": self.nome, "categoria_id": self.id}}
 
 
 class Servico(database.Model):
@@ -170,12 +184,18 @@ class Servico(database.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
     def get_dict(self) -> dict:
+        prestador = database.session.get(Prestador, {"id": self.prestador_id})
+        categoria = database.session.get(Categoria, {"id": self.categoria_id})
         return {
-            "id": self.id,
-            "prestador_id": self.prestador_id,
-            "categoria_id": self.categoria_id,
-            "preco": self.preco,
-            "duracao": self.duracao.seconds / 60 / 60,
+            "servico": {
+                "id": self.id,
+                "prestador_id": self.prestador_id,
+                "categoria_id": self.categoria_id,
+                "preco": self.preco,
+                "duracao": self.duracao.seconds / 60 / 60,
+            },
+            **prestador.get_dict(),
+            **categoria.get_dict(),
         }
 
 

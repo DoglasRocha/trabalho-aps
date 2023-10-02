@@ -28,14 +28,14 @@ def get_usuario(id: int) -> dict:
     if not usuario:
         return {"dados": "Usuário não existente"}
 
-    return {"dados": {"usuario": usuario.get_dict()}}
+    return {"dados": usuario.get_dict()}
 
 
 @app.get("/API/usuarios/all")
 def get_usuarios() -> dict:
     usuarios = database.session.execute(database.select(Usuario)).scalars().all()
 
-    return {"dados": {"usuarios": [usuario.get_dict() for usuario in usuarios]}}
+    return {"dados": [usuario.get_dict() for usuario in usuarios]}
 
 
 @app.post("/API/clientes/create")
@@ -54,12 +54,7 @@ def create_cliente() -> dict:
         database.session.add(novo_cliente)
         database.session.commit()
 
-        return {
-            "dados": {
-                "usuario": novo_usuario.get_dict(),
-                "cliente": novo_cliente.get_dict(),
-            }
-        }
+        return {"dados": novo_cliente.get_dict()}
     except Exception as e:
         return {"msg": str(e)}
 
@@ -71,14 +66,14 @@ def get_cliente(id: int) -> dict:
     if not cliente:
         return {"dados": "Cliente não existente"}
 
-    return {"dados": {"cliente": cliente.get_dict()}}
+    return {"dados": cliente.get_dict()}
 
 
 @app.get("/API/clientes/all")
 def get_clientes() -> dict:
     clientes = database.session.execute(database.select(Cliente)).scalars().all()
 
-    return {"dados": {"clientes": [cliente.get_dict() for cliente in clientes]}}
+    return {"dados": [cliente.get_dict() for cliente in clientes]}
 
 
 @app.post("/API/empresas/create")
@@ -94,7 +89,7 @@ def create_empresa() -> dict:
         database.session.add(nova_empresa)
         database.session.commit()
 
-        return {"dados": {"empresa": nova_empresa.get_dict()}}
+        return {"dados": nova_empresa.get_dict()}
 
     except Exception as e:
         return {"msg": str(e)}
@@ -136,12 +131,7 @@ def create_prestador() -> dict:
         database.session.add(novo_prestador)
         database.session.commit()
 
-        return {
-            "dados": {
-                "prestador": novo_prestador.get_dict(),
-                "usuario": novo_usuario.get_dict(),
-            }
-        }
+        return {"dados": novo_prestador.get_dict()}
     except Exception as e:
         return {"msg": str(e)}
 
@@ -154,9 +144,7 @@ def get_prestador(id: int) -> dict:
         return {"dados": "Prestador não existente"}
 
     return {
-        "dados": {
-            "prestador": prestador.get_dict(),
-        }
+        "dados": prestador.get_dict(),
     }
 
 
@@ -182,11 +170,7 @@ def create_categoria() -> dict:
         database.session.add(nova_categoria)
         database.session.commit()
 
-        return {
-            "dados": {
-                "categoria": nova_categoria.get_dict(),
-            }
-        }
+        return {"dados": nova_categoria.get_dict()}
     except Exception as e:
         return {"msg": str(e)}
 
@@ -198,14 +182,14 @@ def get_categoria(id: int) -> dict:
     if not categoria:
         return {"dados": "Categoria não existente"}
 
-    return {"dados": {"categoria": categoria.get_dict()}}
+    return {"dados": categoria.get_dict()}
 
 
 @app.get("/API/categorias/all")
 def get_categorias() -> dict:
     categorias = database.session.execute(database.select(Categoria)).scalars().all()
 
-    return {"dados": {"categorias": [categoria.get_dict() for categoria in categorias]}}
+    return {"dados": [categoria.get_dict() for categoria in categorias]}
 
 
 @app.post("/API/servicos/create")
@@ -233,9 +217,7 @@ def create_servico() -> dict:
         database.session.commit()
 
         return {
-            "dados": {
-                "servico": novo_servico.get_dict(),
-            }
+            "dados": novo_servico.get_dict(),
         }
     except Exception as e:
         return {"msg": str(e)}
@@ -248,11 +230,11 @@ def get_servico(id: int) -> dict:
     if not servico:
         return {"dados": "Serviço não existente"}
 
-    return {"dados": {"servico": servico.get_dict()}}
+    return {"dados": servico.get_dict()}
 
 
 @app.get("/API/servicos/all")
 def get_servicos() -> dict:
     servicos = database.session.execute(database.select(Servico)).scalars().all()
 
-    return {"dados": {"servicos": [servico.get_dict() for servico in servicos]}}
+    return {"dados": [servico.get_dict() for servico in servicos]}
