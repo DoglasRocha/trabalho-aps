@@ -2,10 +2,23 @@
     background-color: blue;
     height: 100vh;
     width: 100vw;
-    overflow-x: hidden;
-    overflow-x: auto;
+    margin: 100px 10px 10px 10px;
+    overflow: hidden;
     display: block;
     position: relative;
+}
+
+.fundo-principal {
+    background-color: greenyellow;
+    height: calc(100vh - 100px);
+    /*width: 100vw;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    justify-items: center;*/
+    justify-content: center;
+    
+    
 }
 
 .dainfe-image {
