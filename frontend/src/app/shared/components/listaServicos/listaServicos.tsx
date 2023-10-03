@@ -3,7 +3,7 @@ import "./listaServicos.css"
 export const ListaServicos= () => {
     return(
         <>
-            <div className="container teste-1">
+            <div className="teste-1">
                 <div className="row">
                     <div className="col-12 m-2">
                         <strong>Serviço Disponíveis</strong>
@@ -12,11 +12,13 @@ export const ListaServicos= () => {
                 </div>
                 <div className="teste-2">
                     <div className="row m-2">
-                        <div className="container teste-3 p-3">
+                        <div className="teste-3 p-3">
                             <div className="row">
                                     <div className="col-9 servico">
+                                        <div>
                                             <strong>Servico</strong>
-                                            <span className="text-end w-100">Ricardo Lanches</span>
+                                            <span className="ms-auto w-100">Ricardo Lanches</span>
+                                        </div>
                                     </div>
                                     <div className="col-3 text-center data" >
                                         <strong>18/09</strong>

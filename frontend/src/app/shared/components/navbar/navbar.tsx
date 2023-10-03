@@ -15,7 +15,7 @@ export const Navbar= () => {
         {
             nome = nomeUser[0]
         }
-        return <strong>Olá, {nome}</strong>
+        return <strong>Olá, <a href="#">{nome}</a></strong>
     }
     
     function IniciaisUsuario (user : string) {
@@ -40,20 +40,15 @@ export const Navbar= () => {
                 </div>
                 <div className="row ms-auto">
                     <div className="d-flex user">
-                        <div className="">
-                            {NomeUsuario("Ricardo Lanches de Rocha Oliverira")}
-                        </div>
+                        {NomeUsuario("Ricardo Lanches de Rocha Oliverira")}
                         <div className="box-iniciais text-center">
                             {IniciaisUsuario("Ricardo Lanches de Rocha Oliverira")}
                         </div>
-                        <button id="sair" type="button" className="btn-navbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i className="fa-solid fa-angle-down"></i>
-                        </button>
-                        <div className="dropdown-menu" aria-labelledby="sair">
-                            <a className="dropdown-item" href="#">
-                                <i className="fa-regular fa-power-off"></i>
-                                <span className="">Sair</span>
-                            </a>
+                        <div className="ms-1">
+                            <button type="button" className="btn-navbar">
+                                <i className="fa-solid fa-power-off"></i>
+                                <span className="ms-1">Sair</span>
+                            </button>
                         </div>
                     </div>
                 </div>
