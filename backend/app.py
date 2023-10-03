@@ -238,3 +238,39 @@ def get_servicos() -> dict:
     servicos = database.session.execute(database.select(Servico)).scalars().all()
 
     return {"dados": [servico.get_dict() for servico in servicos]}
+
+
+@app.post("/API/agendamentos/create")
+def create_agendamento() -> dict:
+    try:
+        dados = request.json
+
+        # checa se cliente existe
+        cliente = database.session.get(Cliente, {"id": dados["cliente_id"]})
+        if not cliente:
+            return {"dados": "Cliente não existente"}
+
+        # checa se servico existe
+        servico = database.session.get(Servico, {"id": dados["servico_id"]})
+        if not servico:
+            return {"dados": "Servico não existente"}
+
+        # cria agendamento
+        atributos_agendamento = Agendamento.filtra_atributos_dicionario(dados)
+        atributos_agendamento["horario_inicio"] = datetime.fromisoformat(
+            atributos_agendamento["horario_inicio"]
+        )
+        atributos_agendamento["horario_fim"] = (
+            servico.duracao + atributos_agendamento["horario_inicio"]
+        )
+        novo_agendamento = Agendamento(**atributos_agendamento)
+
+        # salva agendamento no banco de dados
+        database.session.add(novo_agendamento)
+        database.session.commit()
+
+        return {
+            "dados": novo_agendamento.get_dict(),
+        }
+    except Exception as e:
+        return {"msg": str(e)}

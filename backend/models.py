@@ -238,12 +238,16 @@ class Agendamento(database.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
     def get_dict(self) -> dict:
+        cliente = database.session.get(Cliente, {"id": self.cliente_id})
+        servico = database.session.get(Servico, {"id": self.servico_id})
         return {
-            "cliente_id": self.cliente_id,
-            "servico_id": self.servico_id,
-            "horario_inicio": self.horario_inicio,
-            "horario_fim": self.horario_fim,
-            "observacoes_cliente": self.observacoes_cliente,
-            "realizado": self.realizado,
-            "observacoes_prestador": self.observacoes_prestador,
+            **cliente.get_dict(),
+            **servico.get_dict(),
+            "agendamento": {
+                "horario_inicio": self.horario_inicio,
+                "horario_fim": self.horario_fim,
+                "observacoes_cliente": self.observacoes_cliente,
+                "realizado": self.realizado,
+                "observacoes_prestador": self.observacoes_prestador,
+            },
         }
