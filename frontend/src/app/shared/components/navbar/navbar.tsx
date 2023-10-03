@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate, Outlet } from "react-router-dom"
 import "./navbar.css"
 
 export const Navbar= () => {
     const [nomeUsuario, setNomeUsuario] = useState('');
+    const navegacao = useNavigate();
 
     function NomeUsuario (user: string) {
         let nomeUser = user.split(" ");
@@ -15,7 +17,7 @@ export const Navbar= () => {
         {
             nome = nomeUser[0]
         }
-        return <strong>Olá, <a href="#">{nome}</a></strong>
+        return <strong>Olá, <a onClick={() => navegacao("/registro")}>{nome}</a></strong>
     }
     
     function IniciaisUsuario (user : string) {
@@ -45,7 +47,7 @@ export const Navbar= () => {
                             {IniciaisUsuario("Ricardo Lanches de Rocha Oliverira")}
                         </div>
                         <div className="ms-1">
-                            <button type="button" className="btn-navbar">
+                            <button type="button" className="btn-navbar" onClick={() => navegacao("/login")}>
                                 <i className="fa-solid fa-power-off"></i>
                                 <span className="ms-1">Sair</span>
                             </button>
@@ -53,6 +55,7 @@ export const Navbar= () => {
                     </div>
                 </div>
             </nav>
+            <Outlet/>
         </>
     );
 }

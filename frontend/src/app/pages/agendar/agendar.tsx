@@ -5,6 +5,12 @@ import "./agendar.css"
 
 export const Agendar = () => {
     return(
-        <strong>agendamento</strong>
+        <>
+            <div className="container-fluid fundo-home">
+                <div className="fundo-agenda">
+                    <strong>Agendamento</strong>
+                </div>
+            </div>
+        </>
     );
 }
