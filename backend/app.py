@@ -265,6 +265,9 @@ def create_agendamento() -> dict:
         )
         novo_agendamento = Agendamento(**atributos_agendamento)
 
+        if novo_agendamento.ha_conflito():
+            return {"msg": "Conflito de horários!!"}
+
         # salva agendamento no banco de dados
         database.session.add(novo_agendamento)
         database.session.commit()
@@ -274,3 +277,22 @@ def create_agendamento() -> dict:
         }
     except Exception as e:
         return {"msg": str(e)}
+
+
+@app.get("/API/agendamentos/get/<int:id>")
+def get_agendamento(id: int) -> dict:
+    agendamento = database.session.get(Agendamento, {"id": id})
+
+    if not agendamento:
+        return {"dados": "Agendamento não existente"}
+
+    return {"dados": agendamento.get_dict()}
+
+
+@app.get("/API/agendamentos/all")
+def get_agendamentos() -> dict:
+    agendamentos = (
+        database.session.execute(database.select(Agendamento)).scalars().all()
+    )
+
+    return {"dados": [agendamento.get_dict() for agendamento in agendamentos]}

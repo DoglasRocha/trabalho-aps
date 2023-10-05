@@ -1,5 +1,6 @@
 from db import database
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.sql import or_, and_
 from datetime import date, timedelta, datetime
 
 
@@ -251,3 +252,27 @@ class Agendamento(database.Model):
                 "observacoes_prestador": self.observacoes_prestador,
             },
         }
+
+    def ha_conflito(self) -> bool:
+        conflitos = database.session.execute(
+            database.select(Agendamento).filter(
+                and_(
+                    or_(
+                        and_(
+                            Agendamento.horario_inicio <= self.horario_inicio,
+                            self.horario_inicio <= Agendamento.horario_fim,
+                        ),
+                        and_(
+                            Agendamento.horario_inicio <= self.horario_fim,
+                            self.horario_fim <= Agendamento.horario_fim,
+                        ),
+                    ),
+                    or_(
+                        Agendamento.cliente_id == self.cliente_id,
+                        Agendamento.servico_id == self.servico_id,
+                    ),
+                )
+            )
+        )
+
+        return len(conflitos.scalars().all()) != 0
