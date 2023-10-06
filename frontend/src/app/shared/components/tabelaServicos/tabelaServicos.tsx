@@ -4,7 +4,7 @@ export const TabelaServicos= () => {
     return(
         <>
         <div className="table-responsive">
-            <table className="table table-bordered">
+            <table className="table table-bordered tabela-semana">
                 <thead>
                     <tr>
                     <th scope="col">#</th>

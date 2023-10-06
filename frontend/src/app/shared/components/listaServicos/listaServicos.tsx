@@ -3,18 +3,18 @@ import "./listaServicos.css"
 export const ListaServicos= () => {
     return(
         <>
-            <div className="teste-1">
+            <div className="container-servico">
                 <div className="row">
                     <div className="col-12 m-2">
                         <strong>Serviço Disponíveis</strong>
                         <i className="fa-regular fa-bell ms-2"></i>
                     </div>
                 </div>
-                <div className="teste-2">
+                <div className="modulo-servico">
                     <div className="row m-2">
-                        <div className="teste-3 p-3">
+                        <div className="topicos-servico p-3">
                             <div className="row">
-                                    <div className="col-9 servico">
+                                    <div className="col-9">
                                         <div>
                                             <strong>Servico</strong>
                                             <span className="ms-auto w-100">Ricardo Lanches</span>
@@ -25,7 +25,7 @@ export const ListaServicos= () => {
                                     </div>
                             </div>
                         </div>
-                        <div className="container teste-3 p-3">
+                        <div className="container topicos-servico p-3">
                             <div className="row">
                                 <div className="col-9 servico">
                                     <strong>Servico</strong>

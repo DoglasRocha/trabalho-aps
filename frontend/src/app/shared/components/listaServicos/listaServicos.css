@@ -1,12 +1,17 @@
-.teste-1 {
+.container-servico {
     padding: 10px;
-    width: 1000px;
+    margin: 10px;
+    width: calc(100%);
+    height: calc(100%);
+    border-radius: 10px;
     overflow: hidden;
-    background-color: orange;
+    background-color: gray;
 }
 
-.teste-2 {
-    background-color: orangered;
+.modulo-servico {
+    background-color: white;
+    border: 2px solid gray;
+    border-radius: 10px;
     width: 100%;
     height: 400px;
     padding: 10px;
@@ -14,9 +19,11 @@
     overflow-y: auto;
 }
 
-.teste-3 {
-    background-color: yellow;
+.topicos-servico {
+    background-color: yellowgreen;
+    box-shadow: -5px 3px 1px green;
     width: 100%;
+    border-radius: 7px;
     height: auto;
     margin-top: 10px;
     align-items: center;

@@ -10,12 +10,22 @@ export const Home= () => {
         <>
             <div className="container-fluid fundo-home">
                 <div className="fundo-principal">
-                    <h1>Área verde é a parte utilizável</h1>
-                    <ListaServicos/>
-                    <div className="d-flex justify-content-end pb-2">
-                        <button className="button-agenda" onClick={() => navegacao("agendar")}>Agendar serviço</button>
+                    <div className="row">
+                        <div className="col-6">
+                            <ListaServicos/>
+                        </div>
+                        <div className="col-6 pb-2">
+                            <div className="d-flex h-100 w-100 align-items-center justify-content-center">
+                                <button className="button-agenda" onClick={() => navegacao("agendar")}>Agendar/Desmarcar serviço</button>
+                            </div>
+                        </div>
                     </div>
-                    <TabelaServicos/>
+                    <div className="row mt-4">
+                        <h2>Horários</h2>
+                    </div>
+                    <div className="container">
+                        <TabelaServicos/>
+                    </div>
                 </div>
             </div>
         </>

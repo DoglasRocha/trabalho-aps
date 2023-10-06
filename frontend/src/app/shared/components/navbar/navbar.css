@@ -1,5 +1,6 @@
 .navegacao {
-    background-color: white;
+    background-color: #2E2E2E;
+    color: green;
     width: 100vw;
     height: 100px;
     position: absolute;
@@ -9,14 +10,16 @@
 }
 
 .dainfe {
-    background-color: red;
+    background-color: green;
+    color: black;
     width: 100px;
     height: 50px;
     margin-left: 15px;
 }
 
 .box-iniciais {
-    background-color: red;
+    background-color: green;
+    color: black;
     padding: 7px;
     width: 40px;
     height: 40px;
@@ -26,7 +29,7 @@
 
 .btn-navbar {
     background-color: transparent;
-    color: brown;
+    color: green;
     border: none;
 }
 

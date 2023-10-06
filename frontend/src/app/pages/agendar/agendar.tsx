@@ -1,5 +1,4 @@
-{/*import { useState } from "react";
-import { useNavigate } from "react-router-dom"*/}
+import { ListaServicos } from "../../shared/components/listaServicos/listaServicos.tsx"
 import "./agendar.css"
 
 
@@ -8,7 +7,17 @@ export const Agendar = () => {
         <>
             <div className="container-fluid fundo-home">
                 <div className="fundo-agenda">
-                    <strong>Agendamento</strong>
+                    <div className="row">
+                        <h1>Agendamento</h1>
+                    </div>
+                    <div className="row">
+                        <div className="col-6">
+                            <ListaServicos />
+                        </div>
+                        <div className="col-6">
+                            <h1>Algo aqui</h1>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
