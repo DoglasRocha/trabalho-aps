@@ -11,7 +11,7 @@ export const Home= () => {
             <div className="container-fluid fundo-home">
                 <div className="fundo-principal">
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col-6 servicos-home">
                             <ListaServicos/>
                         </div>
                         <div className="col-6 pb-2">
@@ -20,11 +20,12 @@ export const Home= () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row mt-4">
-                        <h2>Horários</h2>
-                    </div>
+                    <div className="row horarios">
+                        <h2 className="titulo-horarios">Horários</h2>
+                    
                     <div className="container">
                         <TabelaServicos/>
+                    </div>
                     </div>
                 </div>
             </div>

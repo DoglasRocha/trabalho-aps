@@ -7,17 +7,23 @@ export const Agendar = () => {
         <>
             <div className="container-fluid fundo-home">
                 <div className="fundo-agenda">
-                    <div className="row">
-                        <h1>Agendamento</h1>
-                    </div>
-                    <div className="row">
-                        <div className="col-6">
+                    <div className="d-flex flex-column">
+                    <div className="d-flex flex-row">
+                        <div className="p-2 lado-agendamento">
+                        <h1 className="titulo-agendamento">Agendamento</h1>
+                        
+                        <div className="p-2">
                             <ListaServicos />
                         </div>
-                        <div className="col-6">
-                            <h1>Algo aqui</h1>
-                        </div>
+                        </div>    
+
+                    <div className="p-2 lado-direito-agendamento">
+                        
+                            <h1 className="algo-aqui">Algo aqui</h1>
+                        <div className="box-conteudo-agendamento"></div>
                     </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </>

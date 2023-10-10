@@ -1,6 +1,6 @@
 .navegacao {
-    background-color: #2E2E2E;
-    color: green;
+    background-color: #1d202b;
+    color: white;
     width: 100vw;
     height: 100px;
     position: absolute;
@@ -10,30 +10,40 @@
 }
 
 .dainfe {
-    background-color: green;
-    color: black;
+    background-color: #3a684d;
     width: 100px;
     height: 50px;
     margin-left: 15px;
 }
 
 .box-iniciais {
-    background-color: green;
-    color: black;
+    background-color: #3a684d;
+    color: #c0d230;
     padding: 7px;
     width: 40px;
     height: 40px;
     margin: 0px 10px;
     font-size: large;
+    border-style: solid;
+    border-color: #c0d230;
+    border-width: 1px;
 }
 
 .btn-navbar {
     background-color: transparent;
-    color: green;
+    color: white;
     border: none;
+    transition: all .2s ease-in-out; 
+}
+
+.btn-navbar:hover{
+    color: white;
+    color: white;
+    transform: scale(1.1); 
 }
 
 .user {
-    margin: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     align-items: center;
 }

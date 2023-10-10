@@ -1,5 +1,4 @@
 .fundo-home {
-    background-color: #F4F4F8;
     height: 100vh;
     width: 100vw;
     overflow: hidden;
@@ -8,10 +7,11 @@
 }
 
 .fundo-principal {
-    background-color: #F4F4F8;
+    background-color: #1d202b;
     height: calc(100vh);
     width: calc(100%);
-    padding: 110px 20px 20px 20px;
+    padding-top: 10%;
+    padding-bottom: 10%;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -25,16 +25,37 @@
 }
 
 .button-agenda {
-    background-color: yellowgreen;
-    border: 5px solid yellowgreen;
+    background-color: #ef5b38;
+    color: white;
+    border-style: none;
+    border-radius: 3px;
+    transition: all .3s ease-in-out;
     font-weight: 500;
-    color: #2E2E2E;
     border-radius: 10px;
     width: 300px;
     height: 100px;
-    transform: linear;
+
 }
 
 .button-agenda:hover {
-    background-color: white;
+    transform: scale(1.2); 
+    background-color: #eb340b;
+}
+
+.titulo-horarios{
+    padding-bottom:5%;
+    text-align: center;
+    color:#eb340b;
+    text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+             1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
+}
+
+.horarios{
+    margin-top: 10%;
+    margin-left:10%;
+    margin-right: 10%;
+}
+
+.servicos-home{
+    padding-left:5%;
 }

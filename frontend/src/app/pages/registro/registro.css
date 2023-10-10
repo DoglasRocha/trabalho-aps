@@ -7,11 +7,19 @@
 }
 
 .box-registro {
-    background-color: white;
+    background: linear-gradient(to top, #005c00e3 0%, #003300 80%);
     width: 500px;
     height: auto;
     align-self: center;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 10px 10px 10px black;
+    border-style: solid;    
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+    border-color: white;
 }
 
 .dainfe-image {
@@ -33,7 +41,7 @@
 }
 
 .button-registro {
-    background-color: #ef5b38;
+    background-color: #eb340b;
     color: white;
     border-style: none;
     border-radius: 3px;
@@ -46,13 +54,14 @@
 }
 .button-registro:hover {
     border-style: none;
+    background-color: #eb340b;
     color: white;
     transform: scale(1.1); 
     
 }
 
 .button-voltar{
-    background-color: #ef5b38;
+    background-color: #eb340b;
     color: white;
     border-style: none;
     border-radius: 3px;
@@ -73,3 +82,12 @@
 #form-registro {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.493);
 }
+
+.first-row-registro{
+    margin-top: 8%;
+}
+
+.second-row-registro{
+    margin-left: 10%;
+    margin-top: 10%;
+;}

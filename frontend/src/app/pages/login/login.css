@@ -3,7 +3,6 @@ a {
 }
 
 .background-login {
-    /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
     background: linear-gradient(to bottom, #1d202b 51%, #383e53 98%);
     height: 100vh;
     width: 100vw;
@@ -11,7 +10,7 @@ a {
 }
 
 .box-login {
-    background: linear-gradient(to top, #3a684d 0%, #003300 100%);
+    background: linear-gradient(to top, #005c00e3 0%, #003300 80%);
     width: 500px;
     height: auto;
     align-self: center;
@@ -43,7 +42,7 @@ a {
 }
 
 .button-login {
-    background-color: #ef5b38;
+    background-color: #eb340b;
     color: white;
     border-style: none;
     border-radius: 3px;
@@ -55,9 +54,7 @@ a {
 }
 .button-login:hover {
     border-style: none;
-    color: white;
-    transform: scale(1.1); 
-    
+    transform: scale(1.1);
 }
 
 .text-1{
@@ -65,8 +62,8 @@ a {
 }
 
 .link{
-    margin-left: 1%;color: #ef5b38;
-    
+    margin-left: 1%;
+    color: #ef5b38;
     font-weight: bold;
 }
 

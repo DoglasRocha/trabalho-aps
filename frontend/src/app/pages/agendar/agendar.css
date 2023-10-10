@@ -1,5 +1,4 @@
 .fundo-home {
-  background-color: #F4F4F8;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -8,10 +7,35 @@
 }
 
 .fundo-agenda {
-  background-color: #F4F4F8;
+  background-color: #1d202b;
   height: calc(100vh);
   width: calc(100%);
   padding: 110px 20px 20px 20px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+.titulo-agendamento{
+  color: white;
+  text-align: center;
+}
+
+.lado-direito-agendamento{
+  width: 35%;
+  height: auto;  
+}
+.box-conteudo-agendamento{
+  margin-top: 10%;
+  height: 50%;
+  background-color: #ef5b38;
+
+}
+.algo-aqui{
+  color: white;
+  text-align: center;
+}
+
+.lado-agendamento{
+  width: 60%;
+  height: auto;
+  margin-right: 5%;
 }
