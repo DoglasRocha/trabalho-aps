@@ -7,14 +7,17 @@
 }
 
 .fundo-agenda {
-  background-color: #1d202b;
+  background-color: #b9b9b9;
   height: calc(100vh);
   width: calc(100%);
   padding: 110px 20px 20px 20px;
   overflow-x: hidden;
   overflow-y: auto;
 }
+
 .titulo-agendamento{
+  font-family: 'Roboto';  font-weight: 900;
+  text-shadow: 3px 3px #3a684d;
   color: white;
   text-align: center;
 }
@@ -32,6 +35,8 @@
 .algo-aqui{
   color: white;
   text-align: center;
+  font-family: 'Roboto';  font-weight: 900;
+  text-shadow: 3px 3px #3a684d;
 }
 
 .lado-agendamento{
