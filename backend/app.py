@@ -1,10 +1,12 @@
 from flask import Flask, request, session
+from flask_cors import CORS
 from db import database
 from models import *
 from datetime import date
 from helpers import *
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = b"ricardo_lanches_de_oliveira"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 database.init_app(app)

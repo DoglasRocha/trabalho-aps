@@ -1,8 +1,17 @@
-export class Usuario {
+export interface IUsuario {
   nome: string;
   email: string;
   senha: string;
-  data_nascimento: Date;
+  data_nascimento: Date | string;
+  cpf: string;
+  tipo: string;
+}
+
+export class Usuario implements IUsuario {
+  nome: string;
+  email: string;
+  senha: string;
+  data_nascimento: Date | string;
   cpf: string;
   tipo: string;
 
@@ -34,13 +43,24 @@ export class Usuario {
   }
 }
 
-export class Cliente extends Usuario {
+export interface ICliente extends IUsuario {
+  endereco: string;
+  cidade: string;
+  estado: string;
+}
+
+export class Cliente extends Usuario implements ICliente {
   endereco: string;
   cidade: string;
   estado: string;
 
-  constructor(endereco: string = "", cidade: string = "", estado: string = "") {
-    super();
+  constructor(
+    endereco: string = "",
+    cidade: string = "",
+    estado: string = "",
+    ...outros: string[]
+  ) {
+    super(...outros);
     this.endereco = endereco;
     this.cidade = cidade;
     this.estado = estado;
@@ -98,7 +118,7 @@ export class Categoria {
   }
 
   geraImpressao(): string {
-    let texto: string = `Categoria: ${this.nome}\n`;
+    const texto: string = `Categoria: ${this.nome}\n`;
 
     return texto;
   }
