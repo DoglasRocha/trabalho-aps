@@ -298,3 +298,23 @@ def get_agendamentos() -> dict:
     )
 
     return {"dados": [agendamento.get_dict() for agendamento in agendamentos]}
+
+
+@app.post("/API/login")
+def login() -> dict:
+    dados = request.json
+
+    if not dados["email"] and not dados["senha"]:
+        return {"msg": "erro"}
+
+    usuario = (
+        database.session.execute(
+            database.select(Usuario).where(Usuario.email == dados["email"])
+        )
+        .scalars()
+        .one()
+    )
+    if usuario.senha != dados["senha"]:
+        return {"msg": "senha incorreta"}
+
+    return {"dados": {"email": dados["email"], "tipo": usuario.tipo}}
