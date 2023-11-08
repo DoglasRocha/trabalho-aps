@@ -19,8 +19,7 @@ export const Login = () => {
           <div className="d-flex flex-column input-login pb-2">
             <strong>E-mail</strong>
             <input
-              className="form-control"
-              id="form-login"
+              className="form-control form-login"
               type="text"
               placeholder="email@gmail.com"
               value={email}
@@ -30,8 +29,7 @@ export const Login = () => {
           <div className="d-flex flex-column input-login pb-2">
             <strong>Senha</strong>
             <input
-              className="form-control"
-              id="form-login"
+              className="form-control form-login"
               type="password"
               placeholder="Digite a senha aqui!"
               value={senha}

@@ -1,9 +1,16 @@
 import { ListaServicos } from "../../shared/components/listaServicos/listaServicos.tsx";
 import { useNavigate, Outlet } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import "./agendar.css";
+import { useEffect } from "react";
 
 export const Agendar = () => {
   const navegacao = useNavigate();
+  const cookie = new Cookies();
+
+  useEffect(() => {
+    if (!cookie.get("dados cliente")) navegacao("/login");
+  }, [cookie]);
 
   return (
     <>
