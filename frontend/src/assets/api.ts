@@ -1,3 +1,12 @@
 import axios from "axios";
 
-export const api = axios.create({ baseURL: "http://127.0.0.1:5000/API/" });
+//axios.defaults.withCredentials = true;
+
+export const api = axios.create({
+  baseURL: "http://localhost:5000/API/",
+  withCredentials: true,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": true,
+  },
+});

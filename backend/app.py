@@ -6,9 +6,9 @@ from datetime import date
 from helpers import *
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 app.secret_key = b"ricardo_lanches_de_oliveira"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"é 
 database.init_app(app)
 
 

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../assets/api";
-import { Cookies } from "react-cookie";
 import "./login.css";
+import { cookies } from "../../../assets/cookies";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -52,11 +52,12 @@ export const Login = () => {
                   senha: senha,
                 });
                 if (result.data?.dados) {
-                  const cookie = new Cookies();
                   const expires = new Date();
                   expires.setTime(expires.getTime() + 60 * 60 * 1000);
-                  cookie.set("dados cliente", result.data.dados, {
+                  cookies.set("dados cliente", result.data.dados, {
                     path: "/",
+                    domain: "localhost",
+                    sameSite: "none",
                     expires,
                   });
 
