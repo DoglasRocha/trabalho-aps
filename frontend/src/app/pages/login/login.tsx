@@ -54,12 +54,16 @@ export const Login = () => {
                 if (result.data?.dados) {
                   const expires = new Date();
                   expires.setTime(expires.getTime() + 60 * 60 * 1000);
-                  cookies.set("dados cliente", result.data.dados, {
-                    path: "/",
-                    domain: "localhost",
-                    sameSite: "none",
-                    expires,
-                  });
+                  cookies.set(
+                    "dados cliente",
+                    JSON.stringify(result.data.dados),
+                    {
+                      path: "/",
+                      domain: "localhost",
+                      sameSite: "none",
+                      expires,
+                    }
+                  );
 
                   return navegacao("/home");
                 }
