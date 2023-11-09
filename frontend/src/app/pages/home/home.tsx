@@ -1,15 +1,15 @@
 import { ListaServicos } from "../../shared/components/listaServicos/listaServicos.tsx";
 import { TabelaServicos } from "../../shared/components/tabelaServicos/tabelaServicos.tsx";
 import { useNavigate } from "react-router-dom";
-import { cookies } from "../../../assets/cookies.ts";
 import "./home.css";
 import { useEffect } from "react";
+import { cookies } from "../../../assets/cookies.ts";
 
 export const Home = () => {
   const navegacao = useNavigate();
 
   useEffect(() => {
-    if (!cookies.get("dados cliente")) navegacao("/login");
+    if (!cookies.get("dadosUsuario")) navegacao("/login");
   }, [cookies]);
 
   return (

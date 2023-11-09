@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../assets/api";
 import "./login.css";
-import { cookies } from "../../../assets/cookies";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -51,22 +50,7 @@ export const Login = () => {
                   email: email,
                   senha: senha,
                 });
-                if (result.data?.dados) {
-                  const expires = new Date();
-                  expires.setTime(expires.getTime() + 60 * 60 * 1000);
-                  cookies.set(
-                    "dados cliente",
-                    JSON.stringify(result.data.dados),
-                    {
-                      path: "/",
-                      domain: "localhost",
-                      sameSite: "none",
-                      expires,
-                    }
-                  );
-
-                  return navegacao("/home");
-                }
+                if (result.data?.dados) return navegacao("/home");
 
                 return navegacao("/login");
               }}

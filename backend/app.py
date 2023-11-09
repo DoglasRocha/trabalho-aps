@@ -1,4 +1,4 @@
-from flask import Flask, request, session
+from flask import Flask, request, session, make_response
 from flask_cors import CORS
 from db import database
 from models import *
@@ -8,7 +8,7 @@ from helpers import *
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.secret_key = b"ricardo_lanches_de_oliveira"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"é 
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 database.init_app(app)
 
 
@@ -23,14 +23,26 @@ def create_usuario() -> dict:
         return {"msg": str(e)}
 
 
-@app.get("/API/usuarios/get/<int:id>")
-def get_usuario(id: int) -> dict:
-    usuario = database.session.get(Usuario, {"id": id})
+@app.get("/API/usuarios/get")
+def get_usuario() -> dict:
+    params = request.args.to_dict()
+    emaila = params["email"]
+    usuarios = (
+        database.session.execute(
+            database.select(Usuario).where(
+                (Usuario.email == "doglas@rocha.com")
+                | (Usuario.nome == "Doglas Franco Maurer da Rocha")
+            )
+        )
+        .scalars()
+        .all()
+    )
 
-    if not usuario:
+    print(usuarios)
+    if not usuarios:
         return {"dados": "Usuário não existente"}
 
-    return {"dados": usuario.get_dict()}
+    return {"dados": [usuario.get_dict() for usuario in usuarios]}
 
 
 @app.get("/API/usuarios/all")
@@ -317,4 +329,11 @@ def login() -> dict:
     if usuario.senha != dados["senha"]:
         return {"msg": "senha incorreta"}
 
-    return {"dados": {"email": dados["email"], "tipo": usuario.tipo}}
+    response = make_response({"dados": "ok"})
+    response.set_cookie(
+        "dadosUsuario",
+        str({"email": dados["email"], "tipo": usuario.tipo}),
+        max_age=60 * 60,
+        domain="localhost",
+    )
+    return response

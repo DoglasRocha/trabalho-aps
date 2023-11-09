@@ -1,5 +1,6 @@
 from models import *
 from flask_sqlalchemy import SQLAlchemy
+from flask import request
 
 
 def criar_usuario(dados: dict, database: SQLAlchemy) -> Usuario:
@@ -15,3 +16,7 @@ def criar_usuario(dados: dict, database: SQLAlchemy) -> Usuario:
     database.session.commit()
 
     return novo_usuario
+
+
+def esta_logado() -> bool:
+    return True if request.cookies.get("dadosUsuario") else False
