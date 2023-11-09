@@ -26,12 +26,18 @@ def create_usuario() -> dict:
 @app.get("/API/usuarios/get")
 def get_usuario() -> dict:
     params = request.args.to_dict()
-    emaila = params["email"]
+    params_safe = Usuario.preenche_dicionario_com_atributos_pesquisaves_da_classe(
+        params
+    )
+
     usuarios = (
         database.session.execute(
             database.select(Usuario).where(
-                (Usuario.email == "doglas@rocha.com")
-                | (Usuario.nome == "Doglas Franco Maurer da Rocha")
+                (Usuario.id == params_safe["id"])
+                | (Usuario.nome == params_safe["nome"])
+                | (Usuario.email == params_safe["email"])
+                | (Usuario.cpf == params_safe["cpf"])
+                | (Usuario.tipo == params_safe["tipo"])
             )
         )
         .scalars()

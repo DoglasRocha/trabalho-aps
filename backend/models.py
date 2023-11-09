@@ -29,6 +29,17 @@ class Usuario(database.Model):
         keys = ["nome", "email", "senha", "data_nascimento", "cpf", "tipo"]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
+    @staticmethod
+    def preenche_dicionario_com_atributos_pesquisaves_da_classe(
+        dicionario: dict,
+    ) -> dict:
+        keys = ["id", "nome", "email", "cpf", "tipo"]
+        for key in keys:
+            if key not in dicionario.keys():
+                dicionario[key] = None
+
+        return dicionario
+
     def get_dict(self) -> dict:
         return {
             "usuario": {
