@@ -11,8 +11,8 @@ export const Rota = () => {
         <Route path="/registro" element={<Registro />} />
         <Route path="/home" element={<Navbar />}>
           <Route index element={<Home />} />
+          <Route path="agendar" element={<Agendar />} />
         </Route>
-        <Route path="agendar" element={<Agendar />} />
       </Routes>
     </BrowserRouter>
   );

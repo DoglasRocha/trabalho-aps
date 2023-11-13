@@ -8,9 +8,13 @@ import { cookies } from "../../../assets/cookies.ts";
 export const Home = () => {
   const navegacao = useNavigate();
 
-  useEffect(() => {
-    if (!cookies.get("dadosUsuario")) navegacao("/login");
-  }, [cookies]);
+  // useEffect(() => {
+  //   if (!cookies.get("dadosUsuario")) navegacao("/login");
+  // }, [cookies]);
+
+  // useEffect(() => {
+  //   if (!cookies.get("dadosUsuario")) navegacao("/login");
+  // }, [cookies]);
 
   return (
     <>
@@ -24,7 +28,7 @@ export const Home = () => {
               <div className="d-flex h-100 w-100 align-items-center justify-content-center">
                 <button
                   className="button-agenda"
-                  onClick={() => navegacao("/agendar")}
+                  onClick={() => navegacao("agendar")}
                 >
                   Agendar/Desmarcar serviço
                 </button>

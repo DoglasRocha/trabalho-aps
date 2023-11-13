@@ -7,9 +7,9 @@ import { cookies } from "../../../assets/cookies.ts";
 export const Agendar = () => {
   const navegacao = useNavigate();
 
-  useEffect(() => {
-    if (!cookies.get("dados cliente")) navegacao("/login");
-  }, [cookies]);
+  // useEffect(() => {
+  //   if (!cookies.get("dados cliente")) navegacao("/login");
+  // }, [cookies]);
 
   return (
     <>
@@ -18,7 +18,7 @@ export const Agendar = () => {
           <div>
             <button
               onClick={() => navegacao("/home")}
-              style={({ textDecoration: "none" }, { color: "black" })}
+              style={{ color: "black" }}
             >
               <i className="fa fa-arrow-left"></i>
               <span className="ms-2">Voltar</span>
@@ -32,8 +32,49 @@ export const Agendar = () => {
               </div>
             </div>
 
-            <div className="p-2 lado-direito-agendamento">
-              <div className="box-conteudo-agendamento">aqui</div>
+            <div className="container-fluid lado-direito-agendamento p-2">
+              <div className="box-conteudo-agendamento">
+                <div className="row p-3">
+                  <div className="mb-2">
+                    <i className="fa-regular fa-calendar-plus me-2"></i>
+                    <strong>Agendar</strong>
+                  </div>
+				  <hr />
+                  <div className="col-12 mb-2">
+                    <div className="form-group">
+                      <label>Serviço</label>
+                      <select
+                        className="form-select"
+                        id="exampleFormControlSelect1"
+                      >
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="form-group">
+                      <label>Horário de Início</label>
+                      <input
+                        className="form-control"
+                        type="datetime-local"
+                        max="9999-12-31T23:59"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="form-group">
+                      <label>Horário do Fim</label>
+                      <input
+                        className="form-control"
+                        type="datetime-local"
+                        max="9999-12-31T23:59"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

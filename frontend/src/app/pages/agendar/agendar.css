@@ -1,46 +1,45 @@
 .fundo-home {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  display: contents;
-  position: absolute;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	display: contents;
+	position: absolute;
 }
 
 .fundo-agenda {
-  background-color: #b9b9b9;
-  height: calc(100vh);
-  width: calc(100%);
-  padding: 110px 20px 20px 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
+	background-color: #b9b9b9;
+	height: calc(100vh);
+	width: calc(100%);
+	padding: 110px 20px 20px 20px;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
-.titulo-agendamento{
-  font-family: 'Roboto';  font-weight: 900;
-  text-shadow: 3px 3px #3a684d;
-  color: white;
-  text-align: center;
+.titulo-agendamento {
+	font-family: "Roboto";
+	font-weight: 900;
+	text-shadow: 3px 3px #3a684d;
+	color: white;
+	text-align: center;
 }
 
-.lado-direito-agendamento{
-  width: 35%;
-  height: auto;  
-}
-.box-conteudo-agendamento{
-  margin-top: 10%;
-  height: 50%;
-  background-color: #ef5b38;
-
-}
-.algo-aqui{
-  color: white;
-  text-align: center;
-  font-family: 'Roboto';  font-weight: 900;
-  text-shadow: 3px 3px #3a684d;
+.lado-direito-agendamento {
+	width: 50%;
+	height: 100%;
+	align-items: center;
 }
 
-.lado-agendamento{
-  width: 60%;
-  height: auto;
-  margin-right: 5%;
+.box-conteudo-agendamento {
+	margin-top: 10px;
+	width: 100%;
+	height: auto;
+	background-color: whitesmoke;
+	border-radius: 5px;
+	border: 2px solid gray;
+}
+
+.lado-agendamento {
+	width: 60%;
+	height: auto;
+	margin-right: 20px;
 }

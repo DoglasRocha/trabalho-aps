@@ -35,7 +35,9 @@ export const Navbar = () => {
     <>
       <nav className="d-flex navegacao ">
         <div className="d-flex align-items-center w-50">
-          <div className="dainfe"></div>
+          <div className="dainfe">
+            <img src="../../../public/ZAHP-SemFundo.png" className="img-fluid img-thumbnail" alt="ZAHP" />
+          </div>
         </div>
         <div className="row ms-auto">
           <div className="d-flex user">
