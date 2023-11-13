@@ -1,15 +1,24 @@
 import { ListaServicos } from "../../shared/components/listaServicos/listaServicos.tsx";
 import { useNavigate, Outlet } from "react-router-dom";
 import "./agendar.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cookies } from "../../../assets/cookies.ts";
+import { api } from "../../../assets/api.ts";
 
 export const Agendar = () => {
   const navegacao = useNavigate();
+  const [servicos, setServicos] = useState([]);
 
-  // useEffect(() => {
-  //   if (!cookies.get("dados cliente")) navegacao("/login");
-  // }, [cookies]);
+  useEffect(() => {
+    if (!cookies.get("dadosUsuario")) navegacao("/login");
+  }, [cookies]);
+
+  useEffect(() => {
+    api
+      .get("servicos/all")
+      .then((request) => setServicos(request.data["dados"]));
+    console.log(servicos);
+  }, []);
 
   return (
     <>
@@ -39,7 +48,7 @@ export const Agendar = () => {
                     <i className="fa-regular fa-calendar-plus me-2"></i>
                     <strong>Agendar</strong>
                   </div>
-				  <hr />
+                  <hr />
                   <div className="col-12 mb-2">
                     <div className="form-group">
                       <label>Serviço</label>
@@ -47,9 +56,14 @@ export const Agendar = () => {
                         className="form-select"
                         id="exampleFormControlSelect1"
                       >
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
+                        {servicos.map((servico) => {
+                          return (
+                            <option value={servico.servico.id}>
+                              Serviço: {servico.categoria.nome}, Profissional:{" "}
+                              {servico.usuario.nome}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>

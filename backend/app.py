@@ -44,7 +44,6 @@ def get_usuario() -> dict:
         .all()
     )
 
-    print(usuarios)
     if not usuarios:
         return {"dados": "Usuário não existente"}
 
@@ -338,7 +337,7 @@ def login() -> dict:
     response = make_response({"dados": "ok"})
     response.set_cookie(
         "dadosUsuario",
-        str({"email": dados["email"], "tipo": usuario.tipo}),
+        str({"email": dados["email"], "tipo": usuario.tipo, "usuario_id": usuario.id}),
         max_age=60 * 60,
         domain="localhost",
     )

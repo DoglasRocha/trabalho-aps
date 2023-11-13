@@ -43,7 +43,7 @@ export const Login = () => {
             </a>
           </div>
           <div className="d-flex justify-content-end pb-2">
-            {/* <button
+            <button
               className="button-login"
               onClick={async () => {
                 const result = await api.post("login", {
@@ -55,11 +55,6 @@ export const Login = () => {
                 return navegacao("/login");
               }}
             >
-              Entrar
-            </button> */}
-            <button
-              className="button-login"
-              onClick={() => navegacao("/home")}>
               Entrar
             </button>
           </div>

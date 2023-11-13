@@ -8,13 +8,13 @@ import { cookies } from "../../../assets/cookies.ts";
 export const Home = () => {
   const navegacao = useNavigate();
 
-  // useEffect(() => {
-  //   if (!cookies.get("dadosUsuario")) navegacao("/login");
-  // }, [cookies]);
+  useEffect(() => {
+    if (!cookies.get("dadosUsuario")) navegacao("/login");
+  }, [cookies]);
 
-  // useEffect(() => {
-  //   if (!cookies.get("dadosUsuario")) navegacao("/login");
-  // }, [cookies]);
+  useEffect(() => {
+    if (!cookies.get("dadosUsuario")) navegacao("/login");
+  }, [cookies]);
 
   return (
     <>
