@@ -77,21 +77,31 @@ export class Cliente extends Usuario implements ICliente {
   }
 }
 
-export class Empresa {
-  nome: string;
+export interface IEmpresa {
+  nome_fantasia: string;
+  cnpj: string;
+}
+
+export class Empresa implements IEmpresa {
+  nome_fantasia: string;
   cnpj: string;
 
   constructor(nome: string = "", cnpj: string = "") {
-    this.nome = nome;
+    this.nome_fantasia = nome;
     this.cnpj = cnpj;
   }
 
   geraImpressao(): string {
-    let texto: string = `Nome Fantasia ${this.nome}\n`;
+    let texto: string = `Nome Fantasia ${this.nome_fantasia}\n`;
     texto += `CNPJ: ${this.cnpj}\n`;
 
     return texto;
   }
+}
+
+export interface IPrestador extends IEmpresa {
+  empresa_id: number;
+  usuario_id: number;
 }
 
 export class Prestador extends Usuario {
@@ -110,7 +120,11 @@ export class Prestador extends Usuario {
   }
 }
 
-export class Categoria {
+export interface ICategoria {
+  nome: string;
+}
+
+export class Categoria implements ICategoria {
   nome: string;
 
   constructor(nome: string = "") {
@@ -122,6 +136,20 @@ export class Categoria {
 
     return texto;
   }
+}
+
+export interface IServico {
+  id: number;
+  prestador_id: number;
+  categoria_id: number;
+  preco: number;
+  duracao: number;
+}
+
+export interface IServicoWrapper {
+  servico: IServico;
+  categoria: ICategoria;
+  usuario: IUsuario;
 }
 
 export class Servico {
@@ -150,6 +178,13 @@ export class Servico {
 
     return texto;
   }
+}
+
+export interface IAgendamento {
+  cliente_id: number;
+  servico_id: number;
+  horario_inicio: Date;
+  observacoes_cliente: string;
 }
 
 export class Agendamento {

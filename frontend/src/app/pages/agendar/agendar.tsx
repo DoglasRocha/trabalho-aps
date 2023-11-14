@@ -1,23 +1,23 @@
 import { ListaServicos } from "../../shared/components/listaServicos/listaServicos.tsx";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./agendar.css";
 import { useEffect, useState } from "react";
 import { cookies } from "../../../assets/cookies.ts";
 import { api } from "../../../assets/api.ts";
+import { IServicoWrapper } from "../../../assets/models.ts";
 
 export const Agendar = () => {
   const navegacao = useNavigate();
-  const [servicos, setServicos] = useState([]);
+  const [servicos, setServicos] = useState<IServicoWrapper[]>([]);
 
   useEffect(() => {
     if (!cookies.get("dadosUsuario")) navegacao("/login");
-  }, [cookies]);
+  });
 
   useEffect(() => {
     api
       .get("servicos/all")
       .then((request) => setServicos(request.data["dados"]));
-    console.log(servicos);
   }, []);
 
   return (
