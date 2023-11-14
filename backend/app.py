@@ -376,14 +376,30 @@ def create_agendamento() -> dict:
         return {"msg": str(e)}
 
 
-@app.get("/API/agendamentos/get/<int:id>")
-def get_agendamento(id: int) -> dict:
-    agendamento = database.session.get(Agendamento, {"id": id})
+@app.get("/API/agendamentos/get")
+def get_agendamento() -> dict:
+    params = request.args.to_dict()
+    params_safe = Agendamento.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        params
+    )
 
-    if not agendamento:
+    agendamentos = (
+        database.session.execute(
+            database.select(Agendamento).where(
+                (Agendamento.id == params_safe["id"])
+                | (Agendamento.cliente_id == params_safe["cliente_id"])
+                | (Agendamento.servico_id == params_safe["servico_id"])
+                | (Agendamento.realizado == params_safe["realizado"])
+            )
+        )
+        .scalars()
+        .all()
+    )
+
+    if not agendamentos:
         return {"dados": "Agendamento não existente"}
 
-    return {"dados": agendamento.get_dict()}
+    return {"dados": [agendamento.get_dict() for agendamento in agendamentos]}
 
 
 @app.get("/API/agendamentos/all")
