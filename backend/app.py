@@ -26,7 +26,7 @@ def create_usuario() -> dict:
 @app.get("/API/usuarios/get")
 def get_usuario() -> dict:
     params = request.args.to_dict()
-    params_safe = Usuario.preenche_dicionario_com_atributos_pesquisaves_da_classe(
+    params_safe = Usuario.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
         params
     )
 
@@ -78,14 +78,31 @@ def create_cliente() -> dict:
         return {"msg": str(e)}
 
 
-@app.get("/API/clientes/get/<int:id>")
-def get_cliente(id: int) -> dict:
-    cliente = database.session.get(Cliente, {"id": id})
+@app.get("/API/clientes/get")
+def get_cliente() -> dict:
+    params = request.args.to_dict()
+    params_safe = Cliente.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        params
+    )
 
-    if not cliente:
+    clientes = (
+        database.session.execute(
+            database.select(Cliente).where(
+                (Cliente.id == params_safe["id"])
+                | (Cliente.usuario_id == params_safe["usuario_id"])
+                | (Cliente.estado == params_safe["estado"])
+                | (Cliente.cidade == params_safe["cidade"])
+                | (Cliente.endereco == params_safe["endereco"])
+            )
+        )
+        .scalars()
+        .all()
+    )
+
+    if not clientes:
         return {"dados": "Cliente não existente"}
 
-    return {"dados": cliente.get_dict()}
+    return {"dados": [cliente.get_dict() for cliente in clientes]}
 
 
 @app.get("/API/clientes/all")
@@ -114,14 +131,29 @@ def create_empresa() -> dict:
         return {"msg": str(e)}
 
 
-@app.get("/API/empresas/get/<int:id>")
-def get_empresa(id: int) -> dict:
-    empresa = database.session.get(Empresa, {"id": id})
+@app.get("/API/empresas/get")
+def get_empresa() -> dict:
+    params = request.args.to_dict()
+    params_safe = Empresa.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        params
+    )
 
-    if not empresa:
+    empresas = (
+        database.session.execute(
+            database.select(Empresa).where(
+                (Empresa.id == params_safe["id"])
+                | (Empresa.nome_fantasia == params_safe["nome_fantasia"])
+                | (Empresa.cnpj == params_safe["cnpj"])
+            )
+        )
+        .scalars()
+        .all()
+    )
+
+    if not empresas:
         return {"dados": "Empresa não existente"}
 
-    return {"dados": {"empresa": empresa.get_dict()}}
+    return {"dados": {"empresa": [empresa.get_dict() for empresa in empresas]}}
 
 
 @app.get("/API/empresas/all")
@@ -155,15 +187,30 @@ def create_prestador() -> dict:
         return {"msg": str(e)}
 
 
-@app.get("/API/prestadores/get/<int:id>")
-def get_prestador(id: int) -> dict:
-    prestador = database.session.get(Prestador, {"id": id})
+@app.get("/API/prestadores/get")
+def get_prestador() -> dict:
+    params = request.args.to_dict()
+    params_safe = Prestador.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        params
+    )
 
-    if not prestador:
+    prestadores = (
+        database.session.execute(
+            database.select(Prestador).where(
+                (Prestador.id == params_safe["id"])
+                | (Prestador.usuario_id == params_safe["usuario_id"])
+                | (Prestador.empresa_id == params_safe["empresa_id"])
+            )
+        )
+        .scalars()
+        .all()
+    )
+
+    if not prestadores:
         return {"dados": "Prestador não existente"}
 
     return {
-        "dados": prestador.get_dict(),
+        "dados": [prestador.get_dict() for prestador in prestadores],
     }
 
 
@@ -194,14 +241,28 @@ def create_categoria() -> dict:
         return {"msg": str(e)}
 
 
-@app.get("/API/categorias/get/<int:id>")
-def get_categoria(id: int) -> dict:
-    categoria = database.session.get(Categoria, {"id": id})
+@app.get("/API/categorias/get")
+def get_categoria() -> dict:
+    params = request.args.to_dict()
+    params_safe = Categoria.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        params
+    )
 
-    if not categoria:
+    categorias = (
+        database.session.execute(
+            database.select(Categoria).where(
+                (Categoria.id == params_safe["id"])
+                | (Categoria.nome == params_safe["nome"])
+            )
+        )
+        .scalars()
+        .all()
+    )
+
+    if not categorias:
         return {"dados": "Categoria não existente"}
 
-    return {"dados": categoria.get_dict()}
+    return {"dados": [categoria.get_dict() for categoria in categorias]}
 
 
 @app.get("/API/categorias/all")
@@ -242,14 +303,31 @@ def create_servico() -> dict:
         return {"msg": str(e)}
 
 
-@app.get("/API/servicos/get/<int:id>")
-def get_servico(id: int) -> dict:
-    servico = database.session.get(Servico, {"id": id})
+@app.get("/API/servicos/get")
+def get_servico() -> dict:
+    params = request.args.to_dict()
+    params_safe = Servico.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        params
+    )
 
-    if not servico:
+    servicos = (
+        database.session.execute(
+            database.select(Servico).where(
+                (Servico.id == params_safe["id"])
+                | (Servico.categoria_id == params_safe["categoria_id"])
+                | (Servico.prestador_id == params_safe["prestador_id"])
+                | (Servico.preco == params_safe["preco"])
+                | (Servico.duracao == params_safe["duracao"])
+            )
+        )
+        .scalars()
+        .all()
+    )
+
+    if not servicos:
         return {"dados": "Serviço não existente"}
 
-    return {"dados": servico.get_dict()}
+    return {"dados": [servico.get_dict() for servico in servicos]}
 
 
 @app.get("/API/servicos/all")

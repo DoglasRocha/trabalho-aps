@@ -30,7 +30,7 @@ class Usuario(database.Model):
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
     @staticmethod
-    def preenche_dicionario_com_atributos_pesquisaves_da_classe(
+    def preenche_dicionario_com_atributos_pesquisaveis_da_classe(
         dicionario: dict,
     ) -> dict:
         keys = ["id", "nome", "email", "cpf", "tipo"]
@@ -76,6 +76,17 @@ class Cliente(database.Model):
         keys = ["endereco", "cidade", "estado", "usuario_id"]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
+    @staticmethod
+    def preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        dicionario: dict,
+    ) -> dict:
+        keys = ["endereco", "cidade", "estado", "usuario_id", "id"]
+        for key in keys:
+            if key not in dicionario.keys():
+                dicionario[key] = None
+
+        return dicionario
+
     def get_dict(self) -> dict:
         usuario = database.session.get(Usuario, {"id": self.usuario_id})
 
@@ -110,6 +121,17 @@ class Empresa(database.Model):
         ]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
+    @staticmethod
+    def preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        dicionario: dict,
+    ) -> dict:
+        keys = ["nome_fantasia", "cnpj", "id"]
+        for key in keys:
+            if key not in dicionario.keys():
+                dicionario[key] = None
+
+        return dicionario
+
     def get_dict(self) -> dict:
         return {"empresa": {"nome_fantasia": self.nome_fantasia, "cnpj": self.cnpj}}
 
@@ -136,6 +158,17 @@ class Prestador(database.Model):
             "empresa_id",
         ]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+
+    @staticmethod
+    def preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        dicionario: dict,
+    ) -> dict:
+        keys = ["usuario_id", "empresa_id", "id"]
+        for key in keys:
+            if key not in dicionario.keys():
+                dicionario[key] = None
+
+        return dicionario
 
     def get_dict(self) -> dict:
         empresa = database.session.get(Empresa, {"id": self.empresa_id})
@@ -167,6 +200,17 @@ class Categoria(database.Model):
         ]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
+    @staticmethod
+    def preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        dicionario: dict,
+    ) -> dict:
+        keys = ["nome", "id"]
+        for key in keys:
+            if key not in dicionario.keys():
+                dicionario[key] = None
+
+        return dicionario
+
     def get_dict(self) -> dict:
         return {"categoria": {"nome": self.nome, "categoria_id": self.id}}
 
@@ -194,6 +238,17 @@ class Servico(database.Model):
     def filtra_atributos_dicionario(dicionario: dict) -> dict:
         keys = ["prestador_id", "categoria_id", "preco", "duracao"]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
+
+    @staticmethod
+    def preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        dicionario: dict,
+    ) -> dict:
+        keys = ["prestador_id", "categoria_id", "preco", "duracao", "id"]
+        for key in keys:
+            if key not in dicionario.keys():
+                dicionario[key] = None
+
+        return dicionario
 
     def get_dict(self) -> dict:
         prestador = database.session.get(Prestador, {"id": self.prestador_id})
@@ -249,6 +304,26 @@ class Agendamento(database.Model):
         ]
         return {key: dicionario[key] for key in keys if key in dicionario.keys()}
 
+    @staticmethod
+    def preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        dicionario: dict,
+    ) -> dict:
+        keys = [
+            "cliente_id",
+            "servico_id",
+            "horario_inicio",
+            "horario_fim",
+            "observacoes_cliente",
+            "realizado",
+            "observacoes_prestador",
+            "id",
+        ]
+        for key in keys:
+            if key not in dicionario.keys():
+                dicionario[key] = None
+
+        return dicionario
+
     def get_dict(self) -> dict:
         cliente = database.session.get(Cliente, {"id": self.cliente_id})
         servico = database.session.get(Servico, {"id": self.servico_id})
@@ -267,21 +342,19 @@ class Agendamento(database.Model):
     def ha_conflito(self) -> bool:
         conflitos = database.session.execute(
             database.select(Agendamento).filter(
-                and_(
-                    or_(
-                        and_(
-                            Agendamento.horario_inicio <= self.horario_inicio,
-                            self.horario_inicio <= Agendamento.horario_fim,
-                        ),
-                        and_(
-                            Agendamento.horario_inicio <= self.horario_fim,
-                            self.horario_fim <= Agendamento.horario_fim,
-                        ),
-                    ),
-                    or_(
-                        Agendamento.cliente_id == self.cliente_id,
-                        Agendamento.servico_id == self.servico_id,
-                    ),
+                (
+                    (
+                        (Agendamento.horario_inicio <= self.horario_inicio)
+                        & (self.horario_inicio <= Agendamento.horario_fim)
+                    )
+                    | (
+                        (Agendamento.horario_inicio <= self.horario_fim)
+                        & (self.horario_fim <= Agendamento.horario_fim)
+                    )
+                )
+                & (
+                    (Agendamento.cliente_id == self.cliente_id)
+                    | (Agendamento.servico_id == self.servico_id)
                 )
             )
         )
