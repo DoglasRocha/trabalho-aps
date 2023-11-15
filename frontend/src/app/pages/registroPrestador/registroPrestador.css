@@ -1,0 +1,132 @@
+.background-registro {
+    /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
+    background: linear-gradient(to bottom, #1d202b 51%, #383e53 98%);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.box-registro {
+    background: linear-gradient(to top, #005c00e3 0%, #003300 80%);
+    width: 500px;
+    height: auto;
+    align-self: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 10px 10px 10px black;
+    border-style: solid;    
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+    border-color: white;
+}
+
+.dainfe-image {
+    /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
+    background-color: red;
+    height: 50px;
+    width: 100px;
+    justify-self: center;
+    margin: 10px;
+}
+
+.form-control.registro {
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.493);
+}
+
+
+.input-registro {
+    color: #c0d230;
+}
+
+.button-registro {
+    background-color: #eb340b;
+    color: white;
+    border-style: none;
+    border-radius: 3px;
+    transition: all .2s ease-in-out; 
+    margin-top: 2%;
+    padding-top: 1%;
+    padding-bottom: 1.5%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+.button-registro:hover {
+    border-style: none;
+    background-color: #eb340b;
+    color: white;
+    transform: scale(1.1); 
+    
+}
+
+.button-voltar{
+    background-color: #eb340b;
+    color: white;
+    border-style: none;
+    border-radius: 3px;
+    transition: all .2s ease-in-out; 
+    padding-top: 1%;
+    padding-bottom: 1.5%;
+    padding-left: 2%;
+    padding-right: 2%;
+    
+}
+.button-voltar:hover {
+    border-style: none;
+    color: white;
+    transform: scale(1.1); 
+    
+}
+
+#form-registro {
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.493);
+}
+
+.first-row-registro{
+    margin-top: 20px;
+}
+
+.second-row-registro{
+    margin-top: 20px;
+;}
+
+.radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #EEEEEE;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 300px;
+    font-size: 14px;
+  }
+  
+  .radio-inputs .radio-nova-empresa {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  
+  .radio-inputs .radio-nova-empresa input {
+    display: none;
+  }
+  
+  .radio-inputs .radio-nova-empresa .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: .5rem 0;
+    color: rgba(51, 65, 85, 1);
+    transition: all .15s ease-in-out;
+  }
+  
+  .radio-inputs .radio-nova-empresa input:checked + .name {
+    background-color: #eb340b;
+    color: white;
+    font-weight: 600;
+  }
