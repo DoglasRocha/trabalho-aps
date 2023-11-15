@@ -18,6 +18,12 @@ export interface ICliente {
   estado: string;
   id: number;
   usuario_id: number;
+  nome?: string;
+  email?: string;
+  senha?: string;
+  data_nascimento?: Date | string;
+  cpf?: string;
+  tipo?: string;
 }
 
 export interface IClienteWrapper {
@@ -39,6 +45,12 @@ export interface IPrestador {
   empresa_id: number;
   usuario_id: number;
   id: number;
+  nome?: string;
+  email?: string;
+  senha?: string;
+  data_nascimento?: Date | string;
+  cpf?: string;
+  tipo?: string;
 }
 
 export interface IPrestadorWrapper {
@@ -73,10 +85,10 @@ export interface IServicoWrapper {
 }
 
 export interface IAgendamento {
-  horario_fim: Date;
+  horario_fim?: Date;
   horario_inicio: Date;
   observacoes_cliente: string | null;
-  observacoes_prestador: string | null;
+  observacoes_prestador?: string | null;
   realizado: boolean;
 }
 

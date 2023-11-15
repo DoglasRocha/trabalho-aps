@@ -2,12 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./registroCliente.css";
 import { api } from "../../../assets/api";
-import { ICliente, Cliente } from "../../../assets/models";
+import { ICliente } from "../../../assets/models";
 
 export const RegistroCliente = () => {
-  const [dadosCliente, setDadosCliente] = useState<ICliente | Cliente>(
-    new Cliente()
-  );
+  const [dadosCliente, setDadosCliente] = useState<ICliente>();
   const navegacao = useNavigate();
 
   return (
@@ -15,10 +13,7 @@ export const RegistroCliente = () => {
       <div className="d-flex justify-content-center align-content-center h-100">
         <div className="box-login">
           <div className="d-flex">
-            <button
-              className="button-voltar"
-              onClick={() => navegacao(-1)}
-            >
+            <button className="button-voltar" onClick={() => navegacao(-1)}>
               Voltar
             </button>
           </div>
