@@ -2,15 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./registroPrestador.css";
 import { api } from "../../../assets/api";
-import { IPrestador, Prestador, IEmpresa, Empresa, IEmpresaWrapper } from "../../../assets/models";
+import { IPrestador, IEmpresa, IEmpresaWrapper } from "../../../assets/models";
 
 export const RegistroPrestador = () => {
-  const [dadosPrestador, setDadosPrestador] = useState<IPrestador | Prestador>(
-    new Prestador()
-  );
-  const [dadosEmpresa, setDadosEmpresa] = useState<IEmpresa | Empresa>(
-    new Empresa()
-  );
+  const [dadosPrestador, setDadosPrestador] = useState<IPrestador>();
+  const [dadosEmpresa, setDadosEmpresa] = useState<IEmpresa>();
   const [selectEmpresa, setSelectEmpresa] = useState<IEmpresaWrapper[]>([]);
   const [novaEmpresa, setNovaEmpresa] = useState(false);
   const navegacao = useNavigate();
@@ -32,7 +28,7 @@ export const RegistroPrestador = () => {
                   className="form-control"
                   type="text"
                   placeholder="Curitiba"
-                  value={dadosEmpresa.nome_fantasia}
+                  value={dadosEmpresa?.nome_fantasia}
                   onChange={(e) =>
                     setDadosEmpresa({ ...dadosEmpresa, nome_fantasia: e.target.value })
                   }
@@ -47,7 +43,7 @@ export const RegistroPrestador = () => {
                   className="form-control"
                   type="text"
                   placeholder="12.345.678/0001-90"
-                  value={dadosEmpresa.cnpj}
+                  value={dadosEmpresa?.cnpj}
                   onChange={(e) =>
                     setDadosEmpresa({
                       ...dadosEmpresa,
@@ -68,14 +64,14 @@ export const RegistroPrestador = () => {
                 <strong>Empresa</strong>
                 <select
                         className="form-select"
-                        onChange={(e) => setDadosPrestador({ ...dadosPrestador, empresa: e.target.value })}
+                        onChange={(e) => setDadosPrestador({ ...dadosPrestador, empresa_id: e.target.value })}
                         id="exampleFormControlSelect1"
                       >
                         {selectEmpresa.map((selectEmpresa) => {
                           return (
-                            <option value={selectEmpresa.id}>
-                              Empresa: {selectEmpresa.nome_fantasia}, CNPJ:{" "}
-                              {selectEmpresa.cnpj}
+                            <option value={selectEmpresa.empresa.id}>
+                              Empresa: {selectEmpresa.empresa.nome_fantasia}, CNPJ:{" "}
+                              {selectEmpresa.empresa.cnpj}
                             </option>
                           );
                         })}
@@ -199,7 +195,7 @@ export const RegistroPrestador = () => {
                   console.log(dadosEmpresa);
                   
                   if (resultEmpresa.data?.dados)
-                    dadosPrestador.empresa = resultEmpresa.data?.dados.empresa.id;
+                    dadosPrestador?.empresa_id = resultEmpresa.data?.dados.id;
 
                   resultPrestador = await api.post("prestadores/create", dadosPrestador);
                   console.log(dadosPrestador);
