@@ -43,7 +43,7 @@ class Usuario(database.Model):
     def get_dict(self) -> dict:
         return {
             "usuario": {
-                "usuario_id": self.id,
+                "id": self.id,
                 "nome": self.nome,
                 "email": self.email,
                 "data_nascimento": self.data_nascimento,
@@ -133,7 +133,13 @@ class Empresa(database.Model):
         return dicionario
 
     def get_dict(self) -> dict:
-        return {"empresa": {"nome_fantasia": self.nome_fantasia, "cnpj": self.cnpj}}
+        return {
+            "empresa": {
+                "id": self.id,
+                "nome_fantasia": self.nome_fantasia,
+                "cnpj": self.cnpj,
+            }
+        }
 
 
 class Prestador(database.Model):
@@ -212,7 +218,7 @@ class Categoria(database.Model):
         return dicionario
 
     def get_dict(self) -> dict:
-        return {"categoria": {"nome": self.nome, "categoria_id": self.id}}
+        return {"categoria": {"nome": self.nome, "id": self.id}}
 
 
 class Servico(database.Model):

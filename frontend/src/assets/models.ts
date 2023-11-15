@@ -1,10 +1,15 @@
 export interface IUsuario {
+  id: number;
   nome: string;
   email: string;
-  senha: string;
+  senha?: string;
   data_nascimento: Date | string;
   cpf: string;
   tipo: string;
+}
+
+export interface IUsuarioWrapper {
+  usuario: IUsuario;
 }
 
 export class Usuario implements IUsuario {
@@ -43,10 +48,17 @@ export class Usuario implements IUsuario {
   }
 }
 
-export interface ICliente extends IUsuario {
+export interface ICliente {
   endereco: string;
   cidade: string;
   estado: string;
+  id: number;
+  usuario_id: number;
+}
+
+export interface IClienteWrapper {
+  cliente: ICliente;
+  usuario: IUsuario;
 }
 
 export class Cliente extends Usuario implements ICliente {
@@ -80,6 +92,11 @@ export class Cliente extends Usuario implements ICliente {
 export interface IEmpresa {
   nome_fantasia: string;
   cnpj: string;
+  id: number;
+}
+
+export interface IEmpresaWrapper {
+  empresa: IEmpresa;
 }
 
 export class Empresa implements IEmpresa {
@@ -99,9 +116,16 @@ export class Empresa implements IEmpresa {
   }
 }
 
-export interface IPrestador extends IEmpresa {
+export interface IPrestador {
   empresa_id: number;
   usuario_id: number;
+  id: number;
+}
+
+export interface IPrestadorWrapper {
+  prestador: IPrestador;
+  empresa: IEmpresa;
+  usuario: IUsuario;
 }
 
 export class Prestador extends Usuario {
@@ -121,7 +145,12 @@ export class Prestador extends Usuario {
 }
 
 export interface ICategoria {
+  categoria_id: number;
   nome: string;
+}
+
+export interface ICategoriaWrapper {
+  categoria: ICategoria;
 }
 
 export class Categoria implements ICategoria {
@@ -147,8 +176,10 @@ export interface IServico {
 }
 
 export interface IServicoWrapper {
-  servico: IServico;
   categoria: ICategoria;
+  empresa: IEmpresa;
+  prestador: IPrestador;
+  servico: IServico;
   usuario: IUsuario;
 }
 
@@ -181,10 +212,21 @@ export class Servico {
 }
 
 export interface IAgendamento {
-  cliente_id: number;
-  servico_id: number;
+  horario_fim: Date;
   horario_inicio: Date;
-  observacoes_cliente: string;
+  observacoes_cliente: string | null;
+  observacoes_prestador: string | null;
+  realizado: boolean;
+}
+
+export interface IAgendamentoWrapper {
+  agendamento: IAgendamento;
+  categoria: ICategoria;
+  cliente: ICliente;
+  empresa: IEmpresa;
+  prestador: IPrestador;
+  servico: IServico;
+  usuario: IUsuario;
 }
 
 export class Agendamento {
