@@ -5,7 +5,7 @@ import { api } from "../../../assets/api";
 import { ICliente, IClienteWrapper } from "../../../assets/models";
 
 export const RegistroCliente = () => {
-  const [dadosCliente, setDadosCliente] = useState<ICliente | IClienteWrapper>;
+  const [dadosCliente, setDadosCliente] = useState<ICliente>({});
   const navegacao = useNavigate();
 
   return (
@@ -134,8 +134,10 @@ export const RegistroCliente = () => {
             <button
               className="button-registro btn"
               onClick={async () => {
-                const result = await api.post("clientes/create", dadosCliente);
+                dadosCliente.tipo = "cliente";
                 console.log(dadosCliente);
+                const result = await api.post("clientes/create", dadosCliente);
+                console.log(result);
                 if (result.data?.dados) return navegacao("/login");
                 return navegacao("/registro");
               }}
