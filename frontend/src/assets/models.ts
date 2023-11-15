@@ -77,6 +77,12 @@ export class Cliente extends Usuario implements ICliente {
   }
 }
 
+export interface IEmpresaWrapper {
+  nome_fantasia: string;
+  cnpj: string;
+  id: number;
+}
+
 export interface IEmpresa {
   nome_fantasia: string;
   cnpj: string;
@@ -109,6 +115,7 @@ export class Prestador extends Usuario {
 
   constructor(empresa: Empresa = new Empresa()) {
     super();
+    this.tipo = "prestador";
     this.empresa = empresa;
   }
 
