@@ -1,13 +1,7 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./registro.css";
-import { api } from "../../../assets/api";
-import { ICliente, Cliente } from "../../../assets/models";
 
 export const Registro = () => {
-  const [dadosCliente, setDadosCliente] = useState<ICliente | Cliente>(
-    new Cliente()
-  );
   const navegacao = useNavigate();
 
   return (
