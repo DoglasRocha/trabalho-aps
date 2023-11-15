@@ -18,19 +18,21 @@ export const Registro = () => {
           </div>
           <div className="d-flex flex-row mt-4">
             <div className="row">
-              <button onClick={() => navegacao("cliente")}>Cliente</button>
+              <div className="col-6">
+              <button className="button-escolha w-100" onClick={() => navegacao("cliente")}>Cliente</button>
               <span>
                 Aqui você poderá contratar serviços disponíveis a partir de um
                 horário de sua escolha!
               </span>
-            </div>
-            <div className="row">
-              <button onClick={() => navegacao("prestador")}>Prestador</button>
+              </div>
+            <div className="col-6">
+              <button className="button-escolha w-100" onClick={() => navegacao("prestador")}>Prestador</button>
               <span>
                 Aqui você poderá publicar seus serviços e ser contratado por
                 algum cliente!
               </span>
             </div>
+          </div>
           </div>
         </div>
       </div>

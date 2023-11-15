@@ -1,4 +1,4 @@
-.background-registro {
+.background-registro-cliente {
     /* background-image: url('Assets_GNP_Intranet/background/Background_Login.png'); */
     background: linear-gradient(to bottom, #1d202b 51%, #383e53 98%);
     height: 100vh;
@@ -6,7 +6,7 @@
     overflow: hidden;
 }
 
-.box-registro {
+.box-registro-cliente {
     background: linear-gradient(to top, #005c00e3 0%, #003300 80%);
     width: 500px;
     height: auto;
@@ -31,33 +31,22 @@
     margin: 10px;
 }
 
-.form-control.registro {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.493);
-}
-
-
-.input-registro {
+.input-registro-cliente {
     color: #c0d230;
 }
 
-.button-registro {
+.button-registro-cliente {
     background-color: #eb340b;
     color: white;
     border-style: none;
     border-radius: 3px;
     transition: all .2s ease-in-out; 
-    margin-top: 2%;
-    padding-top: 1%;
-    padding-bottom: 1.5%;
-    padding-left: 2%;
-    padding-right: 2%;
 }
-.button-registro:hover {
+.button-registro-cliente:hover {
     border-style: none;
     background-color: #eb340b;
     color: white;
-    transform: scale(1.1); 
-    
+    transform: scale(1.1);
 }
 
 .button-voltar{
@@ -79,15 +68,10 @@
     
 }
 
-#form-registro {
+#form-registro-cliente {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.493);
 }
 
-.first-row-registro{
-    margin-top: 8%;
+.row-registro-cliente-cliente{
+    margin-top: 20px;
 }
-
-.second-row-registro{
-    margin-left: 10%;
-    margin-top: 10%;
-;}
