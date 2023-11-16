@@ -8,6 +8,17 @@ export interface IUsuario {
   tipo: string;
 }
 
+export function criarIUsuario(): IUsuario {
+  return {
+    id: -1,
+    nome: "",
+    email: "",
+    data_nascimento: "",
+    cpf: "",
+    tipo: "",
+  };
+}
+
 export interface IUsuarioWrapper {
   usuario: IUsuario;
 }
@@ -26,6 +37,17 @@ export interface ICliente {
   tipo?: string;
 }
 
+export function criarICliente(): ICliente {
+  return {
+    endereco: "",
+    cidade: "",
+    estado: "",
+    id: -1,
+    usuario_id: -1,
+    tipo: "cliente",
+  };
+}
+
 export interface IClienteWrapper {
   cliente: ICliente;
   usuario: IUsuario;
@@ -35,6 +57,14 @@ export interface IEmpresa {
   nome_fantasia: string;
   cnpj: string;
   id: number;
+}
+
+export function criarIEmpresa(): IEmpresa {
+  return {
+    nome_fantasia: "",
+    cnpj: "",
+    id: -1,
+  };
 }
 
 export interface IEmpresaWrapper {
@@ -53,6 +83,15 @@ export interface IPrestador {
   tipo?: string;
 }
 
+export function criarIPrestador(): IPrestador {
+  return {
+    empresa_id: -1,
+    usuario_id: -1,
+    id: -1,
+    tipo: "prestador",
+  };
+}
+
 export interface IPrestadorWrapper {
   prestador: IPrestador;
   empresa: IEmpresa;
@@ -64,6 +103,12 @@ export interface ICategoria {
   nome: string;
 }
 
+export function criarICategoria(): ICategoria {
+  return {
+    id: -1,
+    nome: "",
+  };
+}
 export interface ICategoriaWrapper {
   categoria: ICategoria;
 }
@@ -76,6 +121,16 @@ export interface IServico {
   duracao: number;
 }
 
+export function criarIServico(): IServico {
+  return {
+    id: -1,
+    prestador_id: -1,
+    categoria_id: -1,
+    preco: -1,
+    duracao: -1,
+  };
+}
+
 export interface IServicoWrapper {
   categoria: ICategoria;
   empresa: IEmpresa;
@@ -85,11 +140,19 @@ export interface IServicoWrapper {
 }
 
 export interface IAgendamento {
-  horario_fim?: Date;
-  horario_inicio: Date;
+  horario_fim?: Date | string;
+  horario_inicio: Date | string;
   observacoes_cliente: string | null;
   observacoes_prestador?: string | null;
   realizado: boolean;
+}
+
+export function criarIAgendamento(): IAgendamento {
+  return {
+    horario_inicio: "",
+    observacoes_cliente: "",
+    realizado: false,
+  };
 }
 
 export interface IAgendamentoWrapper {

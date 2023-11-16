@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import "./navbar.css";
-import { cookies } from "../../../../assets/cookies";
+import { apagarCookie, getCookie } from "../../../../assets/cookies";
 import { api } from "../../../../assets/api";
 
 function NomeUsuario(user: string) {
@@ -33,14 +33,10 @@ export const Navbar = () => {
   const navegacao = useNavigate();
 
   useEffect(() => {
-    const cookie = cookies.get("dadosUsuario");
-    if (!cookie) return;
-    const semiParsedCookie = cookie
-      .replace(/[']/g, '"')
-      .replace(/(\\054)/g, ",");
-    const userData = JSON.parse(semiParsedCookie);
+    const dadosUsuario = getCookie();
+    if (!dadosUsuario) return;
     api
-      .get(`/usuarios/get?id=${userData.usuario_id}`)
+      .get(`/usuarios/get?id=${dadosUsuario.usuario_id}`)
       .then((response) => setnomeUser(response.data.dados[0].usuario.nome));
   });
 
@@ -50,7 +46,7 @@ export const Navbar = () => {
         <div className="d-flex align-items-center w-50">
           <div className="dainfe">
             <img
-              src="../../../public/ZAHP-SemFundo.png"
+              src="/ZAHP-SemFundo.png"
               className="img-fluid img-thumbnail"
               alt="ZAHP"
             />
@@ -69,7 +65,7 @@ export const Navbar = () => {
                 type="button"
                 className="btn-navbar"
                 onClick={() => {
-                  cookies.remove("dadosUsuario");
+                  apagarCookie();
                   return navegacao("/login");
                 }}
               >

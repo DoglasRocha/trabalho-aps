@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./registroCliente.css";
 import { api } from "../../../assets/api";
-import { ICliente, IClienteWrapper } from "../../../assets/models";
+import { ICliente, criarICliente } from "../../../assets/models";
 
 export const RegistroCliente = () => {
-  const [dadosCliente, setDadosCliente] = useState<ICliente>({});
+  const [dadosCliente, setDadosCliente] = useState<ICliente>(criarICliente());
   const navegacao = useNavigate();
 
   return (
@@ -134,10 +134,8 @@ export const RegistroCliente = () => {
             <button
               className="button-registro btn"
               onClick={async () => {
-                dadosCliente.tipo = "cliente";
-                console.log(dadosCliente);
                 const result = await api.post("clientes/create", dadosCliente);
-                console.log(result);
+
                 if (result.data?.dados) return navegacao("/login");
                 return navegacao("/registro");
               }}

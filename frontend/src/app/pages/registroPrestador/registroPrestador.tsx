@@ -2,11 +2,19 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./registroPrestador.css";
 import { api } from "../../../assets/api";
-import { IPrestador, IEmpresa, IEmpresaWrapper } from "../../../assets/models";
+import {
+  IPrestador,
+  IEmpresa,
+  IEmpresaWrapper,
+  criarIPrestador,
+  criarIEmpresa,
+} from "../../../assets/models";
 
 export const RegistroPrestador = () => {
-  const [dadosPrestador, setDadosPrestador] = useState<IPrestador>({});
-  const [dadosEmpresa, setDadosEmpresa] = useState<IEmpresa>({});
+  const [dadosPrestador, setDadosPrestador] = useState<IPrestador>(
+    criarIPrestador()
+  );
+  const [dadosEmpresa, setDadosEmpresa] = useState<IEmpresa>(criarIEmpresa());
   const [selectEmpresa, setSelectEmpresa] = useState<IEmpresaWrapper[]>([]);
   const [novaEmpresa, setNovaEmpresa] = useState(false);
   const navegacao = useNavigate();
@@ -75,7 +83,6 @@ export const RegistroPrestador = () => {
                 id="exampleFormControlSelect1"
               >
                 {selectEmpresa.map((empresa) => {
-                  console.log(empresa);
                   return (
                     <option value={empresa.empresa.id}>
                       Empresa: {empresa.empresa.nome_fantasia}, CNPJ:{" "}
@@ -194,7 +201,6 @@ export const RegistroPrestador = () => {
                 value="false"
                 onChange={() => {
                   setNovaEmpresa(false);
-                  console.log(novaEmpresa);
                 }}
                 checked={novaEmpresa === false}
               />
@@ -207,7 +213,6 @@ export const RegistroPrestador = () => {
                 value="true"
                 onChange={() => {
                   setNovaEmpresa(true);
-                  console.log(novaEmpresa);
                 }}
                 checked={novaEmpresa === true}
               />
@@ -219,7 +224,6 @@ export const RegistroPrestador = () => {
             <button
               className="button-registro btn"
               onClick={async () => {
-                dadosPrestador.tipo = "prestador";
                 let resultPrestador;
                 let resultEmpresa;
 
@@ -228,8 +232,6 @@ export const RegistroPrestador = () => {
                     "empresas/create",
                     dadosEmpresa
                   );
-                  console.log(dadosEmpresa);
-                  console.log(resultEmpresa);
 
                   if (resultEmpresa.data?.dados)
                     dadosPrestador.empresa_id =
@@ -239,8 +241,6 @@ export const RegistroPrestador = () => {
                     "prestadores/create",
                     dadosPrestador
                   );
-                  console.log(dadosPrestador);
-                  console.log(resultPrestador);
 
                   if (resultPrestador.data?.dados && resultEmpresa.data?.dados)
                     return navegacao("/login");
@@ -250,7 +250,7 @@ export const RegistroPrestador = () => {
                     "prestadores/create",
                     dadosPrestador
                   );
-                  console.log(dadosPrestador);
+
                   console.log(resultPrestador);
                   if (resultPrestador.data?.dados) return navegacao("/login");
                   return navegacao("/registro");
