@@ -9,7 +9,7 @@ export const RegistroCliente = () => {
   const navegacao = useNavigate();
 
   return (
-    <div className="container-fluid background-registro">
+    <div className="container-fluid background-registro-cliente">
       <div className="d-flex justify-content-center align-content-center h-100">
         <div className="box-login">
           <div className="d-flex">
@@ -21,8 +21,8 @@ export const RegistroCliente = () => {
             <div className="dainfe-image">DAINFE</div>
           </div>
           <div className="d-flex flex-row">
-            <div className="p2 first-row-registro ">
-              <div className="d-flex flex-column input-registro pb-2">
+            <div className="row-registro-cliente ">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>Nome Completo</strong>
                 <input
                   className="form-control"
@@ -34,19 +34,19 @@ export const RegistroCliente = () => {
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>E-mail</strong>
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="email@gmail.com"
+                  placeholder="Ex: email@gmail.com"
                   value={dadosCliente.email}
                   onChange={(e) =>
                     setDadosCliente({ ...dadosCliente, email: e.target.value })
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>Senha</strong>
                 <input
                   className="form-control"
@@ -58,7 +58,7 @@ export const RegistroCliente = () => {
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>Data Nascimento</strong>
                 <input
                   className="form-control"
@@ -72,12 +72,12 @@ export const RegistroCliente = () => {
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>CPF</strong>
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="123.456.789-00"
+                  placeholder="Ex: 123.456.789-00"
                   value={dadosCliente.cpf}
                   onChange={(e) =>
                     setDadosCliente({
@@ -88,13 +88,14 @@ export const RegistroCliente = () => {
                 />
               </div>
             </div>
-            <div className="p2 ml-auto p-2 second-row-registro">
-              <div className="d-flex flex-column input-registro pb-2">
+
+            <div className="ms-auto row-registro-cliente">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>Endereço</strong>
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="Rua Fulano 123"
+                  placeholder="Ex: Rua Fulano 123"
                   value={dadosCliente.endereco}
                   onChange={(e) =>
                     setDadosCliente({
@@ -104,24 +105,24 @@ export const RegistroCliente = () => {
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>Estado</strong>
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="Paraná"
+                  placeholder="Ex: Paraná"
                   value={dadosCliente.estado}
                   onChange={(e) =>
                     setDadosCliente({ ...dadosCliente, estado: e.target.value })
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-cliente pb-2">
                 <strong>Cidade</strong>
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="Curitiba"
+                  placeholder="Ex: Curitiba"
                   value={dadosCliente.cidade}
                   onChange={(e) =>
                     setDadosCliente({ ...dadosCliente, cidade: e.target.value })
@@ -130,9 +131,9 @@ export const RegistroCliente = () => {
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end pb-2">
+          <div className="d-flex justify-content-end m-2">
             <button
-              className="button-registro btn"
+              className="button-registro-cliente btn"
               onClick={async () => {
                 const result = await api.post("clientes/create", dadosCliente);
 

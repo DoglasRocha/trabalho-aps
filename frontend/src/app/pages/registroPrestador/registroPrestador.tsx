@@ -29,13 +29,13 @@ export const RegistroPrestador = () => {
     if (novaEmpresa === true) {
       return (
         <div className="d-flex flex-row">
-          <div className="first-row-registro ">
-            <div className="d-flex flex-column input-registro mb-4">
+          <div className="row-registro-prestador ">
+            <div className="d-flex flex-column input-registro-prestador mb-4">
               <strong>Nome Fantasia</strong>
               <input
                 className="form-control"
                 type="text"
-                placeholder="Curitiba"
+                placeholder="Ex: Google"
                 value={dadosEmpresa?.nome_fantasia}
                 onChange={(e) =>
                   setDadosEmpresa({
@@ -47,13 +47,13 @@ export const RegistroPrestador = () => {
             </div>
           </div>
 
-          <div className="ms-auto second-row-registro">
-            <div className="d-flex flex-column input-registro mb-4">
+          <div className="ms-auto row-registro-prestador">
+            <div className="d-flex flex-column input-registro-prestador mb-4">
               <strong>CNPJ</strong>
               <input
                 className="form-control"
                 type="text"
-                placeholder="12.345.678/0001-90"
+                placeholder="Ex: 12.345.678/0001-90"
                 value={dadosEmpresa?.cnpj}
                 onChange={(e) =>
                   setDadosEmpresa({
@@ -69,8 +69,8 @@ export const RegistroPrestador = () => {
     } else {
       return (
         <div className="d-flex flex-row">
-          <div className="first-row-registro ">
-            <div className="d-flex flex-column input-registro mb-4">
+          <div className="row-registro-prestador w-100">
+            <div className="d-flex flex-column input-registro-prestador mb-4">
               <strong>Empresa</strong>
               <select
                 className="form-select"
@@ -99,7 +99,7 @@ export const RegistroPrestador = () => {
   }
 
   return (
-    <div className="container-fluid background-registro">
+    <div className="container-fluid background-registro-prestador">
       <div className="d-flex justify-content-center align-content-center h-100">
         <div className="box-login">
           <div className="d-flex">
@@ -111,8 +111,8 @@ export const RegistroPrestador = () => {
             <div className="dainfe-image">DAINFE</div>
           </div>
           <div className="d-flex flex-row">
-            <div className="first-row-registro ">
-              <div className="d-flex flex-column input-registro pb-2">
+            <div className="row-registro-prestador ">
+              <div className="d-flex flex-column input-registro-prestador pb-2">
                 <strong>Nome Completo</strong>
                 <input
                   className="form-control"
@@ -127,12 +127,12 @@ export const RegistroPrestador = () => {
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-prestador pb-2">
                 <strong>E-mail</strong>
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="email@gmail.com"
+                  placeholder="Ex: email@gmail.com"
                   value={dadosPrestador.email}
                   onChange={(e) =>
                     setDadosPrestador({
@@ -142,7 +142,7 @@ export const RegistroPrestador = () => {
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-prestador pb-2">
                 <strong>Senha</strong>
                 <input
                   className="form-control"
@@ -158,8 +158,8 @@ export const RegistroPrestador = () => {
                 />
               </div>
             </div>
-            <div className="ms-auto second-row-registro">
-              <div className="d-flex flex-column input-registro pb-2">
+            <div className="ms-auto row-registro-prestador">
+              <div className="d-flex flex-column input-registro-prestador pb-2">
                 <strong>Data Nascimento</strong>
                 <input
                   className="form-control"
@@ -173,12 +173,12 @@ export const RegistroPrestador = () => {
                   }
                 />
               </div>
-              <div className="d-flex flex-column input-registro pb-2">
+              <div className="d-flex flex-column input-registro-prestador pb-2">
                 <strong>CPF</strong>
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="123.456.789-00"
+                  placeholder="Ex: 123.456.789-00"
                   value={dadosPrestador.cpf}
                   onChange={(e) =>
                     setDadosPrestador({
@@ -193,7 +193,7 @@ export const RegistroPrestador = () => {
 
           {criacaoEmpresa()}
 
-          <div className="d-flex flex-row radio-inputs w-100">
+          <div className="d-flex flex-row radio-inputs w-100 mb-3">
             <label className="radio-nova-empresa">
               <input
                 type="radio"
@@ -222,7 +222,7 @@ export const RegistroPrestador = () => {
 
           <div className="d-flex justify-content-end pb-2">
             <button
-              className="button-registro btn"
+              className="button-registro-prestador btn"
               onClick={async () => {
                 let resultPrestador;
                 let resultEmpresa;
@@ -251,7 +251,6 @@ export const RegistroPrestador = () => {
                     dadosPrestador
                   );
 
-                  console.log(resultPrestador);
                   if (resultPrestador.data?.dados) return navegacao("/login");
                   return navegacao("/registro");
                 }
