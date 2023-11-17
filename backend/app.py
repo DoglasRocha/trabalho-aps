@@ -2,8 +2,8 @@ from flask import Flask, request, session, make_response
 from flask_cors import CORS
 from db import database
 from models import *
-from datetime import date
 from helpers import *
+from sqlalchemy import Date, cast, func
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -45,7 +45,7 @@ def get_usuario() -> dict:
     )
 
     if not usuarios:
-        return {"dados": "Usuário não existente"}
+        return {"msg": "Usuário não existente"}
 
     return {"dados": [usuario.get_dict() for usuario in usuarios]}
 
@@ -100,7 +100,7 @@ def get_cliente() -> dict:
     )
 
     if not clientes:
-        return {"dados": "Cliente não existente"}
+        return {"msg": "Cliente não existente"}
 
     return {"dados": [cliente.get_dict() for cliente in clientes]}
 
@@ -151,7 +151,7 @@ def get_empresa() -> dict:
     )
 
     if not empresas:
-        return {"dados": "Empresa não existente"}
+        return {"msg": "Empresa não existente"}
 
     return {"dados": {"empresa": [empresa.get_dict() for empresa in empresas]}}
 
@@ -207,7 +207,7 @@ def get_prestador() -> dict:
     )
 
     if not prestadores:
-        return {"dados": "Prestador não existente"}
+        return {"msg": "Prestador não existente"}
 
     return {
         "dados": [prestador.get_dict() for prestador in prestadores],
@@ -260,7 +260,7 @@ def get_categoria() -> dict:
     )
 
     if not categorias:
-        return {"dados": "Categoria não existente"}
+        return {"msg": "Categoria não existente"}
 
     return {"dados": [categoria.get_dict() for categoria in categorias]}
 
@@ -280,12 +280,12 @@ def create_servico() -> dict:
         # checa se prestador existe
         prestador = database.session.get(Prestador, {"id": dados["prestador_id"]})
         if not prestador:
-            return {"dados": "Prestador não existente"}
+            return {"msg": "Prestador não existente"}
 
         # checa se categoria existe
         categoria = database.session.get(Categoria, {"id": dados["categoria_id"]})
         if not categoria:
-            return {"dados": "Categoria não existente"}
+            return {"msg": "Categoria não existente"}
 
         # cria servico
         atributos_servico = Servico.filtra_atributos_dicionario(dados)
@@ -325,7 +325,7 @@ def get_servico() -> dict:
     )
 
     if not servicos:
-        return {"dados": "Serviço não existente"}
+        return {"msg": "Serviço não existente"}
 
     return {"dados": [servico.get_dict() for servico in servicos]}
 
@@ -345,12 +345,12 @@ def create_agendamento() -> dict:
         # checa se cliente existe
         cliente = database.session.get(Cliente, {"id": dados["cliente_id"]})
         if not cliente:
-            return {"dados": "Cliente não existente"}
+            return {"msg": "Cliente não existente"}
 
         # checa se servico existe
         servico = database.session.get(Servico, {"id": dados["servico_id"]})
         if not servico:
-            return {"dados": "Servico não existente"}
+            return {"msg": "Servico não existente"}
 
         # cria agendamento
         atributos_agendamento = Agendamento.filtra_atributos_dicionario(dados)
@@ -390,6 +390,22 @@ def get_agendamento() -> dict:
                 | (Agendamento.cliente_id == params_safe["cliente_id"])
                 | (Agendamento.servico_id == params_safe["servico_id"])
                 | (Agendamento.realizado == params_safe["realizado"])
+                | (
+                    func.date(Agendamento.horario_inicio)
+                    == date.fromisoformat(
+                        "1970-01-01"
+                        if not params_safe["horario_inicio"]
+                        else params_safe["horario_inicio"]
+                    )
+                )
+                | (
+                    func.date(Agendamento.horario_fim)
+                    == date.fromisoformat(
+                        "1970-01-01"
+                        if not params_safe["horario_fim"]
+                        else params_safe["horario_fim"]
+                    )
+                )
             )
         )
         .scalars()
@@ -397,9 +413,125 @@ def get_agendamento() -> dict:
     )
 
     if not agendamentos:
-        return {"dados": "Agendamento não existente"}
+        return {"msg": "Agendamento não existente"}
 
     return {"dados": [agendamento.get_dict() for agendamento in agendamentos]}
+
+
+@app.get("/API/agendamentos/get/semana")
+def get_agendamento_semana() -> dict:
+    params = request.args.to_dict()
+    params_safe = Agendamento.preenche_dicionario_com_atributos_pesquisaveis_da_classe(
+        params
+    )
+
+    dia_inicial = date.fromisoformat(
+        "1970-01-01"
+        if not params_safe["horario_inicio"]
+        else params_safe["horario_inicio"]
+    )
+
+    dia_final = dia_inicial + timedelta(days=7)
+
+    agendamentos = (
+        database.session.execute(
+            database.select(Agendamento).where(
+                (
+                    (Agendamento.cliente_id == params_safe["cliente_id"])
+                    | (Agendamento.servico_id == params_safe["servico_id"])
+                )
+                & (
+                    (func.date(Agendamento.horario_inicio) >= dia_inicial)
+                    & (func.date(Agendamento.horario_fim) <= dia_final)
+                )
+            )
+        )
+        .scalars()
+        .all()
+    )
+
+    if not agendamentos:
+        return {"msg": "Agendamento não existente"}
+
+    return {"dados": [agendamento.get_dict() for agendamento in agendamentos]}
+
+
+@app.patch("/API/agendamentos/alterar/<int:id>")
+def alterar_agendamento(id: int) -> dict:
+    try:
+        dados = request.json
+
+        # checa se agendamento existe
+        antigo_agendamento = database.session.get(Agendamento, {"id": id})
+        if not antigo_agendamento:
+            return {"msg": "Agendamento não existente"}
+
+        # pega se servico existe
+        servico_id = (
+            Agendamento.servico_id
+            if "servico_id" not in dados.keys()
+            else dados["servico_id"]
+        )
+        servico = database.session.get(Servico, {"id": servico_id})
+        if not servico:
+            return {"dados": "Servico não existente"}
+
+        # cria agendamento
+        atributos_atualizacao = Agendamento.filtra_atributos_dicionario(dados)
+
+        if "horario_inicio" in atributos_atualizacao.keys():
+            atributos_atualizacao["horario_inicio"] = datetime.fromisoformat(
+                atributos_atualizacao["horario_inicio"]
+            )
+            atributos_atualizacao["horario_fim"] = (
+                atributos_atualizacao["horario_inicio"] + servico.duracao
+            )
+
+        elif "horario_fim" in atributos_atualizacao.keys():
+            atributos_atualizacao["horario_fim"] = datetime.fromisoformat(
+                atributos_atualizacao["horario_fim"]
+            )
+            atributos_atualizacao["horario_inicio"] = (
+                atributos_atualizacao["horario_fim"] - servico.duracao
+            )
+
+        database.session.execute(
+            database.update(Agendamento)
+            .where(Agendamento.id == id)
+            .values(**atributos_atualizacao)
+        )
+
+        # salva agendamento no banco de dados
+        database.session.commit()
+
+        result = database.session.get(Agendamento, {"id": id})
+        if result.ha_conflito():
+            database.session.execute(
+                database.update(Agendamento)
+                .where(Agendamento.id == id)
+                .values(**antigo_agendamento.get_dict()["agendamento"])
+            )
+            database.session.commit()
+            return {"msg": "Conflito de horários!!"}
+
+        return {
+            "dados": result.get_dict(),
+        }
+    except Exception as e:
+        return {"msg": str(e)}
+
+
+@app.delete("/API/agendamentos/delete/<int:id>")
+def apagar_agendamento(id: int) -> dict:
+    # checa se agendamento existe
+    agendamento = database.session.get(Agendamento, {"id": id})
+    if not agendamento:
+        return {"msg": "Agendamento não existente"}
+
+    database.session.execute(database.delete(Agendamento).where(Agendamento.id == id))
+    database.session.commit()
+
+    return {"dados": agendamento.get_dict()}
 
 
 @app.get("/API/agendamentos/all")

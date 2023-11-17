@@ -19,4 +19,4 @@ def criar_usuario(dados: dict, database: SQLAlchemy) -> Usuario:
 
 
 def esta_logado() -> bool:
-    return True if request.cookies.get("dadosUsuario") else False
+    return bool(request.cookies.get("dadosUsuario"))

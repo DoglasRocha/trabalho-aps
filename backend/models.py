@@ -365,4 +365,8 @@ class Agendamento(database.Model):
             )
         )
 
-        return len(conflitos.scalars().all()) != 0
+        conflitos_list = conflitos.scalars().all()
+        if len(conflitos_list) == 1 and self in conflitos_list:
+            return 0
+
+        return len(conflitos_list) != 0
