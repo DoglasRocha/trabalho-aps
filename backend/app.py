@@ -560,7 +560,15 @@ def login() -> dict:
     if usuario.senha != dados["senha"]:
         return {"msg": "senha incorreta"}
 
-    response = make_response({"dados": "ok"})
+    response = make_response(
+        {
+            "dados": {
+                "email": dados["email"],
+                "tipo": usuario.tipo,
+                "usuario_id": usuario.id,
+            }
+        }
+    )
     response.set_cookie(
         "dadosUsuario",
         str({"email": dados["email"], "tipo": usuario.tipo, "usuario_id": usuario.id}),
