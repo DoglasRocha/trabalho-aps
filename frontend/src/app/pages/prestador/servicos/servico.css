@@ -1,0 +1,60 @@
+.fundo-home {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	display: contents;
+	position: absolute;
+}
+
+.fundo-agenda {
+	background-color: #b9b9b9;
+	height: calc(100vh);
+	width: calc(100%);
+	padding: 110px 20px 20px 20px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.titulo-agendamento {
+	font-family: "Roboto";
+	font-weight: 900;
+	text-shadow: 3px 3px #3a684d;
+	color: white;
+	text-align: center;
+}
+
+.lado-direito-agendamento {
+	width: 50%;
+	height: 100%;
+	align-items: center;
+}
+
+.box-conteudo-agendamento {
+	margin-top: 10px;
+	width: 100%;
+	height: auto;
+	background-color: whitesmoke;
+	border-radius: 5px;
+	border: 2px solid gray;
+}
+
+.lado-agendamento {
+	width: 60%;
+	height: auto;
+	margin-right: 20px;
+}
+
+.button-agendar {
+    background-color: #3a684d;
+    color: white;
+    border-style: none;
+    border-radius: 3px;
+    transition: all .2s ease-in-out;
+}
+
+	.button-agendar:hover {
+        border-style: none;
+        background-color: #3a684d;
+        color: white;
+        transform: scale(1.1); 
+    }

@@ -1,6 +1,19 @@
+import { IAgendamentoWrapper } from "../../../../assets/models.ts";
+import { useEffect, useState } from "react";
+import { api } from "../../../../assets/api.ts";
 import "./listaServicos.css";
 
 export const ListaServicos = () => {
+  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
+
+  useEffect(() => {
+    api
+      //.get(`/agendamentos/get?id=${props}`)
+      .get(`/agendamentos/get?cliente_id=2`)
+      .then((request) => setAgendamento(request.data["dados"]));
+      console.log(dadosAgendamento);
+  }, []);
+
   return (
     <>
       <div className="container-servico">

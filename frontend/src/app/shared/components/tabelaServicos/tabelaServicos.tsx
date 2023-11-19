@@ -1,6 +1,18 @@
+import { IAgendamentoWrapper } from "../../../../assets/models.ts";
+import { useEffect, useState } from "react";
+import { api } from "../../../../assets/api.ts";
 import "./tabelaServicos.css"
 
 export const TabelaServicos= () => {
+    const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
+
+  useEffect(() => {
+    api
+      //.get(`/agendamentos/get?id=${props}`)
+      .get(`/agendamentos/get?id=2`)
+      .then((request) => setAgendamento(request.data["dados"]));
+  }, []);
+
     return(
         <>
         <div className="table-responsive">

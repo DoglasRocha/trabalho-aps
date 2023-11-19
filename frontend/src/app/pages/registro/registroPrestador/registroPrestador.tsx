@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./registroPrestador.css";
-import { api } from "../../../assets/api";
+import { api } from "../../../../assets/api";
 import {
   IPrestador,
   IEmpresa,
   IEmpresaWrapper,
   criarIPrestador,
   criarIEmpresa,
-} from "../../../assets/models";
+} from "../../../../assets/models";
 
 export const RegistroPrestador = () => {
   const [dadosPrestador, setDadosPrestador] = useState<IPrestador>(

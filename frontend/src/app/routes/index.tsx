@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Login, Registro, RegistroPrestador, RegistroCliente, Home, Agendar } from "../pages/page";
+import { Login, Registro, RegistroPrestador, RegistroCliente, HomeAdmin, HomePrestador, HomeCliente, Agendar, Servico } from "../pages/page";
 import { Navbar } from "../shared/components/navbar/navbar";
 
 export const Rota = () => {
@@ -13,9 +13,16 @@ export const Rota = () => {
           <Route path="prestador" element={<RegistroPrestador />} />
           <Route path="cliente" element={<RegistroCliente />} />
         </Route>
-        <Route path="/home" element={<Navbar />}>
-          <Route index element={<Home />} />
+        <Route path="/cliente/home" element={<Navbar />}>
+          <Route index element={<HomeCliente />} />
           <Route path="agendar" element={<Agendar />} />
+        </Route>
+        <Route path="/prestador/home" element={<Navbar />}>
+          <Route index element={<HomePrestador />} />
+          <Route path="servico" element={<Servico />} />
+        </Route>
+        <Route path="/admin/home" element={<Navbar />}>
+          <Route index element={<HomeAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

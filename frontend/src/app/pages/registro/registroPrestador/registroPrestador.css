@@ -47,13 +47,13 @@
     border-radius: 3px;
     transition: all .2s ease-in-out;
 }
-.button-registro-prestador:hover {
-    border-style: none;
-    background-color: #eb340b;
-    color: white;
-    transform: scale(1.1); 
-    
-}
+
+    .button-registro-prestador:hover {
+        border-style: none;
+        background-color: #eb340b;
+        color: white;
+        transform: scale(1.1); 
+    }
 
 .button-voltar {
     background-color: #eb340b;
@@ -63,11 +63,12 @@
     transition: all .2s ease-in-out; 
     
 }
-.button-voltar:hover {
-    border-style: none;
-    color: white;
-    transform: scale(1.1); 
-}
+
+    .button-voltar:hover {
+        border-style: none;
+        color: white;
+        transform: scale(1.1); 
+    }
 
 .row-registro-prestador{
     margin-top: 20px;
