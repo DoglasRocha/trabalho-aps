@@ -1,9 +1,14 @@
 import { ListaServicos } from "../../../shared/components/listaServicos/listaServicos.tsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { cookies } from "../../../../assets/cookies.ts";
+import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
-import { ICategoriaWrapper, criarIServico, IServicoWrapper, IServico } from "../../../../assets/models.ts";
+import {
+  ICategoriaWrapper,
+  criarIServico,
+  IServicoWrapper,
+  IServico,
+} from "../../../../assets/models.ts";
 import "./servico.css";
 
 export const Servico = () => {
@@ -13,15 +18,12 @@ export const Servico = () => {
   const [novoServico, setNovoServico] = useState<IServico>(criarIServico());
 
   useEffect(() => {
-    if (!cookies.get("dadosUsuario")) navegacao("/login");
-  });
-
-  useEffect(() => {
     api
       .get("categorias/all")
       .then((request) => setCategorias(request.data["dados"]));
   }, []);
 
+  if (!getCookie()) return navegacao("/login");
   return (
     <>
       <div className="container-fluid fundo-home">
@@ -78,7 +80,8 @@ export const Servico = () => {
                       <label>Preço</label>
                       <input
                         className="form-control"
-                        type="number" step="0.01"
+                        type="number"
+                        step="0.01"
                         onChange={(e) =>
                           setNovoServico({
                             ...novoServico,
@@ -94,7 +97,8 @@ export const Servico = () => {
                       <input
                         className="form-control"
                         type="number"
-                        min="1" max="8"
+                        min="1"
+                        max="8"
                         onChange={(e) =>
                           setNovoServico({
                             ...novoServico,
@@ -108,13 +112,15 @@ export const Servico = () => {
                     <button
                       className="button-agendar btn"
                       onClick={async () => {
-                          let resultServico;
+                        let resultServico;
 
-                          resultServico = await api.post("servicos/create", novoServico);
-                        
-                          window.location.reload();
-                        }
-                      }
+                        resultServico = await api.post(
+                          "servicos/create",
+                          novoServico
+                        );
+
+                        window.location.reload();
+                      }}
                     >
                       Criar Serviço
                     </button>

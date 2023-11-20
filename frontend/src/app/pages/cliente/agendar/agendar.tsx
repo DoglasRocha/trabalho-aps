@@ -1,26 +1,32 @@
 import { ListaServicos } from "../../../shared/components/listaServicos/listaServicos.tsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { cookies } from "../../../../assets/cookies.ts";
+import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
-import { IAgendamento, criarIAgendamento, IServicoWrapper } from "../../../../assets/models.ts";
+import {
+  IAgendamento,
+  criarIAgendamento,
+  IServicoWrapper,
+  IAgendamentoWrapper,
+} from "../../../../assets/models.ts";
 import "./agendar.css";
 
 export const Agendar = () => {
   const navegacao = useNavigate();
   const [servicos, setServicos] = useState<IServicoWrapper[]>([]);
-  const [novoAgendamento, setNovoAgendamento] = useState<IAgendamento>(criarIAgendamento());
-  const [tempoServico, setTempoServico] = useState(1);
-
-  useEffect(() => {
-    if (!cookies.get("dadosUsuario")) navegacao("/login");
-  });
+  const [novoAgendamento, setNovoAgendamento] = useState<IAgendamento>(
+    criarIAgendamento()
+  );
+  const [tempoServico, setTempoServico] = useState<number | string>(1);
+  const [tempoFinal, setTempoFinal] = useState<Date>(new Date(0));
 
   useEffect(() => {
     api
       .get("servicos/all")
       .then((request) => setServicos(request.data["dados"]));
   }, []);
+
+  if (!getCookie()) return navegacao("/navegacao");
 
   return (
     <>
@@ -56,16 +62,19 @@ export const Agendar = () => {
                       <label>Serviço</label>
                       <select
                         className="form-select"
-                        onChange={(e) =>
+                        onChange={(e) => {
                           setNovoAgendamento({
                             ...novoAgendamento,
-                            servico_id: e.target.value,
-                          })
-                        }
+                            servico_id: e.target.value.split(" ")[0],
+                          });
+                          setTempoServico(e.target.value.split(" ")[1]);
+                        }}
                       >
                         {servicos.map((servico) => {
                           return (
-                            <option value={servico.servico.id}>
+                            <option
+                              value={`${servico.servico.id} ${servico.servico.duracao}`}
+                            >
                               Serviço: {servico.categoria.nome}, Profissional:{" "}
                               {servico.usuario.nome}
                             </option>
@@ -81,13 +90,16 @@ export const Agendar = () => {
                         className="form-control"
                         type="datetime-local"
                         max="9999-12-31T23:59"
-                        onChange={(e) =>
+                        onChange={(e) => {
                           setNovoAgendamento({
                             ...novoAgendamento,
                             horario_inicio: e.target.value,
-                            horario_fim: e.target.value + 2,
-                          })
-                        }
+                          });
+                          setTempoFinal(new Date(e.target.value));
+                          tempoFinal.setHours(
+                            tempoFinal.getHours() + parseInt("" + tempoServico)
+                          );
+                        }}
                       />
                     </div>
                   </div>
@@ -98,7 +110,11 @@ export const Agendar = () => {
                         className="form-control"
                         type="datetime-local"
                         max="9999-12-31T23:59"
-                        value={novoAgendamento.horario_fim}
+                        value={
+                          tempoFinal.getTime() == 0
+                            ? ""
+                            : tempoFinal.toISOString().slice(0, -1)
+                        }
                         disabled
                       />
                     </div>
@@ -106,27 +122,31 @@ export const Agendar = () => {
                   <div className="col-12 mb-2">
                     <div className="form-group">
                       <label>Observação</label>
-                      <textarea className="form-control" 
-                      rows={3}
-                      onChange={(e) =>
-                        setNovoAgendamento({
-                          ...novoAgendamento,
-                          observacoes_cliente: e.target.value,
-                        })
-                      }/>
+                      <textarea
+                        className="form-control"
+                        rows={3}
+                        onChange={(e) =>
+                          setNovoAgendamento({
+                            ...novoAgendamento,
+                            observacoes_cliente: e.target.value,
+                          })
+                        }
+                      />
                     </div>
                   </div>
                   <div className="d-flex justify-content-end mt-2">
                     <button
                       className="button-agendar btn"
                       onClick={async () => {
-                          let resultAgendamento;
+                        const resultAgendamento = await api.post(
+                          "prestadores/create",
+                          novoAgendamento
+                        );
 
-                          resultAgendamento = await api.post("prestadores/create", novoAgendamento);
-                        
-                          window.location.reload();
-                        }
-                      }
+                        if (resultAgendamento.data.dados)
+                          return navegacao("/cliente/home");
+                        alert("Conflito de horário!!");
+                      }}
                     >
                       Agendar Serviço
                     </button>

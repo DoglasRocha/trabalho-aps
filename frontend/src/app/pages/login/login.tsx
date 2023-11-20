@@ -50,8 +50,19 @@ export const Login = () => {
                   email: email,
                   senha: senha,
                 });
-                if (result.data?.dados) 
-                  return navegacao("/cliente/home");
+                if (result.data?.dados) {
+                  const response = result.data?.dados;
+                  switch (response.tipo) {
+                    case "cliente":
+                      return navegacao("/cliente/home");
+
+                    case "prestador":
+                      return navegacao("/prestador/home");
+
+                    case "admin":
+                      return navegacao("/admin/home");
+                  }
+                }
 
                 return navegacao("/login");
               }}

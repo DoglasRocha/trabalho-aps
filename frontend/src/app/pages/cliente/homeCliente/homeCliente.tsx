@@ -3,14 +3,12 @@ import { TabelaServicos } from "../../../shared/components/tabelaServicos/tabela
 import { useNavigate } from "react-router-dom";
 import "./homeCliente.css";
 import { useEffect } from "react";
-import { cookies } from "../../../../assets/cookies.ts";
+import { getCookie } from "../../../../assets/cookies.ts";
 
 export const HomeCliente = () => {
   const navegacao = useNavigate();
 
-  useEffect(() => {
-    if (!cookies.get("dadosUsuario")) navegacao("/login");
-  }, [cookies]);
+  if (!getCookie()) return navegacao("/login");
 
   return (
     <>

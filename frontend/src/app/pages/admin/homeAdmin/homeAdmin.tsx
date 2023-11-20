@@ -3,8 +3,12 @@ import { HomePrestador } from "../../prestador/homePrestador/homePrestador.tsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../../../assets/api.ts";
-import { cookies } from "../../../../assets/cookies.ts";
-import { IUsuario, IUsuarioWrapper, criarIUsuario } from "../../../../assets/models.ts";
+import { getCookie } from "../../../../assets/cookies.ts";
+import {
+  IUsuario,
+  IUsuarioWrapper,
+  criarIUsuario,
+} from "../../../../assets/models.ts";
 import "./homeAdmin.css";
 
 export const HomeAdmin = () => {
@@ -13,24 +17,18 @@ export const HomeAdmin = () => {
   const [selectUsuario, setSelectUsuarios] = useState<IUsuarioWrapper[]>([]);
 
   useEffect(() => {
-    if (!cookies.get("dadosUsuario")) navegacao("/login");
-  }, [cookies]);
-
-  useEffect(() => {
     api
       .get("usuarios/all")
       .then((request) => setSelectUsuarios(request.data["dados"]));
   }, []);
 
+  if (!getCookie()) return navegacao("/login");
+
   function telaUsuario() {
     if (dadosUsuario.tipo === "cliente") {
-      return (
-        <HomeCliente />
-      );
+      return <HomeCliente />;
     } else {
-      return (
-        <HomePrestador />
-      );
+      return <HomePrestador />;
     }
   }
 
@@ -40,7 +38,7 @@ export const HomeAdmin = () => {
         <div className="fundo-principal">
           <div className="row">
             <div className="col-12 servicos-home">
-            <strong>Empresa</strong>
+              <strong>Empresa</strong>
               <select
                 className="form-select"
                 onChange={(e) =>
@@ -54,8 +52,7 @@ export const HomeAdmin = () => {
                 {selectUsuario.map((usuario) => {
                   return (
                     <option value={usuario.usuario.id}>
-                      Nome: {usuario.usuario.nome}, Tipo:{" "}
-                      {usuario.usuario.tipo}
+                      Nome: {usuario.usuario.nome}, Tipo: {usuario.usuario.tipo}
                     </option>
                   );
                 })}
@@ -63,9 +60,7 @@ export const HomeAdmin = () => {
             </div>
           </div>
           <div className="row horarios">
-            <div className="container">
-              {telaUsuario()}
-            </div>
+            <div className="container">{telaUsuario()}</div>
           </div>
         </div>
       </div>
