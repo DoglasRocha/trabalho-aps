@@ -7,7 +7,6 @@ import {
   IAgendamento,
   criarIAgendamento,
   IServicoWrapper,
-  IAgendamentoWrapper,
 } from "../../../../assets/models.ts";
 import "./agendar.css";
 

@@ -140,6 +140,7 @@ export interface IServicoWrapper {
 }
 
 export interface IAgendamento {
+  id: number;
   horario_fim?: Date | string;
   horario_inicio: Date | string;
   observacoes_cliente: string | null;
@@ -149,6 +150,7 @@ export interface IAgendamento {
 
 export function criarIAgendamento(): IAgendamento {
   return {
+    id: -1,
     horario_inicio: "",
     observacoes_cliente: "",
     realizado: false,

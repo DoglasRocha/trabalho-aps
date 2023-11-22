@@ -6,12 +6,20 @@ import "./tabelaServicos.css"
 export const TabelaServicos= () => {
     const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
 
-  useEffect(() => {
-    api
-      //.get(`/agendamentos/get?id=${props}`)
-      .get(`/agendamentos/get?id=2`)
-      .then((request) => setAgendamento(request.data["dados"]));
-  }, []);
+    useEffect(() => {
+        api
+          //.get(`/agendamentos/get?id=${props}`)
+          .get(`/agendamentos/get/semana?cliente_id=1`)
+          .then((request) => setAgendamento(request.data["dados"]));
+      }, []);
+
+    function DiaHorario() {
+        for(let i=0; i<dadosAgendamento.length; i++)
+        {
+            (new Date (dadosAgendamento[i].agendamento.horario_inicio)).getDay();
+            (new Date (dadosAgendamento[i].agendamento.horario_inicio)).getHours();
+        }
+    }
 
     return(
         <>

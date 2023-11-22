@@ -54,11 +54,9 @@ export const Navbar = () => {
         </div>
         <div className="row ms-auto">
           <div className="d-flex user">
-            {NomeUsuario(nomeUser || "Ricardo Lanches de Rocha Oliverira")}
+            {NomeUsuario(nomeUser)}
             <div className="box-iniciais text-center">
-              {IniciaisUsuario(
-                nomeUser || "Ricardo Lanches de Rocha Oliverira"
-              )}
+              {IniciaisUsuario(nomeUser)}
             </div>
             <div className="ms-1">
               <button

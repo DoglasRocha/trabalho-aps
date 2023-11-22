@@ -17,13 +17,14 @@ export const Servico = () => {
   const [servicos, setServicos] = useState<IServicoWrapper[]>([]);
   const [novoServico, setNovoServico] = useState<IServico>(criarIServico());
 
+  if (!getCookie()) return navegacao("/login");
+  
   useEffect(() => {
     api
       .get("categorias/all")
       .then((request) => setCategorias(request.data["dados"]));
   }, []);
 
-  if (!getCookie()) return navegacao("/login");
   return (
     <>
       <div className="container-fluid fundo-home">
@@ -50,7 +51,7 @@ export const Servico = () => {
                 <div className="row p-3">
                   <div className="mb-2">
                     <i className="fa-regular fa-calendar-plus me-2"></i>
-                    <strong>Criar/Editar Serviço</strong>
+                    <strong>Criar Serviço</strong>
                   </div>
                   <hr />
                   <div className="col-12 mb-2">
@@ -78,23 +79,23 @@ export const Servico = () => {
                   <div className="col-6 mb-2">
                     <div className="form-group">
                       <label>Preço</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        step="0.01"
-                        onChange={(e) =>
+                      <div className="input-group mb-3">
+                        <span className="input-group-text">R$</span>
+                        <input className="form-control" type="number" step="0.01"aria-label="Amount (to the nearest dollar)" onChange={(e) =>
                           setNovoServico({
                             ...novoServico,
                             preco: e.target.value,
                           })
-                        }
-                      />
+                        } />
+                        <span className="input-group-text">.00</span>
+                      </div>
                     </div>
                   </div>
                   <div className="col-6 mb-2">
                     <div className="form-group">
                       <label>Duração</label>
-                      <input
+                      <div className="input-group mb-3">
+                        <input
                         className="form-control"
                         type="number"
                         min="1"
@@ -105,7 +106,9 @@ export const Servico = () => {
                             duracao: e.target.value,
                           })
                         }
-                      />
+                        />
+                        <span className="input-group-text">Horas</span>
+                      </div>
                     </div>
                   </div>
                   <div className="d-flex justify-content-end mt-2">
