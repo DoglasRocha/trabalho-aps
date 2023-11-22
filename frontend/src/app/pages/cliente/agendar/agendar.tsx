@@ -1,4 +1,4 @@
-import { ListaServicos } from "../../../shared/components/listaServicos/listaServicos.tsx";
+import { ListaAgendamentos } from "../../../shared/components/listaAgendamentos/listaAgendamentos.tsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../../../assets/cookies.ts";
@@ -44,7 +44,7 @@ export const Agendar = () => {
           <div className="d-flex flex-row">
             <div className="p-2 lado-agendamento">
               <div className="p-2">
-                <ListaServicos />
+                <ListaAgendamentos />
               </div>
             </div>
 

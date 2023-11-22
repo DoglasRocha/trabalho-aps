@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../../../assets/api.ts";
 import "./listaAgendamentos.css";
 
-export const listaAgendamentos = () => {
+export const ListaAgendamentos = () => {
   const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>(
     []
   );
@@ -26,7 +26,7 @@ export const listaAgendamentos = () => {
             <div className="d-flex">
               <strong>{dadosAgendamento.empresa.nome_fantasia}</strong>
               <div className="row ms-auto">
-                <span>{dadosAgendamento.prestador.nome}</span>
+                <span>{dadosAgendamento.usuario.nome}</span>
               </div>
             </div>
           </div>
@@ -35,7 +35,7 @@ export const listaAgendamentos = () => {
               <strong>
                 {new Date(
                   dadosAgendamento.agendamento.horario_inicio
-                ).toString()}
+                ).toLocaleString()}
               </strong>
               <button className="button-excluir-agenda ms-auto">
                 <i className="fa-solid fa-trash-can"></i>

@@ -24,7 +24,7 @@ export const HomePrestador = () => {
                   className="button-agenda"
                   onClick={() => navegacao("servico")}
                 >
-                  Editar serviço
+                  Criar serviços
                 </button>
               </div>
             </div>
