@@ -137,8 +137,15 @@ export const Agendar = () => {
                     <button
                       className="button-agendar btn"
                       onClick={async () => {
+                        const dadosBrutosCliente = await api.get(
+                          `/clientes/get?usuario_id=${getCookie().usuario_id}`
+                        );
+                        const dadosCliente =
+                          dadosBrutosCliente.data.dados[0].cliente;
+
+                        novoAgendamento.cliente_id = dadosCliente.id;
                         const resultAgendamento = await api.post(
-                          "prestadores/create",
+                          "agendamentos/create",
                           novoAgendamento
                         );
 

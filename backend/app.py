@@ -341,17 +341,17 @@ def get_servicos() -> dict:
 def create_agendamento() -> dict:
     try:
         dados = request.json
-
+        print(dados)
         # checa se cliente existe
         cliente = database.session.get(Cliente, {"id": dados["cliente_id"]})
         if not cliente:
             return {"msg": "Cliente não existente"}
-
+        print(cliente)
         # checa se servico existe
         servico = database.session.get(Servico, {"id": dados["servico_id"]})
         if not servico:
             return {"msg": "Servico não existente"}
-
+        print(servico)
         # cria agendamento
         atributos_agendamento = Agendamento.filtra_atributos_dicionario(dados)
         atributos_agendamento["horario_inicio"] = datetime.fromisoformat(

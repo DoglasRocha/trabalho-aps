@@ -337,6 +337,7 @@ class Agendamento(database.Model):
             **cliente.get_dict(),
             **servico.get_dict(),
             "agendamento": {
+                "id": self.id,
                 "horario_inicio": self.horario_inicio,
                 "horario_fim": self.horario_fim,
                 "observacoes_cliente": self.observacoes_cliente,

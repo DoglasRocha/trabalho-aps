@@ -1,43 +1,58 @@
-import { IAgendamentoWrapper } from "../../../../assets/models.ts";
-import { useEffect, useState } from "react";
+import {
+  IAgendamentoWrapper,
+  IClienteWrapper,
+} from "../../../../assets/models.ts";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../../../../assets/api.ts";
 import "./listaAgendamentos.css";
+import { getCookie } from "../../../../assets/cookies.ts";
 
 export const ListaAgendamentos = () => {
   const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>(
     []
   );
+  const [dadosCliente, setDadosCliente] = useState<IClienteWrapper>();
+  const dadosCookies = getCookie();
+  const [trigger, setTrigger] = useState<number>(0);
 
   useEffect(() => {
     api
-      //.get(`/agendamentos/get?id=${props}`)
-      .get(`/agendamentos/get?cliente_id=1`)
+      .get(`/clientes/get?usuario_id=${dadosCookies.usuario_id}`)
+      .then((request) => setDadosCliente(request.data.dados[0]));
+  }, [dadosCookies.usuario_id]);
+
+  useEffect(() => {
+    api
+      .get(`/agendamentos/get?cliente_id=${dadosCliente?.cliente.id}`)
       .then((request) => setAgendamento(request.data["dados"]));
-  }, []);
+  }, [dadosCliente?.cliente.id, trigger]);
 
   function Agenda() {
-    const lista = dadosAgendamento.map((dadosAgendamento) => (
-      <div
-        className="container topicos-agenda"
-        key={dadosAgendamento.agendamento.id}
-      >
+    if (!dadosAgendamento) return <></>;
+
+    const lista = dadosAgendamento.map((dados) => (
+      <div className="container topicos-agenda" key={dados.agendamento.id}>
         <div className="row">
           <div className="col-9 p-3" style={{ borderRight: "1px solid green" }}>
             <div className="d-flex">
-              <strong>{dadosAgendamento.empresa.nome_fantasia}</strong>
+              <strong>{dados.empresa.nome_fantasia}</strong>
               <div className="row ms-auto">
-                <span>{dadosAgendamento.usuario.nome}</span>
+                <span>{dados.usuario.nome}</span>
               </div>
             </div>
           </div>
           <div className="col-3 text-center p-3">
             <div className="input-group">
               <strong>
-                {new Date(
-                  dadosAgendamento.agendamento.horario_inicio
-                ).toLocaleString()}
+                {new Date(dados.agendamento.horario_inicio).toLocaleString()}
               </strong>
-              <button className="button-excluir-agenda ms-auto">
+              <button
+                className="button-excluir-agenda ms-auto"
+                onClick={() => {
+                  api.delete(`/agendamentos/delete/${dados.agendamento.id}`);
+                  setTrigger(trigger + 1);
+                }}
+              >
                 <i className="fa-solid fa-trash-can"></i>
               </button>
             </div>
