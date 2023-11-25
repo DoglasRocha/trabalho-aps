@@ -1,29 +1,39 @@
-import { IAgendamentoWrapper, IClienteWrapper } from "../../../../assets/models.ts";
-import { getCookie } from "../../../../assets/cookies.ts";
+import { IPrestadorWrapper, IServicoWrapper, IAgendamentoWrapper } from "../../../../assets/models.ts";
 import { useEffect, useState } from "react";
+import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
-import "./listaAgendamentos.css";
+import "./listaServicosFazer.css";
 
-export const ListaAgendamentos = () => {
+export const ListaServicosFazer = () => {
+  const [dadosServico, setServico] = useState<IServicoWrapper[]>([]);
+  const [dadosPrestador, setDadosPrestador] = useState<IPrestadorWrapper>();
   const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
-  const [dadosCliente, setDadosCliente] = useState<IClienteWrapper>();
   const [trigger, setTrigger] = useState<number>(0);
   const dadosCookies = getCookie();
 
   useEffect(() => {
     api
-      .get(`/clientes/get?usuario_id=${dadosCookies.usuario_id}`)
-      .then((request) => setDadosCliente(request.data.dados[0]));
+      .get(`/prestadores/get?usuario_id=${dadosCookies.usuario_id}`)
+      .then((request) => setDadosPrestador(request.data.dados[0]));
   }, [dadosCookies.usuario_id]);
 
   useEffect(() => {
     api
-      .get(`/agendamentos/get?cliente_id=${dadosCliente?.cliente.id}`)
-      .then((request) => setAgendamento(request.data["dados"]));
-  }, [dadosCliente?.cliente.id, trigger]);
+      .get(`/servicos/get?prestador_id=${dadosPrestador?.prestador.id}`)
+      .then((request) => setServico(request.data["dados"]));
+  }, [dadosPrestador?.prestador.id, trigger]);
 
-  function Agenda() {
-    if (!dadosAgendamento) return <></>;
+  useEffect(() => {
+    for(let i=0; i<dadosServico.length; i++)
+    {
+      api
+      .get(`/agendamentos/get?servico_id=${dadosServico[i].servico.id}`)
+      .then((request) => dadosAgendamento.push(request.data["dados"]));
+    }
+  }, []);
+
+  function Servicos() {
+    if (!dadosServico) return <></>;
 
     const lista = dadosAgendamento.map((dados) => (
       <div className="container topicos-agenda" key={dados.agendamento.id}>
@@ -60,16 +70,16 @@ export const ListaAgendamentos = () => {
 
   return (
     <>
-      <div className="container-agenda">
+      <div className="container-servico">
         <div className="row">
           <div className="col-12 m-2">
-            <strong>Agenda de Serviços</strong>
+            <strong>Serviços a fazer</strong>
             <i className="fa-regular fa-bell ms-2"></i>
           </div>
         </div>
-        <div className="modulo-agenda">
+        <div className="modulo-servico">
           <div className="row m-2">
-            <Agenda />
+            <Servicos />
           </div>
         </div>
       </div>
