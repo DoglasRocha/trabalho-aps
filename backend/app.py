@@ -209,9 +209,7 @@ def get_prestador() -> dict:
     if not prestadores:
         return {"msg": "Prestador não existente"}
 
-    return {
-        "dados": [prestador.get_dict() for prestador in prestadores],
-    }
+    return {"dados": [prestador.get_dict() for prestador in prestadores]}
 
 
 @app.get("/API/prestadores/all")

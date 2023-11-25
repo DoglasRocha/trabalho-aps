@@ -1,19 +1,14 @@
-import {
-  IAgendamentoWrapper,
-  IClienteWrapper,
-} from "../../../../assets/models.ts";
-import { useEffect, useRef, useState } from "react";
+import { IAgendamentoWrapper, IClienteWrapper } from "../../../../assets/models.ts";
+import { getCookie } from "../../../../assets/cookies.ts";
+import { useEffect, useState } from "react";
 import { api } from "../../../../assets/api.ts";
 import "./listaAgendamentos.css";
-import { getCookie } from "../../../../assets/cookies.ts";
 
 export const ListaAgendamentos = () => {
-  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>(
-    []
-  );
+  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
   const [dadosCliente, setDadosCliente] = useState<IClienteWrapper>();
-  const dadosCookies = getCookie();
   const [trigger, setTrigger] = useState<number>(0);
+  const dadosCookies = getCookie();
 
   useEffect(() => {
     api

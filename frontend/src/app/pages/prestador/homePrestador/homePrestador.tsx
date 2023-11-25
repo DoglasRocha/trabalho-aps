@@ -1,4 +1,4 @@
-import { ListaServicos } from "../../../shared/components/listaServicos/listaServicos.tsx";
+import { ListaServicosFazer } from "../../../shared/components/listaServicosFazer/listaServicosFazer.tsx";
 import { TabelaServicos } from "../../../shared/components/tabelaServicos/tabelaServicos.tsx";
 import { useNavigate } from "react-router-dom";
 import "./homePrestador.css";
@@ -16,7 +16,7 @@ export const HomePrestador = () => {
         <div className="fundo-principal">
           <div className="row">
             <div className="col-6 servicos-home">
-              <ListaServicos />
+              <ListaServicosFazer />
             </div>
             <div className="col-6 pb-2">
               <div className="d-flex h-100 w-100 align-items-center justify-content-center">

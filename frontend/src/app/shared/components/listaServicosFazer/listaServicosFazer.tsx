@@ -1,74 +1,60 @@
-import {
-  IAgendamentoWrapper,
-  IPrestadorWrapper,
-  IServicoWrapper,
-} from "../../../../assets/models.ts";
+import { IPrestadorWrapper, IServicoWrapper, IAgendamentoWrapper } from "../../../../assets/models.ts";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
-import "./listaServicos.css";
-import { getCookie } from "../../../../assets/cookies.ts";
+import "./listaServicosFazer.css";
 
-export const ListaServicos = () => {
-  const [dadosServicos, setServicos] = useState<IServicoWrapper[]>([]);
+export const ListaServicosFazer = () => {
+  const [dadosServico, setServico] = useState<IServicoWrapper[]>([]);
   const [dadosPrestador, setDadosPrestador] = useState<IPrestadorWrapper>();
-  const [dadosAgendamentos, setDadosAgendamentos] = useState<
-    IAgendamentoWrapper[]
-  >([]);
+  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
   const [trigger, setTrigger] = useState<number>(0);
   const dadosCookies = getCookie();
 
   useEffect(() => {
     api
       .get(`/prestadores/get?usuario_id=${dadosCookies.usuario_id}`)
-      .then((response) => setDadosPrestador(response.data.dados[0]));
+      .then((request) => setDadosPrestador(request.data.dados[0]));
   }, [dadosCookies.usuario_id]);
 
   useEffect(() => {
     api
       .get(`/servicos/get?prestador_id=${dadosPrestador?.prestador.id}`)
-      .then((response) => setServicos(response.data.dados));
-  }, [dadosPrestador?.prestador.id]);
+      .then((request) => setServico(request.data["dados"]));
+  }, [dadosPrestador?.prestador.id, trigger]);
 
   useEffect(() => {
-    if (!dadosServicos) return;
-    setDadosAgendamentos([]);
-    dadosServicos.forEach((element) => {
+    for(let i=0; i<dadosServico.length; i++)
+    {
       api
-        .get(`/agendamentos/get?servico_id=${element?.servico.id}`)
-        .then((response) => {
-          if (response.data.dados)
-            setDadosAgendamentos([
-              ...dadosAgendamentos,
-              response.data.dados[0],
-            ]);
-        });
-    });
-  }, [dadosServicos, trigger]);
+      .get(`/agendamentos/get?servico_id=${dadosServico[i].servico.id}`)
+      .then((request) => dadosAgendamento.push(request.data["dados"]));
+    }
+  }, []);
 
   function Servicos() {
-    if (!dadosAgendamentos.length) return <></>;
+    if (!dadosServico) return <></>;
 
-    const lista = dadosAgendamentos.map((agendamento) => (
-      <div className="container topicos-servico" key={agendamento.servico.id}>
+    const lista = dadosAgendamento.map((dados) => (
+      <div className="container topicos-agenda" key={dados.agendamento.id}>
         <div className="row">
           <div className="col-9 p-3" style={{ borderRight: "1px solid green" }}>
             <div className="d-flex">
-              <strong>{agendamento.categoria.nome}</strong>
+              <strong>{dados.empresa.nome_fantasia}</strong>
               <div className="row ms-auto">
-                <span>{agendamento.servico.duracao} horas</span>
+                <span>{dados.usuario.nome}</span>
               </div>
             </div>
           </div>
           <div className="col-3 text-center p-3">
             <div className="input-group">
-              <strong>R${agendamento.servico.preco}</strong>
+              <strong>
+                {new Date(dados.agendamento.horario_inicio).toLocaleString()}
+              </strong>
               <button
-                className="button-excluir-servico ms-auto"
+                className="button-excluir-agenda ms-auto"
                 onClick={() => {
-                  api.delete(
-                    `/agendamentos/delete/${agendamento.agendamento.id}`
-                  );
+                  api.delete(`/agendamentos/delete/${dados.agendamento.id}`);
                   setTrigger(trigger + 1);
                 }}
               >
@@ -87,7 +73,7 @@ export const ListaServicos = () => {
       <div className="container-servico">
         <div className="row">
           <div className="col-12 m-2">
-            <strong>Serviços disponíveis</strong>
+            <strong>Serviços a fazer</strong>
             <i className="fa-regular fa-bell ms-2"></i>
           </div>
         </div>

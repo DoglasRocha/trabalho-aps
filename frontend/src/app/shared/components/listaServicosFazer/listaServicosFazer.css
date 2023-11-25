@@ -1,0 +1,38 @@
+.container-servico {
+    padding: 10px;
+    margin: 10px;
+    width: calc(100%);
+    height: calc(100%);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: gray;
+}
+
+.modulo-servico {
+    background-color: white;
+    border: 2px solid gray;
+    border-radius: 10px;
+    width: 100%;
+    height: 400px;
+    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.topicos-servico {
+    background-color: yellowgreen;
+    box-shadow: -5px 3px 1px green;
+    width: 100%;
+    border-radius: 7px;
+    height: auto;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.button-excluir-servico {
+    background-color: #dc3545;
+    color: white;
+    border-style: none;
+    border-radius: 3px;
+    transition: all .2s ease-in-out;
+}
