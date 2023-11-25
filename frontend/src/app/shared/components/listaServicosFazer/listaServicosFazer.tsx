@@ -1,39 +1,49 @@
-import { IPrestadorWrapper, IServicoWrapper, IAgendamentoWrapper } from "../../../../assets/models.ts";
+import {
+  IPrestadorWrapper,
+  IServicoWrapper,
+  IAgendamentoWrapper,
+} from "../../../../assets/models.ts";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
 import "./listaServicosFazer.css";
 
-export const ListaServicosFazer = () => {
+export const ListaServicosFazer = ({ usuario_id = -1 }) => {
   const [dadosServico, setServico] = useState<IServicoWrapper[]>([]);
   const [dadosPrestador, setDadosPrestador] = useState<IPrestadorWrapper>();
-  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
+  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>(
+    []
+  );
   const [trigger, setTrigger] = useState<number>(0);
   const dadosCookies = getCookie();
+  usuario_id = usuario_id == -1 ? dadosCookies.usuario_id : usuario_id;
 
   useEffect(() => {
     api
-      .get(`/prestadores/get?usuario_id=${dadosCookies.usuario_id}`)
-      .then((request) => setDadosPrestador(request.data.dados[0]));
-  }, [dadosCookies.usuario_id]);
+      .get(`/prestadores/get?usuario_id=${usuario_id}`)
+      .then((result) => setDadosPrestador(result.data.dados[0]));
+  }, [usuario_id]);
 
   useEffect(() => {
     api
       .get(`/servicos/get?prestador_id=${dadosPrestador?.prestador.id}`)
-      .then((request) => setServico(request.data["dados"]));
+      .then((result) => setServico(result.data["dados"]));
   }, [dadosPrestador?.prestador.id, trigger]);
 
   useEffect(() => {
-    for(let i=0; i<dadosServico.length; i++)
-    {
-      api
-      .get(`/agendamentos/get?servico_id=${dadosServico[i].servico.id}`)
-      .then((request) => dadosAgendamento.push(request.data["dados"]));
-    }
-  }, []);
+    if (dadosServico)
+      for (let i = 0; i < dadosServico.length; i++) {
+        api
+          .get(`/agendamentos/get?servico_id=${dadosServico[i].servico.id}`)
+          .then((result) => {
+            if (result.data.dados)
+              setAgendamento([...dadosAgendamento, result.data.dados[0]]);
+          });
+      }
+  }, [dadosServico]);
 
   function Servicos() {
-    if (!dadosServico) return <></>;
+    if (!dadosAgendamento) return <></>;
 
     const lista = dadosAgendamento.map((dados) => (
       <div className="container topicos-agenda" key={dados.agendamento.id}>

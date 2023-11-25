@@ -1,11 +1,9 @@
 import { ListaAgendamentos } from "../../../shared/components/listaAgendamentos/listaAgendamentos.tsx";
-import { TabelaServicos } from "../../../shared/components/tabelaServicos/tabelaServicos.tsx";
 import { useNavigate } from "react-router-dom";
 import "./homeCliente.css";
-import { useEffect } from "react";
 import { getCookie } from "../../../../assets/cookies.ts";
 
-export const HomeCliente = () => {
+export const HomeCliente = ({ usuario_id = -1 }) => {
   const navegacao = useNavigate();
 
   if (!getCookie()) return navegacao("/login");
@@ -16,7 +14,7 @@ export const HomeCliente = () => {
         <div className="fundo-principal">
           <div className="row">
             <div className="col-6 servicos-home">
-              <ListaAgendamentos />
+              <ListaAgendamentos usuario_id={usuario_id} />
             </div>
             <div className="col-6 pb-2">
               <div className="d-flex h-100 w-100 align-items-center justify-content-center">

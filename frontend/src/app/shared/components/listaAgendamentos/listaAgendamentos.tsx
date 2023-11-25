@@ -1,20 +1,26 @@
-import { IAgendamentoWrapper, IClienteWrapper } from "../../../../assets/models.ts";
+import {
+  IAgendamentoWrapper,
+  IClienteWrapper,
+} from "../../../../assets/models.ts";
 import { getCookie } from "../../../../assets/cookies.ts";
 import { useEffect, useState } from "react";
 import { api } from "../../../../assets/api.ts";
 import "./listaAgendamentos.css";
 
-export const ListaAgendamentos = () => {
-  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
+export const ListaAgendamentos = ({ usuario_id = -1 }) => {
+  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>(
+    []
+  );
   const [dadosCliente, setDadosCliente] = useState<IClienteWrapper>();
   const [trigger, setTrigger] = useState<number>(0);
   const dadosCookies = getCookie();
+  usuario_id = usuario_id == -1 ? dadosCookies.usuario_id : usuario_id;
 
   useEffect(() => {
     api
-      .get(`/clientes/get?usuario_id=${dadosCookies.usuario_id}`)
+      .get(`/clientes/get?usuario_id=${usuario_id}`)
       .then((response) => setDadosCliente(response.data.dados[0]));
-  }, [dadosCookies.usuario_id]);
+  }, [usuario_id]);
 
   useEffect(() => {
     api

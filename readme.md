@@ -39,7 +39,7 @@
 - Depois de criarem o ambiente virtual, digitem:
 
   ```sh
-  pip install requirements.txt
+  pip install -r requirements.txt
   ```
 
 - Daí para rodar, digitem:

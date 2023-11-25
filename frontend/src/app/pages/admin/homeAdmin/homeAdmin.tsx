@@ -26,9 +26,9 @@ export const HomeAdmin = () => {
 
   function telaUsuario() {
     if (dadosUsuario.tipo === "cliente") {
-      return <HomeCliente />;
+      return <HomeCliente usuario_id={dadosUsuario.id} />;
     } else {
-      return <HomePrestador />;
+      return <HomePrestador usuario_id={dadosUsuario.id} />;
     }
   }
 
@@ -44,14 +44,17 @@ export const HomeAdmin = () => {
                 onChange={(e) =>
                   setDadosUsuario({
                     ...dadosUsuario,
-                    id: e.target.value,
+                    id: e.target.value.split(" ")[0],
+                    tipo: e.target.value.split(" ")[1],
                   })
                 }
                 id="exampleFormControlSelect1"
               >
                 {selectUsuario.map((usuario) => {
                   return (
-                    <option value={usuario.usuario.id}>
+                    <option
+                      value={`${usuario.usuario.id} ${usuario.usuario.tipo}`}
+                    >
                       Nome: {usuario.usuario.nome}, Tipo: {usuario.usuario.tipo}
                     </option>
                   );
@@ -60,7 +63,13 @@ export const HomeAdmin = () => {
             </div>
           </div>
           <div className="row horarios">
-            <div className="container">{telaUsuario()}</div>
+            <div className="container">
+              {dadosUsuario.tipo === "cliente" ? (
+                <HomeCliente usuario_id={dadosUsuario.id} />
+              ) : (
+                <HomePrestador usuario_id={dadosUsuario.id} />
+              )}
+            </div>
           </div>
         </div>
       </div>
