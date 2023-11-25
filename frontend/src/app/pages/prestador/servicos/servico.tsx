@@ -17,12 +17,13 @@ export const Servico = () => {
   const [servicos, setServicos] = useState<IServicoWrapper[]>([]);
   const [novoServico, setNovoServico] = useState<IServico>(criarIServico());
 
-  if (!getCookie()) return navegacao("/login");
-  
+  if (!getCookie()) navegacao("/login");
+
   useEffect(() => {
     api
       .get("categorias/all")
       .then((request) => setCategorias(request.data["dados"]));
+    console.log(categoria);
   }, []);
 
   return (
@@ -81,12 +82,18 @@ export const Servico = () => {
                       <label>Preço</label>
                       <div className="input-group mb-3">
                         <span className="input-group-text">R$</span>
-                        <input className="form-control" type="number" step="0.01"aria-label="Amount (to the nearest dollar)" onChange={(e) =>
-                          setNovoServico({
-                            ...novoServico,
-                            preco: e.target.value,
-                          })
-                        } />
+                        <input
+                          className="form-control"
+                          type="number"
+                          step="0.01"
+                          aria-label="Amount (to the nearest dollar)"
+                          onChange={(e) =>
+                            setNovoServico({
+                              ...novoServico,
+                              preco: e.target.value,
+                            })
+                          }
+                        />
                         <span className="input-group-text">.00</span>
                       </div>
                     </div>
@@ -96,16 +103,16 @@ export const Servico = () => {
                       <label>Duração</label>
                       <div className="input-group mb-3">
                         <input
-                        className="form-control"
-                        type="number"
-                        min="1"
-                        max="8"
-                        onChange={(e) =>
-                          setNovoServico({
-                            ...novoServico,
-                            duracao: e.target.value,
-                          })
-                        }
+                          className="form-control"
+                          type="number"
+                          min="1"
+                          max="8"
+                          onChange={(e) =>
+                            setNovoServico({
+                              ...novoServico,
+                              duracao: e.target.value,
+                            })
+                          }
                         />
                         <span className="input-group-text">Horas</span>
                       </div>

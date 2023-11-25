@@ -40,7 +40,7 @@ export const ListaServicosFazer = ({ usuario_id = -1 }) => {
               setAgendamento([...dadosAgendamento, result.data.dados[0]]);
           });
       }
-  }, [dadosServico]);
+  }, [dadosServico, trigger]);
 
   function Servicos() {
     if (!dadosAgendamento) return <></>;
