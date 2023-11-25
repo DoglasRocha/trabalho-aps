@@ -1,5 +1,5 @@
-import { HomeCliente } from "../../cliente/homeCliente/homeCliente.tsx";
-import { HomePrestador } from "../../prestador/homePrestador/homePrestador.tsx";
+import { HomeCliente } from "../../cliente/homeCliente/homeCliente";
+import { HomePrestador } from "../../prestador/homePrestador/homePrestador";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../../../assets/api.ts";

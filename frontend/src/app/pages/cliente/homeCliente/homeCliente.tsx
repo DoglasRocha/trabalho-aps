@@ -24,16 +24,9 @@ export const HomeCliente = () => {
                   className="button-agenda"
                   onClick={() => navegacao("agendar")}
                 >
-                  Agendar/Desmarcar serviço
+                  Agendar serviço
                 </button>
               </div>
-            </div>
-          </div>
-          <div className="row horarios">
-            <h2 className="titulo-horarios">Horários</h2>
-
-            <div className="container">
-              <TabelaServicos />
             </div>
           </div>
         </div>

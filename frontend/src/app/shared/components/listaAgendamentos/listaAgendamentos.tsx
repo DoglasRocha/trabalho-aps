@@ -18,13 +18,13 @@ export const ListaAgendamentos = () => {
   useEffect(() => {
     api
       .get(`/clientes/get?usuario_id=${dadosCookies.usuario_id}`)
-      .then((request) => setDadosCliente(request.data.dados[0]));
+      .then((response) => setDadosCliente(response.data.dados[0]));
   }, [dadosCookies.usuario_id]);
 
   useEffect(() => {
     api
       .get(`/agendamentos/get?cliente_id=${dadosCliente?.cliente.id}`)
-      .then((request) => setAgendamento(request.data["dados"]));
+      .then((response) => setAgendamento(response.data["dados"]));
   }, [dadosCliente?.cliente.id, trigger]);
 
   function Agenda() {
