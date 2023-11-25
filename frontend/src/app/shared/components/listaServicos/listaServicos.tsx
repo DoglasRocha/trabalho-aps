@@ -1,76 +1,49 @@
-import {
-  IAgendamentoWrapper,
-  IPrestadorWrapper,
-  IServicoWrapper,
-} from "../../../../assets/models.ts";
+import { IPrestadorWrapper, IServicoWrapper } from "../../../../assets/models.ts";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
 import "./listaServicos.css";
-import { getCookie } from "../../../../assets/cookies.ts";
 
 export const ListaServicos = () => {
-  const [dadosServicos, setServicos] = useState<IServicoWrapper[]>([]);
+  const [dadosServico, setServico] = useState<IServicoWrapper[]>([]);
   const [dadosPrestador, setDadosPrestador] = useState<IPrestadorWrapper>();
-  const [dadosAgendamentos, setDadosAgendamentos] = useState<
-    IAgendamentoWrapper[]
-  >([]);
   const [trigger, setTrigger] = useState<number>(0);
   const dadosCookies = getCookie();
 
   useEffect(() => {
     api
       .get(`/prestadores/get?usuario_id=${dadosCookies.usuario_id}`)
-      .then((response) => setDadosPrestador(response.data.dados[0]));
+      .then((request) => setDadosPrestador(request.data.dados[0]));
   }, [dadosCookies.usuario_id]);
 
   useEffect(() => {
     api
       .get(`/servicos/get?prestador_id=${dadosPrestador?.prestador.id}`)
-      .then((response) => setServicos(response.data.dados));
-  }, [dadosPrestador?.prestador.id]);
-
-  useEffect(() => {
-    if (!dadosServicos) return;
-    setDadosAgendamentos([]);
-    dadosServicos.forEach((element) => {
-      api
-        .get(`/agendamentos/get?servico_id=${element?.servico.id}`)
-        .then((response) => {
-          if (response.data.dados)
-            setDadosAgendamentos([
-              ...dadosAgendamentos,
-              response.data.dados[0],
-            ]);
-        });
-    });
-  }, [dadosServicos, trigger]);
+      .then((request) => setServico(request.data["dados"]));
+  }, [dadosPrestador?.prestador.id, trigger]);
 
   function Servicos() {
-    if (!dadosAgendamentos.length) return <></>;
+    if (!dadosServico) return <></>;
 
-    const lista = dadosAgendamentos.map((agendamento) => (
-      <div className="container topicos-servico" key={agendamento.servico.id}>
+    const lista = dadosServico.map((dadosServico) => (
+      <div className="container topicos-servico" key={dadosServico.servico.id}>
         <div className="row">
           <div className="col-9 p-3" style={{ borderRight: "1px solid green" }}>
             <div className="d-flex">
-              <strong>{agendamento.categoria.nome}</strong>
+              <strong>{dadosServico.categoria.nome}</strong>
               <div className="row ms-auto">
-                <span>{agendamento.servico.duracao} horas</span>
+                <span>{dadosServico.servico.duracao} horas</span>
               </div>
             </div>
           </div>
           <div className="col-3 text-center p-3">
             <div className="input-group">
-              <strong>R${agendamento.servico.preco}</strong>
-              <button
-                className="button-excluir-servico ms-auto"
-                onClick={() => {
-                  api.delete(
-                    `/agendamentos/delete/${agendamento.agendamento.id}`
-                  );
-                  setTrigger(trigger + 1);
-                }}
+              <strong>R${dadosServico.servico.preco}</strong>
+              <button className="button-excluir-servico ms-auto"
+              onClick={() => {
+                api.delete(`/servicos/delete/${dadosServico.servico.id}`);
+                setTrigger(trigger + 1);
+              }}
               >
                 <i className="fa-solid fa-trash-can"></i>
               </button>
