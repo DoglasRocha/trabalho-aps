@@ -16,6 +16,7 @@ export const Servico = () => {
   const [categoria, setCategorias] = useState<ICategoriaWrapper[]>([]);
   const [servicos, setServicos] = useState<IServicoWrapper[]>([]);
   const [novoServico, setNovoServico] = useState<IServico>(criarIServico());
+  const [trigger, setTrigger] = useState<number>(0);
 
   if (!getCookie()) navegacao("/login");
 
@@ -122,14 +123,23 @@ export const Servico = () => {
                     <button
                       className="button-agendar btn"
                       onClick={async () => {
-                        let resultServico;
+                        const dadosPrestador = await api.get(
+                          `/prestadores/get?usuario_id=${
+                            getCookie().usuario_id
+                          }`
+                        );
 
-                        resultServico = await api.post(
+                        novoServico.prestador_id =
+                          dadosPrestador.data.dados[0].prestador.id;
+                        novoServico.duracao = parseFloat(novoServico.duracao);
+                        const resultServico = await api.post(
                           "servicos/create",
                           novoServico
                         );
 
-                        window.location.reload();
+                        setTrigger(trigger + 1);
+
+                        //window.location.reload();
                       }}
                     >
                       Criar Serviço

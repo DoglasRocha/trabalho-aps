@@ -466,7 +466,7 @@ def alterar_agendamento(id: int) -> dict:
 
         # pega se servico existe
         servico_id = (
-            Agendamento.servico_id
+            antigo_agendamento.servico_id
             if "servico_id" not in dados.keys()
             else dados["servico_id"]
         )
@@ -476,6 +476,7 @@ def alterar_agendamento(id: int) -> dict:
 
         # cria agendamento
         atributos_atualizacao = Agendamento.filtra_atributos_dicionario(dados)
+        print(atributos_atualizacao)
 
         if "horario_inicio" in atributos_atualizacao.keys():
             atributos_atualizacao["horario_inicio"] = datetime.fromisoformat(

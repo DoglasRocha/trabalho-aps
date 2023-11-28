@@ -34,7 +34,10 @@ export const ListaAgendamentos = ({ usuario_id = -1 }) => {
     const lista = dadosAgendamento.map((dados) => (
       <div className="container topicos-agenda" key={dados.agendamento.id}>
         <div className="row">
-          <div className="col-9 p-3" style={{ borderRight: "1px solid orangered" }}>
+          <div
+            className="col-9 p-3"
+            style={{ borderRight: "1px solid orangered" }}
+          >
             <div className="d-flex">
               <strong>{dados.empresa.nome_fantasia}</strong>
               <div className="row ms-auto">

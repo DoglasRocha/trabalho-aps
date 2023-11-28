@@ -2,10 +2,10 @@ import {
   IPrestadorWrapper,
   IServicoWrapper,
   IAgendamentoWrapper,
-  IAgendamento
+  IAgendamento,
 } from "../../../../assets/models.ts";
 import { useEffect, useState } from "react";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
 import "./listaServicosFazer.css";
@@ -13,13 +13,15 @@ import "./listaServicosFazer.css";
 export const ListaServicosFazer = ({ usuario_id = -1 }) => {
   const [dadosServico, setServico] = useState<IServicoWrapper[]>([]);
   const [dadosPrestador, setDadosPrestador] = useState<IPrestadorWrapper>();
-  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
+  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>(
+    []
+  );
   const [trigger, setTrigger] = useState<number>(0);
-  
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+
   const dadosCookies = getCookie();
 
   usuario_id = usuario_id == -1 ? dadosCookies.usuario_id : usuario_id;
@@ -48,39 +50,69 @@ export const ListaServicosFazer = ({ usuario_id = -1 }) => {
       }
   }, [dadosServico, trigger]);
 
-  function modalConclusaoServico(agendamento : IAgendamento) {
-    console.log(agendamento)
+  function modalConclusaoServico(agendamento: IAgendamento) {
+    console.log(agendamento);
     return (
       <>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Realizar Serviço</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <button className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>Voltar</button>
-              <button type="button" className="btn btn-primary" onClick={async () => {
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Realizar Serviço</Modal.Title>
+          </Modal.Header>
+          <Modal.Body></Modal.Body>
+          <Modal.Footer>
+            <button
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
+              onClick={handleClose}
+            >
+              Voltar
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={async () => {
                 let resultAgendamento;
                 agendamento.realizado = true;
-                resultAgendamento = await api.patch(`/agendamentos/alterar/${agendamento.id}`, agendamento);
-                window.location.reload();
-                }}
-              >
-                Concluir
-              </button>
-        </Modal.Footer>
-      </Modal>
+                resultAgendamento = await api.patch(
+                  `/agendamentos/alterar/${agendamento.id}`,
+                  {
+                    realizado: true,
+                    observacoes_prestador: agendamento.observacoes_prestador,
+                  }
+                );
+                //window.location.reload();
+                console.log(resultAgendamento);
+                setShow(false);
+              }}
+            >
+              Concluir
+            </button>
+          </Modal.Footer>
+        </Modal>
       </>
-    )
+    );
   }
 
   function Servicos() {
     if (!dadosAgendamento) return <></>;
 
     const lista = dadosAgendamento.map((dados) => (
-      <div className={'container topicos-servico-fazer' + (dados.agendamento.realizado ? '-realizado' : '')} key={dados.agendamento.id}>
+      <div
+        className={
+          "container topicos-servico-fazer" +
+          (dados.agendamento.realizado ? "-realizado" : "")
+        }
+        key={dados.agendamento.id}
+      >
         <div className="row">
-          <div className="col-9 p-3" style={{ borderRight: "1px solid " +  (dados.agendamento.realizado ? 'green' : '#891010')}}>
+          <div
+            className="col-9 p-3"
+            style={{
+              borderRight:
+                "1px solid " +
+                (dados.agendamento.realizado ? "green" : "#891010"),
+            }}
+          >
             <div className="d-flex">
               <strong>{dados.empresa.nome_fantasia}</strong>
               <div className="row ms-auto">
@@ -93,7 +125,10 @@ export const ListaServicosFazer = ({ usuario_id = -1 }) => {
               <strong>
                 {new Date(dados.agendamento.horario_inicio).toLocaleString()}
               </strong>
-              <button className="button-concluir-servico-fazer ms-auto" onClick={handleShow} >
+              <button
+                className="button-concluir-servico-fazer ms-auto"
+                onClick={handleShow}
+              >
                 <i className="fa-solid fa-circle-check"></i>
               </button>
               <button
