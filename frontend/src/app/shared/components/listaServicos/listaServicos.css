@@ -13,14 +13,14 @@
     border: 2px solid gray;
     border-radius: 10px;
     width: 100%;
-    height: 400px;
+    height: 600px;
     padding: 10px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .topicos-servico {
-    background-color: yellowgreen;
+    background-color: #30d267;
     box-shadow: -5px 3px 1px green;
     width: 100%;
     border-radius: 7px;

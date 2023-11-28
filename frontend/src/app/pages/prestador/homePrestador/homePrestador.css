@@ -8,7 +8,7 @@
 
 .fundo-principal {
     background-color: #b9b9b9;
-    height: calc(100vh);
+    height: calc(100%);
     width: calc(100%);
     padding-top: 10%;
     padding-bottom: 10%;

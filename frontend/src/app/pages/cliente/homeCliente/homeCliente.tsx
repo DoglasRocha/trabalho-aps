@@ -13,10 +13,10 @@ export const HomeCliente = ({ usuario_id = -1 }) => {
       <div className="container-fluid fundo-home">
         <div className="fundo-principal">
           <div className="row">
-            <div className="col-6 servicos-home">
+            <div className="col-7 servicos-home">
               <ListaAgendamentos usuario_id={usuario_id} />
             </div>
-            <div className="col-6 pb-2">
+            <div className="col-5 pb-2">
               <div className="d-flex h-100 w-100 align-items-center justify-content-center">
                 <button
                   className="button-agenda"

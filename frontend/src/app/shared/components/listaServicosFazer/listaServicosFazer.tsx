@@ -2,8 +2,10 @@ import {
   IPrestadorWrapper,
   IServicoWrapper,
   IAgendamentoWrapper,
+  IAgendamento
 } from "../../../../assets/models.ts";
 import { useEffect, useState } from "react";
+import Modal from 'react-bootstrap/Modal';
 import { getCookie } from "../../../../assets/cookies.ts";
 import { api } from "../../../../assets/api.ts";
 import "./listaServicosFazer.css";
@@ -11,11 +13,15 @@ import "./listaServicosFazer.css";
 export const ListaServicosFazer = ({ usuario_id = -1 }) => {
   const [dadosServico, setServico] = useState<IServicoWrapper[]>([]);
   const [dadosPrestador, setDadosPrestador] = useState<IPrestadorWrapper>();
-  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>(
-    []
-  );
+  const [dadosAgendamento, setAgendamento] = useState<IAgendamentoWrapper[]>([]);
   const [trigger, setTrigger] = useState<number>(0);
+  
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  
   const dadosCookies = getCookie();
+
   usuario_id = usuario_id == -1 ? dadosCookies.usuario_id : usuario_id;
 
   useEffect(() => {
@@ -42,13 +48,39 @@ export const ListaServicosFazer = ({ usuario_id = -1 }) => {
       }
   }, [dadosServico, trigger]);
 
+  function modalConclusaoServico(agendamento : IAgendamento) {
+    console.log(agendamento)
+    return (
+      <>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Realizar Serviço</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>Voltar</button>
+              <button type="button" className="btn btn-primary" onClick={async () => {
+                let resultAgendamento;
+                agendamento.realizado = true;
+                resultAgendamento = await api.patch(`/agendamentos/alterar/${agendamento.id}`, agendamento);
+                window.location.reload();
+                }}
+              >
+                Concluir
+              </button>
+        </Modal.Footer>
+      </Modal>
+      </>
+    )
+  }
+
   function Servicos() {
     if (!dadosAgendamento) return <></>;
 
     const lista = dadosAgendamento.map((dados) => (
-      <div className="container topicos-agenda" key={dados.agendamento.id}>
+      <div className={'container topicos-servico-fazer' + (dados.agendamento.realizado ? '-realizado' : '')} key={dados.agendamento.id}>
         <div className="row">
-          <div className="col-9 p-3" style={{ borderRight: "1px solid green" }}>
+          <div className="col-9 p-3" style={{ borderRight: "1px solid " +  (dados.agendamento.realizado ? 'green' : '#891010')}}>
             <div className="d-flex">
               <strong>{dados.empresa.nome_fantasia}</strong>
               <div className="row ms-auto">
@@ -61,8 +93,11 @@ export const ListaServicosFazer = ({ usuario_id = -1 }) => {
               <strong>
                 {new Date(dados.agendamento.horario_inicio).toLocaleString()}
               </strong>
+              <button className="button-concluir-servico-fazer ms-auto" onClick={handleShow} >
+                <i className="fa-solid fa-circle-check"></i>
+              </button>
               <button
-                className="button-excluir-agenda ms-auto"
+                className="button-excluir-servico-fazer ms-auto"
                 onClick={() => {
                   api.delete(`/agendamentos/delete/${dados.agendamento.id}`);
                   setTrigger(trigger + 1);
@@ -70,6 +105,8 @@ export const ListaServicosFazer = ({ usuario_id = -1 }) => {
               >
                 <i className="fa-solid fa-trash-can"></i>
               </button>
+
+              {modalConclusaoServico(dados.agendamento)}
             </div>
           </div>
         </div>
@@ -80,14 +117,14 @@ export const ListaServicosFazer = ({ usuario_id = -1 }) => {
 
   return (
     <>
-      <div className="container-servico">
+      <div className="container-servico-fazer">
         <div className="row">
           <div className="col-12 m-2">
             <strong>Serviços a fazer</strong>
             <i className="fa-regular fa-bell ms-2"></i>
           </div>
         </div>
-        <div className="modulo-servico">
+        <div className="modulo-servico-fazer">
           <div className="row m-2">
             <Servicos />
           </div>

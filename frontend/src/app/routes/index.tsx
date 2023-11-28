@@ -23,6 +23,10 @@ export const Rota = () => {
         </Route>
         <Route path="/admin/home" element={<Navbar />}>
           <Route index element={<HomeAdmin />} />
+          {/*<Route index element={<HomeCliente />} />
+          <Route path="agendar" element={<Agendar />} />
+          <Route index element={<HomePrestador />} />
+  <Route path="servico" element={<Servico />} />*/}
         </Route>
       </Routes>
     </BrowserRouter>
